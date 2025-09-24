@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.skorify"
+    namespace = "com.github.skorify"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
