@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'pages/login_pages.dart';
 import 'package:skorify/background.dart';
 
 void main() {
@@ -11,42 +11,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: Container(
-          decoration: background,
-
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.only(left: 20.0, right: 20.0),
-                  alignment: Alignment.bottomLeft,
-                  child: Text(
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    'SKORIFY',
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.only(left: 20.0, right: 20.0),
-                  alignment: Alignment.bottomLeft,
-                  child: Text(
-                    textAlign: TextAlign.justify,
-                    style: TextStyle(color: Colors.white, fontSize: 26),
-                    'Aplikasi CBT Test Potensi Akademik',
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: LoginPage(),
     );
   }
 }
