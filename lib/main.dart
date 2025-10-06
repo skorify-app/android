@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:skorify/pages/homepages.dart';
 import 'pages/login_pages.dart';
+import 'pages/register_pages.dart';
 import 'package:skorify/background.dart';
 
 void main() {
@@ -11,9 +13,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginPage(),
+      title: 'Skorify',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        fontFamily: 'Poppins',
+      ),
+
+      // Halaman pertama saat aplikasi dibuka
+      initialRoute: '/login',
+
+      // Semua route didefinisikan di sini
+      routes: {
+        '/login': (context) => const LoginPage(),
+        '/register': (context) => const RegisterPages(),
+        '/homepages': (context) => const HomePages()
+      },
     );
   }
 }

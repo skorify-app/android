@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'register_pages.dart';
+import 'homepages.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:skorify/background.dart';
 
@@ -21,7 +23,7 @@ class _LoginPageState extends State<LoginPage> {
     if (_formKey.currentState!.validate()) {
       setState(() => _isLoading = true);
 
-      // simulasi login (bisa diganti dengan API login nanti)
+      // simulasi login (dummy akun)
       await Future.delayed(const Duration(seconds: 2));
 
       if (emailController.text == "admin@gmail.com" &&
@@ -29,8 +31,12 @@ class _LoginPageState extends State<LoginPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Login berhasil!")),
         );
-        // Navigasi ke halaman utama
-        // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => HomePage()));
+
+        // Navigasi ke HomePage
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const HomePages()),
+        );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Email atau kata sandi salah.")),
@@ -40,6 +46,7 @@ class _LoginPageState extends State<LoginPage> {
       setState(() => _isLoading = false);
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -51,12 +58,14 @@ class _LoginPageState extends State<LoginPage> {
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("assets/images/home-background.png"), // Path ke gambar
+                image: AssetImage(
+                  "assets/images/home-background.png",
+                ), // Path ke gambar
                 fit: BoxFit.cover, // Agar gambar memenuhi seluruh layar
               ),
             ),
           ),
-          
+
           // 2. KONTEN LOGIN (WIDGET LAMA ANDA)
           Center(
             child: SingleChildScrollView(
@@ -64,7 +73,8 @@ class _LoginPageState extends State<LoginPage> {
                 width: 350,
                 padding: const EdgeInsets.all(16),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center, // Pusatkan kolom secara vertikal
+                  mainAxisAlignment: MainAxisAlignment
+                      .center, // Pusatkan kolom secara vertikal
                   children: [
                     // Logo dan Judul
                     Image.asset(
@@ -87,10 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                     const Text(
                       'Aplikasi CBT Tes potensi akademik',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 25,
-                      ),
+                      style: TextStyle(color: Colors.white, fontSize: 25),
                     ),
                     const SizedBox(height: 80),
 
@@ -195,7 +202,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     TextButton(
                       onPressed: () {
-                        // Navigator.push(context, MaterialPageRoute(builder: (_) => RegisterPage()));
+                        Navigator.pushNamed(context, '/register');
                       },
                       child: const Text(
                         "Buat akun sekarang",
