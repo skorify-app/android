@@ -14,6 +14,14 @@ class _HomePagesState extends State<HomePages> {
     setState(() {
       _selectedIndex = index;
     });
+
+    // 🔹 Tambahan navigasi
+    if (index == 2) {
+      // Jika tab "Akun" ditekan, pindah ke halaman setting
+      Navigator.pushNamed(context, '/setting');
+    }
+    // Kalau nanti kamu mau bikin halaman aktivitas, bisa tambahkan:
+    // else if (index == 1) { Navigator.pushNamed(context, '/activity'); }
   }
 
   @override
@@ -28,7 +36,6 @@ class _HomePagesState extends State<HomePages> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        
       ),
 
       body: SingleChildScrollView(
@@ -36,7 +43,6 @@ class _HomePagesState extends State<HomePages> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Judul utama
             const Text(
               "CBT Potensi Akademik",
               style: TextStyle(
@@ -53,7 +59,6 @@ class _HomePagesState extends State<HomePages> {
             ),
             const SizedBox(height: 20),
 
-            // Kartu simulasi
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -99,7 +104,6 @@ class _HomePagesState extends State<HomePages> {
             ),
             const SizedBox(height: 16),
 
-            // Grid subtes
             GridView.count(
               crossAxisCount: 2,
               shrinkWrap: true,
@@ -118,26 +122,35 @@ class _HomePagesState extends State<HomePages> {
         ),
       ),
 
-      // Bottom Navigation
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Beranda",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.checklist),
-            label: "Aktivitas",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: "Akun",
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: const Color(0xFF002855),
-        onTap: _onItemTapped,
+      // 🔹 Bottom Navigation
+      bottomNavigationBar: ClipRRect(
+  borderRadius: const BorderRadius.only(
+    topLeft: Radius.circular(15),
+    topRight: Radius.circular(15),
+  ),
+  child: BottomNavigationBar(
+    backgroundColor:const Color(0xFF001D39),
+    items: const [
+      BottomNavigationBarItem(
+        icon: Icon(Icons.home),
+        label: "Beranda",
       ),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.checklist),
+        label: "Aktivitas",
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.person),
+        label: "Akun",
+      ),
+    ],
+    currentIndex: _selectedIndex,
+    selectedItemColor: const Color(0xFF001D39),
+    unselectedItemColor: Colors.white,
+    onTap: _onItemTapped,
+  ),
+),
+
     );
   }
 
@@ -147,7 +160,7 @@ class _HomePagesState extends State<HomePages> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
-          BoxShadow(
+          const BoxShadow(
             color: Colors.black12,
             blurRadius: 4,
             offset: Offset(2, 2),

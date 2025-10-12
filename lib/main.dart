@@ -3,6 +3,7 @@ import 'package:skorify/pages/homepages.dart';
 import 'pages/login_pages.dart';
 import 'pages/register_pages.dart';
 import 'package:skorify/background.dart';
+import 'pages/setting.dart';
 
 void main() {
   runApp(const MyApp());
@@ -28,7 +29,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login': (context) => const LoginPage(),
         '/register': (context) => const RegisterPages(),
-        '/homepages': (context) => const HomePages()
+        '/homepages': (context) => const HomePages(),
+        '/setting': (context) => const SettingPage(), 
       },
     );
   }
