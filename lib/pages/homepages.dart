@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'setting.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomePages extends StatefulWidget {
   const HomePages({super.key});
@@ -15,76 +17,111 @@ class _HomePagesState extends State<HomePages> {
       _selectedIndex = index;
     });
 
-    // 🔹 Tambahan navigasi
     if (index == 2) {
-      // Jika tab "Akun" ditekan, pindah ke halaman setting
       Navigator.pushNamed(context, '/setting');
     }
-    // Kalau nanti kamu mau bikin halaman aktivitas, bisa tambahkan:
-    // else if (index == 1) { Navigator.pushNamed(context, '/activity'); }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 16.0),
+          child: Image.asset(
+            'assets/images/logo.png',
+            height: 20,
+            width: 20,
+          ),
+        ),
         title: const Text(
           "Skorify",
           style: TextStyle(
-            fontFamily: 'Inter',
+            color: Colors.white,
             fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+        ),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/home-background.png"),
+              fit: BoxFit.fitWidth,
+              alignment: Alignment.topCenter,
+            ),
           ),
         ),
       ),
 
+      // 🔹 Body
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "CBT Potensi Akademik",
-              style: TextStyle(
-                fontSize: 22,
+            Text(
+              "CBT Potensi akademik",
+              style: GoogleFonts.inter(
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF002855),
+                color: const Color(0xFF002855),
               ),
             ),
-            const SizedBox(height: 8),
-            const Text(
-              "Simulasi Ujian Mandiri Polibatam (UMPB)\n"
-              "Uji dan asah pengetahuanmu dengan latihan simulasi UMP sungguhan!",
-              style: TextStyle(fontSize: 16, color: Colors.black87),
+            const SizedBox(height: 4),
+            Text(
+              "Simulasi Ujian Mandiri Polibatam (UMPB)",
+              style: GoogleFonts.inter(
+                fontSize: 14,
+                color: Colors.black87,
+              ),
             ),
             const SizedBox(height: 20),
 
+            // 🔹 Kartu utama
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.lightBlue[50],
-                borderRadius: BorderRadius.circular(12),
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
               ),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(Icons.assignment, size: 40, color: Colors.blue),
+                  Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFE7F0FB),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Image.asset(
+                      'assets/images/UMPB.png',
+                      fit: BoxFit.contain,
+                    ),
+                  ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Text(
                           "Simulasi Ujian Mandiri Polibatam (UMPB)",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: Color(0xFF002855),
+                          style: GoogleFonts.inter(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xFF002855),
                           ),
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         Text(
                           "Uji dan asah pengetahuanmu dengan latihan simulasi UMP sungguhan!",
-                          style: TextStyle(fontSize: 14, color: Colors.black87),
+                          style: GoogleFonts.inter(
+                            fontSize: 13,
+                            color: Colors.black54,
+                          ),
                         ),
                       ],
                     ),
@@ -94,96 +131,99 @@ class _HomePagesState extends State<HomePages> {
             ),
 
             const SizedBox(height: 24),
-            const Text(
+
+            Text(
               "Coba uji persubtes yuk!",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF002855),
+              style: GoogleFonts.inter(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: const Color(0xFF002855),
               ),
             ),
             const SizedBox(height: 16),
 
+            // 🔹 GridView untuk subtes
             GridView.count(
               crossAxisCount: 2,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               crossAxisSpacing: 12,
               mainAxisSpacing: 12,
+              childAspectRatio: 1.1,
               children: [
-                _buildSubtestCard(Icons.science, "Sains"),
-                _buildSubtestCard(Icons.calculate, "Matematika"),
-                _buildSubtestCard(Icons.memory, "Computational Thinking"),
-                _buildSubtestCard(Icons.menu_book, "Bahasa Inggris"),
-                _buildSubtestCard(Icons.book, "Bahasa Indonesia"),
+                _buildSubtestCard('assets/images/sains.png', "Sains"),
+                _buildSubtestCard('assets/images/matematika.png', "Matematika"),
+                _buildSubtestCard('assets/images/computer.png', "Computational thinking"),
+                _buildSubtestCard('assets/images/inggris.png', "Bahasa Inggris"),
+                _buildSubtestCard('assets/images/indonesia.png', "Bahasa Indonesia"),
               ],
             ),
           ],
         ),
       ),
 
-      // 🔹 Bottom Navigation
+      // 🔹 Bottom Navigation Bar
       bottomNavigationBar: ClipRRect(
-  borderRadius: const BorderRadius.only(
-    topLeft: Radius.circular(15),
-    topRight: Radius.circular(15),
-  ),
-  child: BottomNavigationBar(
-    backgroundColor:const Color(0xFF001D39),
-    items: const [
-      BottomNavigationBarItem(
-        icon: Icon(Icons.home),
-        label: "Beranda",
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(15),
+          topRight: Radius.circular(15),
+        ),
+        child: BottomNavigationBar(
+          backgroundColor: const Color(0xFF0A2342),
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.white70,
+          onTap: _onItemTapped,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_rounded),
+              label: "Beranda",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.assignment_rounded),
+              label: "Aktivitas",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_rounded),
+              label: "Akun",
+            ),
+          ],
+        ),
       ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.checklist),
-        label: "Aktivitas",
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.person),
-        label: "Akun",
-      ),
-    ],
-    currentIndex: _selectedIndex,
-    selectedItemColor: const Color(0xFF001D39),
-    unselectedItemColor: Colors.white,
-    onTap: _onItemTapped,
-  ),
-),
-
     );
   }
 
-  Widget _buildSubtestCard(IconData icon, String title) {
+  // 🔹 Widget kartu subtes pakai gambar (bukan Icon)
+  Widget _buildSubtestCard(String imagePath, String title) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          const BoxShadow(
-            color: Colors.black12,
-            blurRadius: 4,
-            offset: Offset(2, 2),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(16),
       ),
+      padding: const EdgeInsets.all(12),
       child: InkWell(
+        borderRadius: BorderRadius.circular(16),
         onTap: () {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("Kamu pilih $title")),
           );
         },
-        borderRadius: BorderRadius.circular(12),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 40, color: Colors.blue),
+            Image.asset(
+              imagePath,
+              height: 50,
+              fit: BoxFit.contain,
+            ),
             const SizedBox(height: 8),
             Text(
               title,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF002855),
+              textAlign: TextAlign.center,
+              style: GoogleFonts.inter(
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
+                color: const Color(0xFF002855),
               ),
             ),
           ],

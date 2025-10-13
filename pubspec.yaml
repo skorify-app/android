@@ -65,6 +65,13 @@ flutter:
     - assets/images/avatar.jpeg
     - assets/images/Dashboard_pengguna.png
     - assets/images/pengerjaan_soal.png
+    - assets/images/UMPB.png
+    - assets/images/sains.png
+    - assets/images/matematika.png
+    - assets/images/inggris.png
+    - assets/images/indonesia.png
+    - assets/images/computer.png
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
