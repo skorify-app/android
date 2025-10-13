@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skorify/pages/homepages.dart';
+import 'pages/landing_pages.dart';
 import 'pages/login_pages.dart';
 import 'pages/register_pages.dart';
 import 'package:skorify/background.dart';
@@ -23,10 +24,11 @@ class MyApp extends StatelessWidget {
       ),
 
       // Halaman pertama saat aplikasi dibuka
-      initialRoute: '/login',
+      initialRoute: '/landing_page',
 
       // Semua route didefinisikan di sini
       routes: {
+        '/landing_page': (context) => const LandingPage(),
         '/login': (context) => const LoginPage(),
         '/register': (context) => const RegisterPages(),
         '/homepages': (context) => const HomePages(),
