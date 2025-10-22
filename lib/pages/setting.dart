@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:skorify/background.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});

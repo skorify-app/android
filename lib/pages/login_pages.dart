@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'register_pages.dart';
 import 'homepages.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:skorify/background.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

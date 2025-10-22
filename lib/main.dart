@@ -3,7 +3,6 @@ import 'package:skorify/pages/homepages.dart';
 import 'pages/OnBoarding_pages.dart';
 import 'pages/login_pages.dart';
 import 'pages/register_pages.dart';
-import 'package:skorify/background.dart';
 import 'pages/setting.dart';
 
 void main() {

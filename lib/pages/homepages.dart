@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'setting.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomePages extends StatefulWidget {
