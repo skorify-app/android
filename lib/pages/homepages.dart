@@ -203,10 +203,14 @@ class _HomePagesState extends State<HomePages> {
       padding: const EdgeInsets.all(12),
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
-        onTap: () {
+        /*onTap: () {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("Kamu pilih $title")),
           );
+        },*/
+        // temp code
+        onTap: () {
+          Navigator.pushNamed(context, '/test/english');
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
