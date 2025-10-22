@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skorify/pages/homepages.dart';
+import 'package:skorify/pages/questions_screen.dart';
 import 'pages/OnBoarding_pages.dart';
 import 'pages/login_pages.dart';
 import 'pages/register_pages.dart';
