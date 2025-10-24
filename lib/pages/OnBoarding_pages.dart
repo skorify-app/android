@@ -42,141 +42,148 @@ class _OnboardingPageState extends State<OnboardingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SafeArea(
-        child: PageView.builder(
-          controller: _controller,
-          itemCount: _pages.length,
-          onPageChanged: (index) {
-            setState(() {
-              _currentPage = index;
-            });
-          },
-          itemBuilder: (context, index) {
-            final page = _pages[index];
-            final bool isLastPage = index == _pages.length - 1;
+        child: Stack(
+          children: [
+          
+            Positioned.fill(
+              child: Image.asset(
+                'assets/images/home-background.png', 
+                fit: BoxFit.cover,
+                alignment: Alignment.center, 
+              ),
+            ),
 
-            return Container(
-              color: index == 1 || index == 2
-                  ? const Color(0xFFD9E6F4)
-                  : Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // 🔹 Gambar + Teks
-                  const SizedBox(height: 40),
-                  Image.asset(
-                    page['image']!,
-                    height: 220, // ✅ Lebih dekat ke teks
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    page['title']!,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  if (page['subtitle']!.isNotEmpty) ...[
-                    const SizedBox(height: 8),
-                    Text(
-                      page['subtitle']!,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.black54,
-                      ),
-                    ),
-                  ],
-                  const SizedBox(height: 30),
+            
 
-                  // 🔹 Indicator + Chevron
-                  Row(
+            // 🔹 Isi konten onboarding
+            PageView.builder(
+              controller: _controller,
+              itemCount: _pages.length,
+              onPageChanged: (index) {
+                setState(() {
+                  _currentPage = index;
+                });
+              },
+              itemBuilder: (context, index) {
+                final page = _pages[index];
+                final bool isLastPage = index == _pages.length - 1;
+
+                return Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Tombol panah kiri (jika bukan halaman pertama)
-                      if (index != 0)
-                        IconButton(
-                          onPressed: () {
-                            _controller.previousPage(
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.easeInOut,
-                            );
-                          },
-                          icon: const Icon(Icons.arrow_back_ios,
-                              color: Colors.black87),
+                      const SizedBox(height: 40),
+                      Image.asset(
+                        page['image']!,
+                        height: 220,
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        page['title']!,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.black,
                         ),
+                      ),
+                      if (page['subtitle']!.isNotEmpty) ...[
+                        const SizedBox(height: 8),
+                        Text(
+                          page['subtitle']!,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                      const SizedBox(height: 30),
 
-                      // Bulatan indikator
+                      // 🔹 Indikator & panah
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(
-                          _pages.length,
-                          (dotIndex) => Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 4),
-                            width: 8,
-                            height: 8,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: _currentPage == dotIndex
-                                  ? Colors.blueAccent
-                                  : Colors.grey[300],
+                        children: [
+                          if (index != 0)
+                            IconButton(
+                              onPressed: () {
+                                _controller.previousPage(
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeInOut,
+                                );
+                              },
+                              icon: const Icon(Icons.arrow_back_ios,
+                                  color: Colors.black),
+                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: List.generate(
+                              _pages.length,
+                              (dotIndex) => Container(
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 4),
+                                width: 8,
+                                height: 8,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: _currentPage == dotIndex
+                                      ? Colors.blueAccent
+                                      : Colors.grey[300],
+                                ),
+                              ),
+                            ),
+                          ),
+                          if (!isLastPage)
+                            IconButton(
+                              onPressed: () {
+                                _controller.nextPage(
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeInOut,
+                                );
+                              },
+                              icon: const Icon(Icons.arrow_forward_ios,
+                                  color: Colors.black),
+                            ),
+                        ],
+                      ),
+                      const SizedBox(height: 30),
+
+                      // 🔹 Tombol terakhir
+                      if (isLastPage)
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const LoginPage(),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF001D39),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 40, vertical: 14),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: Text(
+                            page['button']!,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
                             ),
                           ),
                         ),
-                      ),
-
-                      // Tombol panah kanan (jika bukan laman terakhir)
-                      if (!isLastPage)
-                        IconButton(
-                          onPressed: () {
-                            _controller.nextPage(
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.easeInOut,
-                            );
-                          },
-                          icon: const Icon(Icons.arrow_forward_ios,
-                              color: Colors.black87),
-                        ),
                     ],
                   ),
-                  const SizedBox(height: 30),
-
-                  // 🔹 Tombol “Coba Sekarang!” hanya di laman terakhir
-                  if (isLastPage)
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const LoginPage(),
-                          ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF001D39),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 40, vertical: 14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      child: Text(
-                        page['button']!,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            );
-          },
+                );
+              },
+            ),
+          ],
         ),
       ),
     );
