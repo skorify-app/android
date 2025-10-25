@@ -23,6 +23,7 @@ class _SettingPageState extends State<SettingPage> {
     // Navigasi berdasarkan item
     if (index == 0) {
       Navigator.pushNamed(context, '/homepages');
+      Navigator.pushNamed(context, '/activity_page');
     } else if (index == 1) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
