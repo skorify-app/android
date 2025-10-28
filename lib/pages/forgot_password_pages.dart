@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class RegisterPages extends StatefulWidget {
-  const RegisterPages({super.key});
+class ForgotPasswordPages extends StatefulWidget {
+  const ForgotPasswordPages({super.key});
 
   @override
-  State<RegisterPages> createState() => _RegisterPagesState();
+  State<ForgotPasswordPages> createState() => _ForgotPasswordPagesState();
 }
 
-class _RegisterPagesState extends State<RegisterPages> {
+class _ForgotPasswordPagesState extends State<ForgotPasswordPages> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -37,7 +37,7 @@ class _RegisterPagesState extends State<RegisterPages> {
               child: Column(
                 children: [
                   const Text(
-                    "Buat akun anda",
+                    "Lupa Kata Sandi",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 25,
@@ -45,27 +45,10 @@ class _RegisterPagesState extends State<RegisterPages> {
                     ),
                   ),
                   const SizedBox(height: 2),
-
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/login');
-                    },  
-                    child: const Text.rich(
-                      TextSpan(
-                        text: "sudah memiliki akun? ",
-                        style: TextStyle(color: Colors.white70, fontSize: 16),
-                        children: [
-                          TextSpan(
-                            text: "Masuk",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              decoration: TextDecoration.underline,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                  const Text(
+                    "Masukkan email terdaftar untuk mengatur ulang kata sandi Anda",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white70, fontSize: 17 ),
                   ),
                 ],
               ),
@@ -80,19 +63,19 @@ class _RegisterPagesState extends State<RegisterPages> {
                 children: [
                   buildTextField(
                     controller: nameController,
-                    hint: "Nama Lengkap",
-                    icon: Icons.person,
-                  ),
-                  const SizedBox(height: 20),
-                  buildTextField(
-                    controller: emailController,
-                    hint: "Email",
+                    hint: "Email Terdaftar",
                     icon: Icons.email,
                   ),
                   const SizedBox(height: 20),
                   buildTextField(
+                    controller: emailController,
+                    hint: "kata Sandi Baru",
+                    icon: Icons.key,
+                  ),
+                  const SizedBox(height: 20),
+                  buildTextField(
                     controller: passwordController,
-                    hint: "Kata sandi",
+                    hint: "konfirmasi Kata Sandi Baru",
                     icon: Icons.key,
                     obscureText: true,
                   ),
@@ -155,7 +138,7 @@ class _RegisterPagesState extends State<RegisterPages> {
                         // TODO: aksi daftar
                       },
                       child: const Text(
-                        "DAFTAR",
+                        "KONFIRMASI",
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.white,

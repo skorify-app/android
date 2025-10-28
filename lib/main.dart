@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skorify/pages/forgot_password_pages.dart';
 import 'package:skorify/pages/homepages.dart';
 import 'package:skorify/pages/questions_screen.dart';
 import 'pages/OnBoarding_pages.dart';
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
         '/homepages': (context) => const HomePages(),
         '/setting': (context) => const SettingPage(),
         '/test/english': (context) => const QuestionsScreen(),
+        '/forgot_password': (context) => const ForgotPasswordPages(),
       },
     );
   }

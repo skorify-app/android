@@ -20,7 +20,6 @@ class _LoginPageState extends State<LoginPage> {
     if (_formKey.currentState!.validate()) {
       setState(() => _isLoading = true);
 
-      // simulasi login (dummy akun)
       await Future.delayed(const Duration(seconds: 2));
 
       if (emailController.text == "admin@gmail.com" &&
@@ -29,7 +28,6 @@ class _LoginPageState extends State<LoginPage> {
           const SnackBar(content: Text("Login berhasil!")),
         );
 
-        // Navigasi ke HomePage
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (_) => const HomePages()),
@@ -44,38 +42,33 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
-    // Menggunakan Stack untuk menumpuk widget
     return Scaffold(
       body: Stack(
         children: [
-          // 1. WIDGET UNTUK BACKGROUND IMAGE
+          // Background image
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(
-                  "assets/images/home-background.png",
-                ), // Path ke gambar
-                fit: BoxFit.cover, // Agar gambar memenuhi seluruh layar
+                image: AssetImage("assets/images/home-background.png"),
+                fit: BoxFit.cover,
               ),
             ),
           ),
 
-          // 2. KONTEN LOGIN (WIDGET LAMA ANDA)
+          // Konten login
           Center(
             child: SingleChildScrollView(
               child: Container(
                 width: 350,
                 padding: const EdgeInsets.all(16),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment
-                      .center, // Pusatkan kolom secara vertikal
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Logo dan Judul
+                    // Logo dan judul
                     Image.asset(
-                      'assets/images/logo.png', // Ganti dengan logo kamu
+                      'assets/images/logo.png',
                       height: 120,
                       width: 120,
                       fit: BoxFit.cover,
@@ -98,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const SizedBox(height: 80),
 
-                    // Form Login
+                    // Form login
                     Container(
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
@@ -113,10 +106,26 @@ class _LoginPageState extends State<LoginPage> {
                               controller: emailController,
                               keyboardType: TextInputType.emailAddress,
                               decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.grey.shade200,
                                 hintText: "Email",
-                                prefixIcon: const Icon(Icons.email_outlined),
+                                hintStyle: const TextStyle(color: Colors.grey),
+                                prefixIcon: const Icon(Icons.email_outlined, color: Colors.grey),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
+                                  borderSide: const BorderSide(color: Colors.grey),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: const BorderSide(color: Colors.grey),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: const BorderSide(color: Color(0xFF002855), width: 2),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: const BorderSide(color: Colors.red, width: 2),
                                 ),
                               ),
                               validator: (value) {
@@ -134,13 +143,15 @@ class _LoginPageState extends State<LoginPage> {
                               controller: passwordController,
                               obscureText: _obscureText,
                               decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.grey.shade200,
                                 hintText: "Kata sandi",
-                                prefixIcon: const Icon(Icons.lock_outline),
+                                hintStyle: const TextStyle(color: Colors.grey),
+                                prefixIcon: const Icon(Icons.lock_outline, color: Colors.grey),
                                 suffixIcon: IconButton(
                                   icon: Icon(
-                                    _obscureText
-                                        ? Icons.visibility_off
-                                        : Icons.visibility,
+                                    _obscureText ? Icons.visibility_off : Icons.visibility,
+                                    color: Colors.grey,
                                   ),
                                   onPressed: () {
                                     setState(() {
@@ -150,6 +161,19 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
+                                  borderSide: const BorderSide(color: Colors.grey),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: const BorderSide(color: Colors.grey),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: const BorderSide(color: Color(0xFF002855), width: 2),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: const BorderSide(color: Colors.red, width: 2),
                                 ),
                               ),
                               validator: (value) {
@@ -175,9 +199,7 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                                 onPressed: _isLoading ? null : _login,
                                 child: _isLoading
-                                    ? const CircularProgressIndicator(
-                                        color: Colors.white,
-                                      )
+                                    ? const CircularProgressIndicator(color: Colors.white)
                                     : const Text(
                                         "MASUK",
                                         style: TextStyle(
@@ -192,19 +214,43 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
 
-                    const SizedBox(height: 16),
-                    const Text(
-                      "Belum memiliki akun?",
-                      style: TextStyle(color: Colors.white70),
-                    ),
+                    const SizedBox(height: 12),
+
+                    // Lupa kata sandi
                     TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/register');
+                        Navigator.pushNamed(context, '/forgot_password');
                       },
                       child: const Text(
-                        "Buat akun sekarang",
-                        style: TextStyle(color: Colors.white),
+                        "Lupa kata sandi?",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
+                    ),
+
+                    // Teks dan tombol register secara horizontal
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Belum memiliki akun? ",
+                          style: TextStyle(color: Colors.white70),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/register');
+                          },
+                          child: const Text(
+                            "Buat akun sekarang",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
