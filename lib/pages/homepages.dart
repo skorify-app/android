@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; // Import untuk Haptic Feedback
+import 'package:flutter/services.dart'; 
 import 'package:google_fonts/google_fonts.dart';
 import 'questions_screen.dart'; 
 
 class TappableCard extends StatefulWidget {
   final Widget child;
   final VoidCallback onTap;
-  final double scaleDown; // Ukuran pengecilan, default 0.98
+  final double scaleDown;
 
   const TappableCard({
     Key? key,
@@ -28,7 +28,7 @@ class _TappableCardState extends State<TappableCard>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 150), // Durasi cepat
+      duration: const Duration(milliseconds: 150), 
       vsync: this,
     );
 
@@ -45,23 +45,22 @@ class _TappableCardState extends State<TappableCard>
 
   // Aksi saat disentuh
   void _onTapDown(TapDownDetails details) {
-    _controller.forward(); // Mulai animasi pengecilan
-    HapticFeedback.lightImpact(); // **EFEK GETARAN HALUS**
+    _controller.forward(); 
+    HapticFeedback.lightImpact(); 
   }
 
   // Aksi saat dilepas
   void _onTapUp(TapUpDetails details) {
-    _controller.reverse(); // Kembalikan ke ukuran normal
-    widget.onTap(); // Panggil fungsi klik
+    _controller.reverse(); 
+    widget.onTap(); 
   }
 
   void _onTapCancel() {
-    _controller.reverse(); // Kembalikan jika sentuhan dibatalkan
+    _controller.reverse(); 
   }
 
   @override
   Widget build(BuildContext context) {
-    // GestureDetector: Mendeteksi sentuhan
     return GestureDetector(
       onTapDown: _onTapDown,
       onTapUp: _onTapUp,
@@ -71,7 +70,7 @@ class _TappableCardState extends State<TappableCard>
         builder: (context, child) {
           return Transform.scale(
             scale: _scaleAnimation.value,
-            child: widget.child, // Konten Kartu yang asli
+            child: widget.child,
           );
         },
       ),
@@ -89,9 +88,8 @@ class HomePages extends StatefulWidget {
 class _HomePagesState extends State<HomePages> {
   int _selectedIndex = 0;
 
-  // 🔹 FUNGSI BOTTOM NAV BAR (TIDAK DIUBAH)
+  // FUNGSI BOTTOM NAV BAR
   void _onItemTapped(int index) {
-    // Menambahkan Haptic Feedback saat navigasi bar diklik
     HapticFeedback.selectionClick(); 
     
     setState(() {
@@ -103,7 +101,7 @@ class _HomePagesState extends State<HomePages> {
     }
   }
 
-  // 🔹 Dialog Detail Subtes
+  // Dialog Detail Subtes
   void _showSubtestDialog(BuildContext context, String title) {
     showGeneralDialog(
       context: context,
@@ -215,7 +213,7 @@ class _HomePagesState extends State<HomePages> {
   }
 
 
-  // 🔹 Helper baris detail
+  // Helper baris detail
   Widget _buildDetailRow({
     required IconData icon,
     required String label,
@@ -243,20 +241,20 @@ class _HomePagesState extends State<HomePages> {
     );
   }
 
-  // 🔹 Dialog Simulasi UMPB
+  // Dialog Simulasi UMPB
   void _showSimulasiDialog(BuildContext context) {
     showGeneralDialog(
       context: context,
       barrierLabel: "Simulasi UMPB",
       barrierDismissible: true,
-      barrierColor: Colors.black54, // background gelap transparan
-      transitionDuration: const Duration(milliseconds: 300), // durasi animasi
+      barrierColor: Colors.black54, 
+      transitionDuration: const Duration(milliseconds: 300), 
       pageBuilder: (context, animation1, animation2) {
         return const SizedBox.shrink();
       },
       transitionBuilder: (context, animation, secondaryAnimation, child) {
         final curvedValue =
-            Curves.easeOutBack.transform(animation.value); // efek lembut muncul
+            Curves.easeOutBack.transform(animation.value); 
         return Transform.scale(
           scale: curvedValue,
           child: Opacity(
@@ -367,7 +365,7 @@ class _HomePagesState extends State<HomePages> {
     );
   }
 
-  // 🔹 Item timeline
+  // Item timeline
   Widget _buildTimelineItem(String title, String waktu, String soal) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -426,9 +424,9 @@ class _HomePagesState extends State<HomePages> {
     );
   }
 
-  // 🔹 Subtest Card dengan TappableCard
+  // Subtest Card dengan TappableCard
   Widget _buildSubtestCard(String imagePath, String title) {
-    return TappableCard( // <-- EFEK KLIK DITERAPKAN DI SINI
+    return TappableCard( 
       onTap: () => _showSubtestDialog(context, title),
       scaleDown: 0.95, 
       child: Container(
@@ -475,7 +473,7 @@ class _HomePagesState extends State<HomePages> {
     );
   }
 
-  // 🔹 Build
+  // Build
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -535,9 +533,9 @@ class _HomePagesState extends State<HomePages> {
             const SizedBox(height: 20),
 
             // KARTU SIMULASI UMPB DENGAN TappableCard
-            TappableCard( // <-- EFEK KLIK DITERAPKAN DI SINI
+            TappableCard( 
               onTap: () => _showSimulasiDialog(context),
-              scaleDown: 0.99, // Efek scale yang sangat halus
+              scaleDown: 0.99, 
               child: Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
@@ -606,7 +604,7 @@ class _HomePagesState extends State<HomePages> {
             ),
             const SizedBox(height: 16),
 
-            // Grid Subtes (MENGGUNAKAN _buildSubtestCard yang baru)
+            // Grid Subtes 
             GridView.count(
               crossAxisCount: 2,
               shrinkWrap: true,
@@ -626,7 +624,7 @@ class _HomePagesState extends State<HomePages> {
         ),
       ),
 
-      // Bottom NavBar (TIDAK DIUBAH, hanya ditambahkan Haptic Feedback di onTap)
+      // Bottom NavBar 
       bottomNavigationBar: ClipRRect(
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(15),

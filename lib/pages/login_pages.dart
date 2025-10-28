@@ -226,6 +226,7 @@ class _LoginPageState extends State<LoginPage> {
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w500,
+                          fontSize: 16,
                         ),
                       ),
                     ),
@@ -236,7 +237,7 @@ class _LoginPageState extends State<LoginPage> {
                       children: [
                         const Text(
                           "Belum memiliki akun? ",
-                          style: TextStyle(color: Colors.white70),
+                          style: TextStyle(color: Colors.white70, fontSize: 14),
                         ),
                         TextButton(
                           onPressed: () {
@@ -247,6 +248,7 @@ class _LoginPageState extends State<LoginPage> {
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
+                              fontSize: 16,
                             ),
                           ),
                         ),

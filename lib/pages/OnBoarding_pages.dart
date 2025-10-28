@@ -45,8 +45,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
   @override
   Widget build(BuildContext context) {
     final bool isLastPage = _currentPage == _pages.length - 1;
-    
-    // Tinggi yang dicadangkan di bagian bawah untuk Row Indikator (sekitar 60px)
     const double bottomAreaHeight = 60.0; 
 
     return Scaffold(
@@ -54,7 +52,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
         child: Stack(
           children: [
             
-            // 🔹 1. Background Image
+            // Background Image
             Positioned.fill(
               child: Image.asset(
                 'assets/images/home-background.png', 
@@ -63,8 +61,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               ),
             ),
 
-            // 🔹 2. Isi konten onboarding (Gambar & Teks)
-            // Tambahkan Padding hanya setinggi Row Indikator
+            // Isi konten onboarding (Gambar & Teks)
             Padding(
               padding: const EdgeInsets.only(bottom: bottomAreaHeight),
               child: PageView.builder(
@@ -82,11 +79,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   return Container(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: Column(
-                      // PENTING: Mengatur alignment ke CENTER
-                      // Ini akan memusatkan konten di tengah sisa ruang PageView.
                       mainAxisAlignment: MainAxisAlignment.center, 
                       children: [
-                        // --- HAPUS SizedBox(height: topSpacing) ---
                         
                         Image.asset(
                           page['image']!,
@@ -115,7 +109,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                           ),
                         ],
                         
-                        // 🌟 Tombol Coba Sekarang
+                        // Tombol Coba Sekarang
                         if (isLastPageItem)
                           Padding(
                             padding: const EdgeInsets.only(top: 20.0), 
@@ -146,8 +140,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
                               ),
                             ),
                           ),
-                          
-                        // --- HAPUS const Spacer() ---
                       ],
                     ),
                   );
@@ -155,7 +147,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               ),
             ),
 
-            // 🌟 3. INDIKATOR DI BAWAH STACK
+            // INDIKATOR DI BAWAH STACK
             Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
@@ -164,7 +156,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     
-                    // 1. Tombol Kembali (Panah Kiri) atau Penyeimbang
+                    // Tombol Kembali (Panah Kiri) atau Penyeimbang
                     if (_currentPage != 0) 
                       IconButton(
                         onPressed: () {
@@ -179,7 +171,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     else
                       const SizedBox(width: 48.0), 
 
-                    // 2. Indikator Titik
+                    // Indikator Titik
                     Row(
                       children: List.generate(
                         _pages.length,
@@ -197,7 +189,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       ),
                     ),
 
-                    // 3. Tombol Maju (Panah Kanan) atau Penyeimbang
+                    // Tombol Maju (Panah Kanan) atau Penyeimbang
                     if (_currentPage != _pages.length - 1) 
                       IconButton(
                         onPressed: () {

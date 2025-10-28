@@ -152,7 +152,6 @@ class _RegisterPagesState extends State<RegisterPages> {
                           );
                           return;
                         }
-                        // TODO: aksi daftar
                       },
                       child: const Text(
                         "DAFTAR",

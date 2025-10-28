@@ -135,7 +135,6 @@ class _ForgotPasswordPagesState extends State<ForgotPasswordPages> {
                           );
                           return;
                         }
-                        // TODO: aksi daftar
                       },
                       child: const Text(
                         "KONFIRMASI",

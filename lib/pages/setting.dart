@@ -8,9 +8,9 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
-  int _selectedIndex = 2; // default di tab "Akun"
+  int _selectedIndex = 2; 
 
-  // ✅ Tambahkan variabel penyimpanan data pengguna
+  // Tambahkan variabel penyimpanan data pengguna
   String userName = "Hyung Jaehyun";
   String userEmail = "hyunghyung@gmail.com";
   String userPassword = "***********";
@@ -63,9 +63,9 @@ class _SettingPageState extends State<SettingPage> {
           elevation: 0,
           backgroundColor: Colors.transparent,
           flexibleSpace: Container(
-            decoration: const BoxDecoration( // <-- Perbaikan di sini
+            decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("assets/images/home-background.png"), // Pastikan path ini benar
+                image: AssetImage("assets/images/home-background.png"), 
                 fit: BoxFit.fitWidth,
                 alignment: Alignment.topCenter,
               ),
@@ -78,7 +78,7 @@ class _SettingPageState extends State<SettingPage> {
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(20), // 🔹 radius main body
+            borderRadius: BorderRadius.circular(20), 
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.05),
@@ -93,7 +93,6 @@ class _SettingPageState extends State<SettingPage> {
               const SizedBox(height: 20),
               const CircleAvatar(
                 radius: 50,
-                // ✅ Catatan: Pastikan path gambar di sini benar dan gambarnya sesuai
                 backgroundImage: AssetImage('assets/images/avatar.jpeg'), 
               ),
               const SizedBox(height: 25),
@@ -148,7 +147,7 @@ class _SettingPageState extends State<SettingPage> {
         ),
       ),
 
-      // ✅ Bottom Navigation Bar dengan radius
+      // Bottom Navigation Bar dengan radius
       bottomNavigationBar: ClipRRect(
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(15),
@@ -179,10 +178,7 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
-  // ==============================
-  // 🟦 Dialog ubah data pengguna
-  // ==============================
-
+  // Dialog ubah data pengguna
   void _showEditNameDialog(BuildContext context) {
     TextEditingController nameController =
         TextEditingController(text: userName);
@@ -202,7 +198,7 @@ class _SettingPageState extends State<SettingPage> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF001D39),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10), // 🔹 radius 10
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 padding:
                     const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
@@ -249,7 +245,7 @@ class _SettingPageState extends State<SettingPage> {
         title: const Text("Ubah Email"),
         content: TextField(
           controller: emailController,
-          keyboardType: TextInputType.emailAddress, // ✅ agar format email
+          keyboardType: TextInputType.emailAddress, 
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
             hintText: "Masukkan email (contoh: user@gmail.com)",
@@ -261,7 +257,7 @@ class _SettingPageState extends State<SettingPage> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF001D39),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10), // 🔹 radius 10
+                  borderRadius: BorderRadius.circular(10), 
                 ),
                 padding:
                     const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
@@ -404,10 +400,7 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
-  // ==============================
-  // 🟩 Kartu info
-  // ==============================
-
+  // Kartu info
   Widget _buildInfoCard({
     required String title,
     required String value,
