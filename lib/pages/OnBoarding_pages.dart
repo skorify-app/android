@@ -44,7 +44,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isLastPage = _currentPage == _pages.length - 1;
     const double bottomAreaHeight = 60.0; 
 
     return Scaffold(
