@@ -1,45 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:skorify/components/questions/answer_option_button.dart';
+import 'package:skorify/components/questions/question_nav.dart';
+import 'package:skorify/components/questions/question_number.dart';
+import 'package:skorify/components/questions/timer.dart';
+import 'package:skorify/components/questions/top_bar.dart';
 
 class QuestionsScreen extends StatefulWidget {
   const QuestionsScreen({super.key});
+
+  final int questionNumber = 1;
 
   @override
   State<QuestionsScreen> createState() => _QuestionsScreenState();
 }
 
 class _QuestionsScreenState extends State<QuestionsScreen> {
-  int? selectedAnswer;
+  late int _questionNumber;
   bool showQuestionNav = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _questionNumber = 1;
+  }
+
+  void nextQuestion() {
+    setState(() {
+      _questionNumber++;
+    });
+  }
+
+  void previousQuestion() {
+    setState(() {
+      _questionNumber--;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16.0),
-          child: Image.asset('assets/images/logo.png', height: 20, width: 20),
-        ),
-        title: const Text(
-          "Skorify",
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-          ),
-        ),
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/images/home-background.png"),
-              fit: BoxFit.fitWidth,
-              alignment: Alignment.topCenter,
-            ),
-          ),
-        ),
-      ),
+      appBar: TopBar(),
       body: Stack(
         children: [
           Column(
@@ -67,80 +68,11 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             // Timer and Hide button
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 6,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.grey.shade300,
-                                    ),
-                                    borderRadius: BorderRadius.circular(6),
-                                  ),
-                                  child: const Text(
-                                    'Waktu tersisa 0:38:19',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.black87,
-                                    ),
-                                  ),
-                                ),
-                                OutlinedButton(
-                                  onPressed: () {},
-                                  style: OutlinedButton.styleFrom(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 16,
-                                      vertical: 6,
-                                    ),
-                                    side: BorderSide(
-                                      color: Colors.grey.shade300,
-                                    ),
-                                  ),
-                                  child: const Text(
-                                    'Hide',
-                                    style: TextStyle(
-                                      color: Colors.black87,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                            Timer(),
                             const SizedBox(height: 16),
                             // Question Number
-                            Row(
-                              children: [
-                                const Text(
-                                  'Soal No ',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.black87,
-                                  ),
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 2,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFF2C3E50),
-                                    borderRadius: BorderRadius.circular(4),
-                                  ),
-                                  child: const Text(
-                                    '1',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                            QuestionNumber(number: '$_questionNumber'),
+
                             const SizedBox(height: 20),
                             // Question Text
                             const Text(
@@ -153,30 +85,20 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                               ),
                             ),
                             const SizedBox(height: 24),
+
                             // Answer Options
-                            _buildAnswerOption(
-                              index: 0,
-                              text:
-                                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                            ),
-                            const SizedBox(height: 12),
-                            _buildAnswerOption(
-                              index: 1,
-                              text:
-                                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                            ),
-                            const SizedBox(height: 12),
-                            _buildAnswerOption(
-                              index: 2,
-                              text:
-                                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                            ),
-                            const SizedBox(height: 12),
-                            _buildAnswerOption(
-                              index: 3,
-                              text:
-                                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                            ),
+                            ...List.generate(
+                                  4,
+                                  (i) => AnswerOptionButton(
+                                    text:
+                                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+                                  ),
+                                )
+                                .expand<Widget>(
+                                  (w) => [w, const SizedBox(height: 10)],
+                                )
+                                .toList()
+                              ..removeLast(),
                           ],
                         ),
                       ),
@@ -184,90 +106,14 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                   ),
                 ),
               ),
-              // Bottom Navigation
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color.fromARGB(59, 158, 158, 158),
-                      spreadRadius: 1,
-                      blurRadius: 10,
-                      offset: const Offset(0, -3),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ElevatedButton.icon(
-                      onPressed: () {},
-                      icon: const Icon(Icons.arrow_back, size: 14),
-                      label: const Text(
-                        'Kembali',
-                        style: TextStyle(fontSize: 11),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF2C3E50),
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 8,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFFFD700),
-                        foregroundColor: Colors.black87,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 8,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                      ),
-                      child: const Text(
-                        'Ragu-ragu',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 11,
-                        ),
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF2C3E50),
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 8,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                      ),
-                      child: const Row(
-                        children: [
-                          Text(
-                            'Soal selanjutnya',
-                            style: TextStyle(fontSize: 11),
-                          ),
-                          SizedBox(width: 4),
-                          Icon(Icons.arrow_forward, size: 14),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+
+              // Question bottons (previous, unsure, next) Navigation
+              QuestionNav(
+                previousQuestionMethod: previousQuestion,
+                nextQuestionMethod: nextQuestion,
+                questionNumber: _questionNumber,
               ),
+
               // Bottom Navigation Bar
               Container(
                 color: const Color(0xFF0D2A47),
@@ -483,51 +329,6 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                 : Colors.black54,
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildAnswerOption({required int index, required String text}) {
-    final isSelected = selectedAnswer == index;
-    final colors = [
-      const Color(0xFF4A90E2),
-      const Color(0xFFE74C3C),
-      Colors.grey.shade400,
-      Colors.grey.shade400,
-    ];
-
-    return InkWell(
-      onTap: () {
-        setState(() {
-          selectedAnswer = index;
-        });
-      },
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 32,
-            height: 32,
-            decoration: BoxDecoration(
-              color: isSelected ? colors[index] : Colors.grey.shade300,
-              shape: BoxShape.circle,
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 6),
-              child: Text(
-                text,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey.shade700,
-                  height: 1.5,
-                ),
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

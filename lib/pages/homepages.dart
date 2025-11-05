@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; 
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'questions_screen.dart'; 
+import 'questions_screen.dart';
 
 class TappableCard extends StatefulWidget {
   final Widget child;
@@ -9,11 +9,11 @@ class TappableCard extends StatefulWidget {
   final double scaleDown;
 
   const TappableCard({
-    Key? key,
+    super.key,
     required this.child,
     required this.onTap,
     this.scaleDown = 0.98,
-  }) : super(key: key);
+  });
 
   @override
   State<TappableCard> createState() => _TappableCardState();
@@ -28,13 +28,14 @@ class _TappableCardState extends State<TappableCard>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 150), 
+      duration: const Duration(milliseconds: 150),
       vsync: this,
     );
 
-    _scaleAnimation = Tween<double>(begin: 1.0, end: widget.scaleDown).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
-    );
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: widget.scaleDown,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
   }
 
   @override
@@ -45,18 +46,18 @@ class _TappableCardState extends State<TappableCard>
 
   // Aksi saat disentuh
   void _onTapDown(TapDownDetails details) {
-    _controller.forward(); 
-    HapticFeedback.lightImpact(); 
+    _controller.forward();
+    HapticFeedback.lightImpact();
   }
 
   // Aksi saat dilepas
   void _onTapUp(TapUpDetails details) {
-    _controller.reverse(); 
-    widget.onTap(); 
+    _controller.reverse();
+    widget.onTap();
   }
 
   void _onTapCancel() {
-    _controller.reverse(); 
+    _controller.reverse();
   }
 
   @override
@@ -90,8 +91,8 @@ class _HomePagesState extends State<HomePages> {
 
   // FUNGSI BOTTOM NAV BAR
   void _onItemTapped(int index) {
-    HapticFeedback.selectionClick(); 
-    
+    HapticFeedback.selectionClick();
+
     setState(() {
       _selectedIndex = index;
     });
@@ -113,7 +114,10 @@ class _HomePagesState extends State<HomePages> {
         return FadeTransition(
           opacity: CurvedAnimation(parent: animation, curve: Curves.easeInOut),
           child: ScaleTransition(
-            scale: CurvedAnimation(parent: animation, curve: Curves.easeOutBack),
+            scale: CurvedAnimation(
+              parent: animation,
+              curve: Curves.easeOutBack,
+            ),
             child: Dialog(
               backgroundColor: Colors.white,
               shape: RoundedRectangleBorder(
@@ -145,7 +149,10 @@ class _HomePagesState extends State<HomePages> {
                     Text(
                       "CBT Potensi Akademik, $title - #1\n20 Agustus 2024",
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.inter(fontSize: 13, color: Colors.black54),
+                      style: GoogleFonts.inter(
+                        fontSize: 13,
+                        color: Colors.black54,
+                      ),
                     ),
 
                     const SizedBox(height: 20),
@@ -212,7 +219,6 @@ class _HomePagesState extends State<HomePages> {
     );
   }
 
-
   // Helper baris detail
   Widget _buildDetailRow({
     required IconData icon,
@@ -247,22 +253,22 @@ class _HomePagesState extends State<HomePages> {
       context: context,
       barrierLabel: "Simulasi UMPB",
       barrierDismissible: true,
-      barrierColor: Colors.black54, 
-      transitionDuration: const Duration(milliseconds: 300), 
+      barrierColor: Colors.black54,
+      transitionDuration: const Duration(milliseconds: 300),
       pageBuilder: (context, animation1, animation2) {
         return const SizedBox.shrink();
       },
       transitionBuilder: (context, animation, secondaryAnimation, child) {
-        final curvedValue =
-            Curves.easeOutBack.transform(animation.value); 
+        final curvedValue = Curves.easeOutBack.transform(animation.value);
         return Transform.scale(
           scale: curvedValue,
           child: Opacity(
             opacity: animation.value,
             child: Dialog(
               backgroundColor: Colors.white,
-              shape:
-                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(20),
                 child: Column(
@@ -311,7 +317,10 @@ class _HomePagesState extends State<HomePages> {
                     const SizedBox(height: 6),
                     Row(
                       children: [
-                        const Icon(Icons.list_alt_rounded, color: Color(0xFF002855)),
+                        const Icon(
+                          Icons.list_alt_rounded,
+                          color: Color(0xFF002855),
+                        ),
                         const SizedBox(width: 8),
                         Text(
                           "Total soal: 125 soal",
@@ -322,9 +331,17 @@ class _HomePagesState extends State<HomePages> {
                     const Divider(height: 30, thickness: 1),
                     _buildTimelineItem("Matematika", "30 menit", "25 soal"),
                     _buildTimelineItem("Sains", "30 menit", "25 soal"),
-                    _buildTimelineItem("Computational thinking", "30 menit", "25 soal"),
+                    _buildTimelineItem(
+                      "Computational thinking",
+                      "30 menit",
+                      "25 soal",
+                    ),
                     _buildTimelineItem("Bahasa Inggris", "30 menit", "25 soal"),
-                    _buildTimelineItem("Bahasa Indonesia", "30 menit", "25 soal"),
+                    _buildTimelineItem(
+                      "Bahasa Indonesia",
+                      "30 menit",
+                      "25 soal",
+                    ),
                     const SizedBox(height: 20),
                     SizedBox(
                       width: double.infinity,
@@ -380,11 +397,7 @@ class _HomePagesState extends State<HomePages> {
                 color: Color(0xFF002855),
               ),
             ),
-            Container(
-              width: 2,
-              height: 40,
-              color: Colors.grey.shade300,
-            ),
+            Container(width: 2, height: 40, color: Colors.grey.shade300),
           ],
         ),
         const SizedBox(width: 12),
@@ -405,15 +418,33 @@ class _HomePagesState extends State<HomePages> {
                 const SizedBox(height: 4),
                 Row(
                   children: [
-                    const Icon(Icons.timer_outlined, size: 14, color: Colors.black54),
+                    const Icon(
+                      Icons.timer_outlined,
+                      size: 14,
+                      color: Colors.black54,
+                    ),
                     const SizedBox(width: 4),
-                    Text(waktu,
-                        style: GoogleFonts.inter(fontSize: 12, color: Colors.black54)),
+                    Text(
+                      waktu,
+                      style: GoogleFonts.inter(
+                        fontSize: 12,
+                        color: Colors.black54,
+                      ),
+                    ),
                     const SizedBox(width: 12),
-                    const Icon(Icons.article_outlined, size: 14, color: Colors.black54),
+                    const Icon(
+                      Icons.article_outlined,
+                      size: 14,
+                      color: Colors.black54,
+                    ),
                     const SizedBox(width: 4),
-                    Text(soal,
-                        style: GoogleFonts.inter(fontSize: 12, color: Colors.black54)),
+                    Text(
+                      soal,
+                      style: GoogleFonts.inter(
+                        fontSize: 12,
+                        color: Colors.black54,
+                      ),
+                    ),
                   ],
                 ),
               ],
@@ -426,9 +457,9 @@ class _HomePagesState extends State<HomePages> {
 
   // Subtest Card dengan TappableCard
   Widget _buildSubtestCard(String imagePath, String title) {
-    return TappableCard( 
+    return TappableCard(
       onTap: () => _showSubtestDialog(context, title),
-      scaleDown: 0.95, 
+      scaleDown: 0.95,
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -481,11 +512,7 @@ class _HomePagesState extends State<HomePages> {
       appBar: AppBar(
         leading: Padding(
           padding: const EdgeInsets.only(left: 16.0),
-          child: Image.asset(
-            'assets/images/logo.png',
-            height: 20,
-            width: 20,
-          ),
+          child: Image.asset('assets/images/logo.png', height: 20, width: 20),
         ),
         title: const Text(
           "Skorify",
@@ -533,9 +560,9 @@ class _HomePagesState extends State<HomePages> {
             const SizedBox(height: 20),
 
             // KARTU SIMULASI UMPB DENGAN TappableCard
-            TappableCard( 
+            TappableCard(
               onTap: () => _showSimulasiDialog(context),
-              scaleDown: 0.99, 
+              scaleDown: 0.99,
               child: Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
@@ -604,7 +631,7 @@ class _HomePagesState extends State<HomePages> {
             ),
             const SizedBox(height: 16),
 
-            // Grid Subtes 
+            // Grid Subtes
             GridView.count(
               crossAxisCount: 2,
               shrinkWrap: true,
@@ -615,16 +642,25 @@ class _HomePagesState extends State<HomePages> {
               children: [
                 _buildSubtestCard('assets/images/sains.png', "Sains"),
                 _buildSubtestCard('assets/images/matematika.png', "Matematika"),
-                _buildSubtestCard('assets/images/computer.png', "Computational thinking"),
-                _buildSubtestCard('assets/images/inggris.png', "Bahasa Inggris"),
-                _buildSubtestCard('assets/images/indonesia.png', "Bahasa Indonesia"),
+                _buildSubtestCard(
+                  'assets/images/computer.png',
+                  "Computational thinking",
+                ),
+                _buildSubtestCard(
+                  'assets/images/inggris.png',
+                  "Bahasa Inggris",
+                ),
+                _buildSubtestCard(
+                  'assets/images/indonesia.png',
+                  "Bahasa Indonesia",
+                ),
               ],
             ),
           ],
         ),
       ),
 
-      // Bottom NavBar 
+      // Bottom NavBar
       bottomNavigationBar: ClipRRect(
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(15),
