@@ -24,9 +24,9 @@ class _LoginPageState extends State<LoginPage> {
 
       if (emailController.text == "admin@gmail.com" &&
           passwordController.text == "password123") {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Login berhasil!")),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text("Login berhasil!")));
 
         Navigator.pushReplacement(
           context,
@@ -89,7 +89,9 @@ class _LoginPageState extends State<LoginPage> {
                       textAlign: TextAlign.center,
                       style: TextStyle(color: Colors.white, fontSize: 25),
                     ),
-                    const SizedBox(height: 80),
+
+                    // Space antara title dan form
+                    const Padding(padding: EdgeInsetsGeometry.only(bottom: 50)),
 
                     // Form login
                     Container(
@@ -110,22 +112,35 @@ class _LoginPageState extends State<LoginPage> {
                                 fillColor: Colors.grey.shade200,
                                 hintText: "Email",
                                 hintStyle: const TextStyle(color: Colors.grey),
-                                prefixIcon: const Icon(Icons.email_outlined, color: Colors.grey),
+                                prefixIcon: const Icon(
+                                  Icons.email_outlined,
+                                  color: Colors.grey,
+                                ),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  borderSide: const BorderSide(color: Colors.grey),
+                                  borderSide: const BorderSide(
+                                    color: Colors.grey,
+                                  ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  borderSide: const BorderSide(color: Colors.grey),
+                                  borderSide: const BorderSide(
+                                    color: Colors.grey,
+                                  ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  borderSide: const BorderSide(color: Color(0xFF002855), width: 2),
+                                  borderSide: const BorderSide(
+                                    color: Color(0xFF002855),
+                                    width: 2,
+                                  ),
                                 ),
                                 errorBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  borderSide: const BorderSide(color: Colors.red, width: 2),
+                                  borderSide: const BorderSide(
+                                    color: Colors.red,
+                                    width: 2,
+                                  ),
                                 ),
                               ),
                               validator: (value) {
@@ -147,10 +162,15 @@ class _LoginPageState extends State<LoginPage> {
                                 fillColor: Colors.grey.shade200,
                                 hintText: "Kata sandi",
                                 hintStyle: const TextStyle(color: Colors.grey),
-                                prefixIcon: const Icon(Icons.lock_outline, color: Colors.grey),
+                                prefixIcon: const Icon(
+                                  Icons.lock_outline,
+                                  color: Colors.grey,
+                                ),
                                 suffixIcon: IconButton(
                                   icon: Icon(
-                                    _obscureText ? Icons.visibility_off : Icons.visibility,
+                                    _obscureText
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
                                     color: Colors.grey,
                                   ),
                                   onPressed: () {
@@ -161,19 +181,29 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  borderSide: const BorderSide(color: Colors.grey),
+                                  borderSide: const BorderSide(
+                                    color: Colors.grey,
+                                  ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  borderSide: const BorderSide(color: Colors.grey),
+                                  borderSide: const BorderSide(
+                                    color: Colors.grey,
+                                  ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  borderSide: const BorderSide(color: Color(0xFF002855), width: 2),
+                                  borderSide: const BorderSide(
+                                    color: Color(0xFF002855),
+                                    width: 2,
+                                  ),
                                 ),
                                 errorBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  borderSide: const BorderSide(color: Colors.red, width: 2),
+                                  borderSide: const BorderSide(
+                                    color: Colors.red,
+                                    width: 2,
+                                  ),
                                 ),
                               ),
                               validator: (value) {
@@ -199,7 +229,9 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                                 onPressed: _isLoading ? null : _login,
                                 child: _isLoading
-                                    ? const CircularProgressIndicator(color: Colors.white)
+                                    ? const CircularProgressIndicator(
+                                        color: Colors.white,
+                                      )
                                     : const Text(
                                         "MASUK",
                                         style: TextStyle(
@@ -231,8 +263,10 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
 
+                    Padding(padding: EdgeInsetsGeometry.only(top: 15)),
+
                     // Teks dan tombol register secara horizontal
-                    Row(
+                    Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Text(
