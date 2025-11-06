@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:skorify/handlers/post_data.dart';
+import 'package:skorify/handlers/secure_storage_service.dart';
 import 'homepages.dart';
 
 class LoginPage extends StatefulWidget {
@@ -9,6 +11,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final SecureStorageService _secureStorage = SecureStorageService();
+
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -20,7 +24,38 @@ class _LoginPageState extends State<LoginPage> {
     if (_formKey.currentState!.validate()) {
       setState(() => _isLoading = true);
 
-      await Future.delayed(const Duration(seconds: 2));
+      String email = emailController.text;
+      String password = passwordController.text;
+
+      ApiResponse result = await postData('login', {
+        'email': email,
+        'password': password,
+      });
+
+      // check if the widget is still mounted...? idk man
+
+      if (result.success) {
+        await _secureStorage.saveSession(result.result);
+
+        if (!mounted) return;
+
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text("Login berhasil!")));
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const HomePages()),
+        );
+      } else {
+        if (!mounted) return;
+
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(result.result)));
+      }
+
+      /*await Future.delayed(const Duration(seconds: 2));
 
       if (emailController.text == "admin@gmail.com" &&
           passwordController.text == "password123") {
@@ -36,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Email atau kata sandi salah.")),
         );
-      }
+      }*/
 
       setState(() => _isLoading = false);
     }

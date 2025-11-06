@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:skorify/handlers/logout.dart';
+import 'package:skorify/handlers/post_data.dart';
+import 'package:skorify/handlers/secure_storage_service.dart';
+import 'package:skorify/pages/login_pages.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
@@ -8,7 +12,9 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
-  int _selectedIndex = 2; 
+  final SecureStorageService _secureStorage = SecureStorageService();
+
+  int _selectedIndex = 2;
 
   // Tambahkan variabel penyimpanan data pengguna
   String userName = "Hyung Jaehyun";
@@ -45,32 +51,28 @@ class _SettingPageState extends State<SettingPage> {
       appBar: AppBar(
         leading: Padding(
           padding: const EdgeInsets.only(left: 16.0),
-          child: Image.asset(
-            'assets/images/logo.png',
-          height: 20,
-          width: 20,
-          ),
+          child: Image.asset('assets/images/logo.png', height: 20, width: 20),
         ),
 
-          title: const Text(
-            "Skorify",
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
+        title: const Text(
+          "Skorify",
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+        ),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/home-background.png"),
+              fit: BoxFit.fitWidth,
+              alignment: Alignment.topCenter,
             ),
           ),
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/images/home-background.png"), 
-                fit: BoxFit.fitWidth,
-                alignment: Alignment.topCenter,
-              ),
-            ),
-          ),
+        ),
       ),
 
       body: SingleChildScrollView(
@@ -78,7 +80,7 @@ class _SettingPageState extends State<SettingPage> {
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(20), 
+            borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.05),
@@ -93,7 +95,7 @@ class _SettingPageState extends State<SettingPage> {
               const SizedBox(height: 20),
               const CircleAvatar(
                 radius: 50,
-                backgroundImage: AssetImage('assets/images/avatar.jpeg'), 
+                backgroundImage: AssetImage('assets/images/avatar.jpeg'),
               ),
               const SizedBox(height: 25),
 
@@ -112,19 +114,14 @@ class _SettingPageState extends State<SettingPage> {
                 value: userPassword,
                 onTap: () => _showEditPasswordDialog(context),
               ),
-              _buildStaticCard(
-                title: "Peran",
-                value: "Peserta",
-              ),
+              _buildStaticCard(title: "Peran", value: "Peserta"),
 
               const SizedBox(height: 30),
 
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/login');
-                  },
+                  onPressed: _processLogout,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF002C50),
                     padding: const EdgeInsets.symmetric(vertical: 14),
@@ -156,18 +153,12 @@ class _SettingPageState extends State<SettingPage> {
         child: BottomNavigationBar(
           backgroundColor: const Color(0xFF001D39),
           items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: "Beranda",
-            ),
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: "Beranda"),
             BottomNavigationBarItem(
               icon: Icon(Icons.checklist),
               label: "Aktivitas",
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: "Akun",
-            ),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: "Akun"),
           ],
           currentIndex: _selectedIndex,
           selectedItemColor: Colors.white,
@@ -180,8 +171,9 @@ class _SettingPageState extends State<SettingPage> {
 
   // Dialog ubah data pengguna
   void _showEditNameDialog(BuildContext context) {
-    TextEditingController nameController =
-        TextEditingController(text: userName);
+    TextEditingController nameController = TextEditingController(
+      text: userName,
+    );
 
     showDialog(
       context: context,
@@ -200,8 +192,10 @@ class _SettingPageState extends State<SettingPage> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 40,
+                  vertical: 12,
+                ),
               ),
               onPressed: () {
                 setState(() {
@@ -235,8 +229,9 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   void _showEditEmailDialog(BuildContext context) {
-    TextEditingController emailController =
-        TextEditingController(text: userEmail);
+    TextEditingController emailController = TextEditingController(
+      text: userEmail,
+    );
 
     showDialog(
       context: context,
@@ -245,7 +240,7 @@ class _SettingPageState extends State<SettingPage> {
         title: const Text("Ubah Email"),
         content: TextField(
           controller: emailController,
-          keyboardType: TextInputType.emailAddress, 
+          keyboardType: TextInputType.emailAddress,
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
             hintText: "Masukkan email (contoh: user@gmail.com)",
@@ -257,10 +252,12 @@ class _SettingPageState extends State<SettingPage> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF001D39),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10), 
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 40,
+                  vertical: 12,
+                ),
               ),
               onPressed: () {
                 setState(() {
@@ -306,7 +303,8 @@ class _SettingPageState extends State<SettingPage> {
           builder: (context, setStateDialog) {
             return AlertDialog(
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15)),
+                borderRadius: BorderRadius.circular(15),
+              ),
               title: const Text("Ubah Kata Sandi"),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -340,9 +338,7 @@ class _SettingPageState extends State<SettingPage> {
                       border: const OutlineInputBorder(),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          obscureNew
-                              ? Icons.visibility_off
-                              : Icons.visibility,
+                          obscureNew ? Icons.visibility_off : Icons.visibility,
                         ),
                         onPressed: () {
                           setStateDialog(() {
@@ -363,7 +359,9 @@ class _SettingPageState extends State<SettingPage> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 40, vertical: 12),
+                        horizontal: 40,
+                        vertical: 12,
+                      ),
                     ),
                     onPressed: () {
                       setState(() {
@@ -372,8 +370,9 @@ class _SettingPageState extends State<SettingPage> {
                       Navigator.pop(context);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content:
-                              const Text("Kata sandi berhasil diperbarui!"),
+                          content: const Text(
+                            "Kata sandi berhasil diperbarui!",
+                          ),
                           behavior: SnackBarBehavior.floating,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -400,6 +399,31 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
+  void _processLogout() async {
+    String? sessionId = await _secureStorage.getSession();
+    ApiResponse result = await logout({'sessionId': sessionId});
+
+    if (result.success) {
+      await _secureStorage.deleteSession();
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(result.result)));
+
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => LoginPage()),
+        (Route<dynamic> route) => false,
+      );
+    } else {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(result.result)));
+    }
+  }
+
   // Kartu info
   Widget _buildInfoCard({
     required String title,
@@ -415,7 +439,7 @@ class _SettingPageState extends State<SettingPage> {
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
-            BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 5)
+            BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 5),
           ],
         ),
         child: Row(
@@ -442,7 +466,7 @@ class _SettingPageState extends State<SettingPage> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 5)
+          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 5),
         ],
       ),
       child: Text(

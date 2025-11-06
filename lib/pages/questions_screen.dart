@@ -49,7 +49,6 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      // Timer and Question Number Section
                       Container(
                         margin: const EdgeInsets.all(16),
                         padding: const EdgeInsets.all(16),
@@ -67,14 +66,15 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Timer and Hide button
+                            // Timer dan tombol Sembunyikan
                             Timer(),
                             const SizedBox(height: 16),
-                            // Question Number
-                            QuestionNumber(number: '$_questionNumber'),
 
+                            // Nomor Soal
+                            QuestionNumber(number: '$_questionNumber'),
                             const SizedBox(height: 20),
-                            // Question Text
+
+                            // Teks Soal
                             const Text(
                               '''Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                                   Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.''',
@@ -86,7 +86,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                             ),
                             const SizedBox(height: 24),
 
-                            // Answer Options
+                            // Opsi Jawaban
                             ...List.generate(
                                   4,
                                   (i) => AnswerOptionButton(
@@ -107,14 +107,14 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                 ),
               ),
 
-              // Question bottons (previous, unsure, next) Navigation
+              // Navigasi soal (tombol selanjutnya, sebelumnya, ragu-ragu)
               QuestionNav(
                 previousQuestionMethod: previousQuestion,
                 nextQuestionMethod: nextQuestion,
                 questionNumber: _questionNumber,
               ),
 
-              // Bottom Navigation Bar
+              // Navbar Aplikasi
               Container(
                 color: const Color(0xFF0D2A47),
                 child: SafeArea(
@@ -133,7 +133,8 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
               ),
             ],
           ),
-          // Question Navigation Panel
+
+          // Panel navigasi soal-soal
           if (showQuestionNav)
             Positioned(
               right: 0,
