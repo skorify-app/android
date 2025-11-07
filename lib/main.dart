@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skorify/pages/activity_screen.dart';
 import 'package:skorify/pages/forgot_password_pages.dart';
 import 'package:skorify/pages/homepages.dart';
 import 'package:skorify/pages/questions_screen.dart';
@@ -6,7 +7,7 @@ import 'package:skorify/pages/start_screen.dart';
 import 'pages/onboarding_pages.dart';
 import 'pages/login_pages.dart';
 import 'pages/register_pages.dart';
-import 'pages/setting.dart';
+import 'pages/account_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,7 +33,8 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginPage(),
         '/register': (context) => const RegisterPages(),
         '/homepages': (context) => const HomePages(),
-        '/setting': (context) => const SettingPage(),
+        '/activity_page': (context) => const ActivityScreen(),
+        '/account': (context) => const AccountScreen(),
         '/test/english': (context) => const QuestionsScreen(),
         '/forgot_password': (context) => const ForgotPasswordPages(),
       },

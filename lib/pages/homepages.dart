@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:skorify/components/misc/bottom_navbar.dart';
 import 'questions_screen.dart';
 
 class TappableCard extends StatefulWidget {
@@ -98,7 +99,7 @@ class _HomePagesState extends State<HomePages> {
     });
 
     if (index == 2) {
-      Navigator.pushNamed(context, '/setting');
+      Navigator.pushNamed(context, '/account');
     }
   }
 
@@ -661,7 +662,11 @@ class _HomePagesState extends State<HomePages> {
       ),
 
       // Bottom NavBar
-      bottomNavigationBar: ClipRRect(
+      bottomNavigationBar: BottomNavbar(
+        index: _selectedIndex,
+        onTap: _onItemTapped,
+      ),
+      /*bottomNavigationBar: ClipRRect(
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(15),
           topRight: Radius.circular(15),
@@ -687,7 +692,7 @@ class _HomePagesState extends State<HomePages> {
             ),
           ],
         ),
-      ),
+      ),*/
     );
   }
 }

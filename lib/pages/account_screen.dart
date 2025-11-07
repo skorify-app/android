@@ -1,24 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:skorify/components/misc/bottom_navbar.dart';
+import 'package:skorify/handlers/get_account_info.dart';
 import 'package:skorify/handlers/logout.dart';
 import 'package:skorify/handlers/post_data.dart';
 import 'package:skorify/handlers/secure_storage_service.dart';
 import 'package:skorify/pages/login_pages.dart';
 
-class SettingPage extends StatefulWidget {
-  const SettingPage({super.key});
+class AccountScreen extends StatefulWidget {
+  const AccountScreen({super.key});
 
   @override
-  State<SettingPage> createState() => _SettingPageState();
+  State<AccountScreen> createState() => _SettingPageState();
 }
 
-class _SettingPageState extends State<SettingPage> {
+class _SettingPageState extends State<AccountScreen> {
   final SecureStorageService _secureStorage = SecureStorageService();
 
   int _selectedIndex = 2;
+  var fullName = 'Loading...';
+  var email = 'Loading...';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadAccountInfo();
+  }
+
+  void _loadAccountInfo() async {
+    var sessionId = await _secureStorage.getSession();
+    ApiAccountResponse account = await getAccountInfo({'sessionId': sessionId});
+
+    setState(() {
+      fullName = account.result['full_name'];
+      email = account.result['email'];
+    });
+  }
 
   // Tambahkan variabel penyimpanan data pengguna
-  String userName = "Hyung Jaehyun";
-  String userEmail = "hyunghyung@gmail.com";
   String userPassword = "***********";
 
   void _onItemTapped(int index) {
@@ -29,7 +47,6 @@ class _SettingPageState extends State<SettingPage> {
     // Navigasi berdasarkan item
     if (index == 0) {
       Navigator.pushNamed(context, '/homepages');
-      Navigator.pushNamed(context, '/activity_page');
     } else if (index == 1) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -83,7 +100,7 @@ class _SettingPageState extends State<SettingPage> {
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: const Color.fromARGB(71, 0, 0, 0),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
@@ -101,12 +118,12 @@ class _SettingPageState extends State<SettingPage> {
 
               _buildInfoCard(
                 title: "Nama",
-                value: userName,
+                value: fullName,
                 onTap: () => _showEditNameDialog(context),
               ),
               _buildInfoCard(
                 title: "Email",
-                value: userEmail,
+                value: email,
                 onTap: () => _showEditEmailDialog(context),
               ),
               _buildInfoCard(
@@ -145,26 +162,9 @@ class _SettingPageState extends State<SettingPage> {
       ),
 
       // Bottom Navigation Bar dengan radius
-      bottomNavigationBar: ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(15),
-          topRight: Radius.circular(15),
-        ),
-        child: BottomNavigationBar(
-          backgroundColor: const Color(0xFF001D39),
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: "Beranda"),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.checklist),
-              label: "Aktivitas",
-            ),
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: "Akun"),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.white70,
-          onTap: _onItemTapped,
-        ),
+      bottomNavigationBar: BottomNavbar(
+        index: _selectedIndex,
+        onTap: _onItemTapped,
       ),
     );
   }
@@ -172,7 +172,7 @@ class _SettingPageState extends State<SettingPage> {
   // Dialog ubah data pengguna
   void _showEditNameDialog(BuildContext context) {
     TextEditingController nameController = TextEditingController(
-      text: userName,
+      text: fullName,
     );
 
     showDialog(
@@ -199,7 +199,7 @@ class _SettingPageState extends State<SettingPage> {
               ),
               onPressed: () {
                 setState(() {
-                  userName = nameController.text;
+                  fullName = nameController.text;
                 });
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -229,9 +229,7 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   void _showEditEmailDialog(BuildContext context) {
-    TextEditingController emailController = TextEditingController(
-      text: userEmail,
-    );
+    TextEditingController emailController = TextEditingController(text: email);
 
     showDialog(
       context: context,
@@ -261,7 +259,7 @@ class _SettingPageState extends State<SettingPage> {
               ),
               onPressed: () {
                 setState(() {
-                  userEmail = emailController.text;
+                  email = emailController.text;
                 });
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -439,7 +437,7 @@ class _SettingPageState extends State<SettingPage> {
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
-            BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 5),
+            BoxShadow(color: const Color.fromARGB(71, 0, 0, 0), blurRadius: 5),
           ],
         ),
         child: Row(
@@ -466,7 +464,7 @@ class _SettingPageState extends State<SettingPage> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 5),
+          BoxShadow(color: Color.fromARGB(71, 0, 0, 0), blurRadius: 5),
         ],
       ),
       child: Text(
