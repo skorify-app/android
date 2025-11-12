@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:skorify/components/questions/answer_option_button.dart';
+import 'package:skorify/components/questions/color_indication_text.dart';
 import 'package:skorify/components/questions/question_nav.dart';
+import 'package:skorify/components/questions/question_nav_button.dart';
 import 'package:skorify/components/questions/question_number.dart';
 import 'package:skorify/components/questions/timer.dart';
-import 'package:skorify/components/questions/top_bar.dart';
+import 'package:skorify/components/misc/top_bar.dart';
 
 class QuestionsScreen extends StatefulWidget {
-  const QuestionsScreen({super.key});
+  const QuestionsScreen({super.key, required this.subtestId});
 
   final int questionNumber = 1;
+  final String subtestId;
 
   @override
   State<QuestionsScreen> createState() => _QuestionsScreenState();
@@ -21,7 +24,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
   @override
   void initState() {
     super.initState();
-    _questionNumber = 1;
+    _questionNumber = widget.questionNumber;
   }
 
   void nextQuestion() {
@@ -113,24 +116,6 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                 nextQuestionMethod: nextQuestion,
                 questionNumber: _questionNumber,
               ),
-
-              // Navbar Aplikasi
-              Container(
-                color: const Color(0xFF0D2A47),
-                child: SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        _buildNavItem(Icons.home, 'Beranda'),
-                        _buildNavItem(Icons.assignment, 'Aktivitas'),
-                        _buildNavItem(Icons.person, 'Akun'),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
             ],
           ),
 
@@ -176,6 +161,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                         ],
                       ),
                     ),
+
                     // Question Grid
                     Expanded(
                       child: Padding(
@@ -195,63 +181,25 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                         ),
                       ),
                     ),
-                    // Legend
+
+                    // Question color indication
                     Padding(
                       padding: const EdgeInsets.all(16),
                       child: Column(
                         children: [
-                          Row(
-                            children: [
-                              Container(
-                                width: 20,
-                                height: 20,
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFF4CAF50),
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              const Text(
-                                'Sudah dijawab',
-                                style: TextStyle(fontSize: 12),
-                              ),
-                            ],
+                          ColorIndicationText(
+                            text: 'Sudah Dijawab',
+                            colorCode: 0xFF4CAF50,
                           ),
                           const SizedBox(height: 8),
-                          Row(
-                            children: [
-                              Container(
-                                width: 20,
-                                height: 20,
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFFFFD700),
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              const Text(
-                                'Ragu-ragu',
-                                style: TextStyle(fontSize: 12),
-                              ),
-                            ],
+                          ColorIndicationText(
+                            text: 'Ragu-ragu',
+                            colorCode: 0xFFFFD700,
                           ),
                           const SizedBox(height: 8),
-                          Row(
-                            children: [
-                              Container(
-                                width: 20,
-                                height: 20,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade300,
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              const Text(
-                                'Belum dijawab',
-                                style: TextStyle(fontSize: 12),
-                              ),
-                            ],
+                          ColorIndicationText(
+                            text: 'Belum Dijawab',
+                            colorCode: 0xFFE0E0E0,
                           ),
                         ],
                       ),
@@ -260,6 +208,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                 ),
               ),
             ),
+
           // Floating Question Navigator Button
           Positioned(
             top: 10,
@@ -270,30 +219,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                   showQuestionNav = !showQuestionNav;
                 });
               },
-              child: Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF4A90E2),
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(25),
-                    bottomLeft: Radius.circular(25),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color.fromARGB(55, 0, 0, 0),
-                      spreadRadius: 1,
-                      blurRadius: 5,
-                      offset: const Offset(-2, 0),
-                    ),
-                  ],
-                ),
-                child: const Icon(
-                  Icons.arrow_back_ios,
-                  color: Colors.white,
-                  size: 20,
-                ),
-              ),
+              child: QuestionNavButton(),
             ),
           ),
         ],
@@ -331,17 +257,6 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildNavItem(IconData icon, String label) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(icon, color: Colors.white, size: 24),
-        const SizedBox(height: 4),
-        Text(label, style: const TextStyle(color: Colors.white, fontSize: 12)),
-      ],
     );
   }
 }

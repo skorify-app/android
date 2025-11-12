@@ -15,3 +15,9 @@ class SecureStorageService {
     await _storage.delete(key: 'session');
   }
 }
+
+SecureStorageService _storage = SecureStorageService();
+
+SecureStorageService getStorage() {
+  return _storage;
+}

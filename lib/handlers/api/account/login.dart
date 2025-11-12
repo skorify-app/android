@@ -1,15 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:skorify/handlers/classes.dart';
 
-class ApiResponse {
-  final String result; // Bisa berupa error message atau session id
-  final bool success;
-
-  ApiResponse({required this.result, required this.success});
-}
-
-Future<ApiResponse> postData(String path, Object data) async {
-  final String completeURL = 'https://skorify-api.hosea.dev/$path';
+Future<StringAPIResult> login(Object data) async {
+  final String completeURL = 'https://skorify-api.hosea.dev/account/login';
   final Map<String, String> headers = {'Content-Type': 'application/json'};
   final String body = jsonEncode(data);
 
@@ -33,9 +27,9 @@ Future<ApiResponse> postData(String path, Object data) async {
     }
 
     // If not accepted
-    return ApiResponse(result: result, success: success);
+    return StringAPIResult(result: result, success: success);
   } catch (err) {
-    return ApiResponse(
+    return StringAPIResult(
       result: 'Maaf, terjadi kesalahan pada sistem.',
       success: false,
     );

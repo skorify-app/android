@@ -12,7 +12,7 @@ class StartScreen extends StatelessWidget {
   }
 
   void _sessionExist(BuildContext ctx) async {
-    final SecureStorageService secureStorage = SecureStorageService();
+    final SecureStorageService secureStorage = getStorage();
     bool sessionExists = await secureStorage.getSession() != null;
 
     if (!ctx.mounted) return;

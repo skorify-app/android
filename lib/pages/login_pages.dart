@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:skorify/handlers/post_data.dart';
+import 'package:skorify/handlers/api/account/login.dart';
+import 'package:skorify/handlers/classes.dart';
 import 'package:skorify/handlers/secure_storage_service.dart';
 import 'homepages.dart';
 
@@ -11,7 +12,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final SecureStorageService _secureStorage = SecureStorageService();
+  final SecureStorageService _secureStorage = getStorage();
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -27,12 +28,10 @@ class _LoginPageState extends State<LoginPage> {
       String email = emailController.text;
       String password = passwordController.text;
 
-      ApiResponse result = await postData('account/login', {
+      StringAPIResult result = await login({
         'email': email,
         'password': password,
       });
-
-      // check if the widget is still mounted...? idk man
 
       if (result.success) {
         await _secureStorage.saveSession(result.result);
@@ -54,24 +53,6 @@ class _LoginPageState extends State<LoginPage> {
           context,
         ).showSnackBar(SnackBar(content: Text(result.result)));
       }
-
-      /*await Future.delayed(const Duration(seconds: 2));
-
-      if (emailController.text == "admin@gmail.com" &&
-          passwordController.text == "password123") {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text("Login berhasil!")));
-
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const HomePages()),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Email atau kata sandi salah.")),
-        );
-      }*/
 
       setState(() => _isLoading = false);
     }

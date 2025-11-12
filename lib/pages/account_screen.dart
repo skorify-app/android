@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:skorify/components/misc/bottom_navbar.dart';
-import 'package:skorify/handlers/get_account_info.dart';
-import 'package:skorify/handlers/logout.dart';
-import 'package:skorify/handlers/post_data.dart';
+import 'package:skorify/handlers/api/account/info.dart';
+import 'package:skorify/handlers/api/account/logout.dart';
+import 'package:skorify/handlers/classes.dart';
 import 'package:skorify/handlers/secure_storage_service.dart';
 import 'package:skorify/pages/login_pages.dart';
 
@@ -14,7 +14,7 @@ class AccountScreen extends StatefulWidget {
 }
 
 class _SettingPageState extends State<AccountScreen> {
-  final SecureStorageService _secureStorage = SecureStorageService();
+  final SecureStorageService _secureStorage = getStorage();
 
   int _selectedIndex = 2;
   var fullName = 'Loading...';
@@ -29,12 +29,14 @@ class _SettingPageState extends State<AccountScreen> {
 
   void _loadAccountInfo() async {
     String sessionId = await _secureStorage.getSession() ?? '';
-    ApiAccountResponse account = await getAccountInfo(sessionId);
+    DefaultAPIResult account = await getAccountInfo(sessionId);
 
     setState(() {
-      fullName = account.result['full_name'];
-      email = account.result['email'];
-      role = account.result['role'];
+      if (account.success) {
+        fullName = account.result['full_name'];
+        email = account.result['email'];
+        role = account.result['role'];
+      }
     });
   }
 
@@ -46,20 +48,10 @@ class _SettingPageState extends State<AccountScreen> {
       _selectedIndex = index;
     });
 
-    // Navigasi berdasarkan item
     if (index == 0) {
       Navigator.pushNamed(context, '/homepages');
     } else if (index == 1) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text("Fitur Aktivitas belum tersedia"),
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          margin: const EdgeInsets.all(16),
-        ),
-      );
+      Navigator.pushNamed(context, '/activity');
     }
   }
 
@@ -400,8 +392,8 @@ class _SettingPageState extends State<AccountScreen> {
   }
 
   void _processLogout() async {
-    String? sessionId = await _secureStorage.getSession();
-    ApiResponse result = await logout({'sessionId': sessionId});
+    String sessionId = await _secureStorage.getSession() ?? '';
+    StringAPIResult result = await logout(sessionId);
 
     if (result.success) {
       await _secureStorage.deleteSession();

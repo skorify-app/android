@@ -88,17 +88,17 @@ class HomePages extends StatefulWidget {
 }
 
 class _HomePagesState extends State<HomePages> {
-  int _selectedIndex = 0;
+  int _selectedNavbarIndex = 0;
 
   // FUNGSI BOTTOM NAV BAR
   void _onItemTapped(int index) {
-    HapticFeedback.selectionClick();
-
     setState(() {
-      _selectedIndex = index;
+      _selectedNavbarIndex = index;
     });
 
-    if (index == 2) {
+    if (index == 1) {
+      Navigator.pushNamed(context, '/activity');
+    } else if (index == 2) {
       Navigator.pushNamed(context, '/account');
     }
   }
@@ -110,8 +110,8 @@ class _HomePagesState extends State<HomePages> {
       barrierDismissible: true,
       barrierLabel: '',
       transitionDuration: const Duration(milliseconds: 300),
-      pageBuilder: (_, __, ___) => const SizedBox.shrink(),
-      transitionBuilder: (context, animation, _, __) {
+      pageBuilder: (_, _, _) => const SizedBox.shrink(),
+      transitionBuilder: (context, animation, _, _) {
         return FadeTransition(
           opacity: CurvedAnimation(parent: animation, curve: Curves.easeInOut),
           child: ScaleTransition(
@@ -189,7 +189,8 @@ class _HomePagesState extends State<HomePages> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const QuestionsScreen(),
+                              builder: (context) =>
+                                  const QuestionsScreen(subtestId: '3'),
                             ),
                           );
                         },
@@ -352,7 +353,8 @@ class _HomePagesState extends State<HomePages> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const QuestionsScreen(),
+                              builder: (context) =>
+                                  const QuestionsScreen(subtestId: '3'),
                             ),
                           );
                         },
@@ -663,36 +665,9 @@ class _HomePagesState extends State<HomePages> {
 
       // Bottom NavBar
       bottomNavigationBar: BottomNavbar(
-        index: _selectedIndex,
+        index: _selectedNavbarIndex,
         onTap: _onItemTapped,
       ),
-      /*bottomNavigationBar: ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(15),
-          topRight: Radius.circular(15),
-        ),
-        child: BottomNavigationBar(
-          backgroundColor: const Color(0xFF001D39),
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.white70,
-          onTap: _onItemTapped,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home_rounded),
-              label: "Beranda",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.assignment_rounded),
-              label: "Aktivitas",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person_rounded),
-              label: "Akun",
-            ),
-          ],
-        ),
-      ),*/
     );
   }
 }
