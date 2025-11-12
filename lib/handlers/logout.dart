@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:skorify/handlers/post_data.dart';
 
 Future<ApiResponse> logout(Object data) async {
-  final String completeURL = 'https://skorify-api.hosea.dev/logout';
+  final String completeURL = 'https://skorify-api.hosea.dev/account/logout';
   final Map<String, String> headers = {'Content-Type': 'application/json'};
   final String body = jsonEncode(data);
 

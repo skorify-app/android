@@ -19,6 +19,7 @@ class _SettingPageState extends State<AccountScreen> {
   int _selectedIndex = 2;
   var fullName = 'Loading...';
   var email = 'Loading...';
+  var role = 'Loading...';
 
   @override
   void initState() {
@@ -27,12 +28,13 @@ class _SettingPageState extends State<AccountScreen> {
   }
 
   void _loadAccountInfo() async {
-    var sessionId = await _secureStorage.getSession();
-    ApiAccountResponse account = await getAccountInfo({'sessionId': sessionId});
+    String sessionId = await _secureStorage.getSession() ?? '';
+    ApiAccountResponse account = await getAccountInfo(sessionId);
 
     setState(() {
       fullName = account.result['full_name'];
       email = account.result['email'];
+      role = account.result['role'];
     });
   }
 
@@ -131,7 +133,7 @@ class _SettingPageState extends State<AccountScreen> {
                 value: userPassword,
                 onTap: () => _showEditPasswordDialog(context),
               ),
-              _buildStaticCard(title: "Peran", value: "Peserta"),
+              _buildStaticCard(title: "Peran", value: role),
 
               const SizedBox(height: 30),
 

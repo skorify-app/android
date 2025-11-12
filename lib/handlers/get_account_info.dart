@@ -8,17 +8,15 @@ class ApiAccountResponse {
   ApiAccountResponse({required this.result, required this.success});
 }
 
-Future<ApiAccountResponse> getAccountInfo(Object data) async {
-  final String completeURL = 'https://skorify-api.hosea.dev/account-info';
-  final Map<String, String> headers = {'Content-Type': 'application/json'};
-  final String body = jsonEncode(data);
+Future<ApiAccountResponse> getAccountInfo(String session) async {
+  final String completeURL = 'https://skorify-api.hosea.dev/account/info';
+  final Map<String, String> headers = {
+    'Content-Type': 'application/json',
+    'Session': session,
+  };
 
   try {
-    final res = await http.post(
-      Uri.parse(completeURL),
-      headers: headers,
-      body: body,
-    );
+    final res = await http.get(Uri.parse(completeURL), headers: headers);
 
     final Map<String, dynamic> jsonResponse = jsonDecode(res.body);
 

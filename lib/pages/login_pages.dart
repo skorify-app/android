@@ -27,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
       String email = emailController.text;
       String password = passwordController.text;
 
-      ApiResponse result = await postData('login', {
+      ApiResponse result = await postData('account/login', {
         'email': email,
         'password': password,
       });
