@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:skorify/components/account/change_password_field.dart';
+import 'package:skorify/components/account/info_card.dart';
+import 'package:skorify/components/account/logout_button.dart';
+import 'package:skorify/components/account/info_static_card.dart';
+import 'package:skorify/components/account/popup_input.dart';
 import 'package:skorify/components/misc/bottom_navbar.dart';
+import 'package:skorify/components/misc/top_bar.dart';
 import 'package:skorify/handlers/api/account/info.dart';
 import 'package:skorify/handlers/api/account/logout.dart';
 import 'package:skorify/handlers/classes.dart';
@@ -31,17 +37,14 @@ class _SettingPageState extends State<AccountScreen> {
     String sessionId = await _secureStorage.getSession() ?? '';
     DefaultAPIResult account = await getAccountInfo(sessionId);
 
-    setState(() {
-      if (account.success) {
+    if (account.success) {
+      setState(() {
         fullName = account.result['full_name'];
         email = account.result['email'];
         role = account.result['role'];
-      }
-    });
+      });
+    }
   }
-
-  // Tambahkan variabel penyimpanan data pengguna
-  String userPassword = "***********";
 
   void _onItemTapped(int index) {
     setState(() {
@@ -59,33 +62,7 @@ class _SettingPageState extends State<AccountScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
-      appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16.0),
-          child: Image.asset('assets/images/logo.png', height: 20, width: 20),
-        ),
-
-        title: const Text(
-          "Skorify",
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-          ),
-        ),
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/images/home-background.png"),
-              fit: BoxFit.fitWidth,
-              alignment: Alignment.topCenter,
-            ),
-          ),
-        ),
-      ),
-
+      appBar: TopBar(),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Container(
@@ -108,54 +85,32 @@ class _SettingPageState extends State<AccountScreen> {
                 radius: 50,
                 backgroundImage: AssetImage('assets/images/avatar.jpeg'),
               ),
-              const SizedBox(height: 25),
 
-              _buildInfoCard(
-                title: "Nama",
+              const SizedBox(height: 25),
+              InfoCard(
+                title: 'Nama',
                 value: fullName,
                 onTap: () => _showEditNameDialog(context),
               ),
-              _buildInfoCard(
-                title: "Email",
+              InfoCard(
+                title: 'Email',
                 value: email,
                 onTap: () => _showEditEmailDialog(context),
               ),
-              _buildInfoCard(
-                title: "Kata sandi",
-                value: userPassword,
+              InfoCard(
+                title: 'Kata sandi',
+                value: '**********',
                 onTap: () => _showEditPasswordDialog(context),
               ),
-              _buildStaticCard(title: "Peran", value: role),
+              InfoStaticCard(title: 'Peran', value: role),
 
               const SizedBox(height: 30),
-
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: _processLogout,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF002C50),
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: const Text(
-                    "KELUAR",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
+              LogoutButton(onPressed: _processLogout),
             ],
           ),
         ),
       ),
 
-      // Bottom Navigation Bar dengan radius
       bottomNavigationBar: BottomNavbar(
         index: _selectedIndex,
         onTap: _onItemTapped,
@@ -181,16 +136,7 @@ class _SettingPageState extends State<AccountScreen> {
         actions: [
           Center(
             child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF001D39),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 40,
-                  vertical: 12,
-                ),
-              ),
+              style: popupStyle,
               onPressed: () {
                 setState(() {
                   fullName = nameController.text;
@@ -207,14 +153,7 @@ class _SettingPageState extends State<AccountScreen> {
                   ),
                 );
               },
-              child: const Text(
-                "SIMPAN",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              child: popupButtonText,
             ),
           ),
         ],
@@ -241,16 +180,7 @@ class _SettingPageState extends State<AccountScreen> {
         actions: [
           Center(
             child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF001D39),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 40,
-                  vertical: 12,
-                ),
-              ),
+              style: popupStyle,
               onPressed: () {
                 setState(() {
                   email = emailController.text;
@@ -267,14 +197,7 @@ class _SettingPageState extends State<AccountScreen> {
                   ),
                 );
               },
-              child: const Text(
-                "SIMPAN",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              child: popupButtonText,
             ),
           ),
         ],
@@ -301,64 +224,33 @@ class _SettingPageState extends State<AccountScreen> {
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  TextField(
-                    controller: currentPassController,
-                    obscureText: obscureCurrent,
-                    decoration: InputDecoration(
-                      labelText: "Masukkan kata sandi saat ini",
-                      border: const OutlineInputBorder(),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          obscureCurrent
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                        ),
-                        onPressed: () {
-                          setStateDialog(() {
-                            obscureCurrent = !obscureCurrent;
-                          });
-                        },
-                      ),
-                    ),
+                  ChangePasswordField(
+                    currentPassController: currentPassController,
+                    obscureCurrent: obscureCurrent,
+                    onPressed: () {
+                      setStateDialog(() {
+                        obscureCurrent = !obscureCurrent;
+                      });
+                    },
                   ),
+
                   const SizedBox(height: 12),
-                  TextField(
-                    controller: newPassController,
-                    obscureText: obscureNew,
-                    decoration: InputDecoration(
-                      labelText: "Masukkan kata sandi baru",
-                      border: const OutlineInputBorder(),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          obscureNew ? Icons.visibility_off : Icons.visibility,
-                        ),
-                        onPressed: () {
-                          setStateDialog(() {
-                            obscureNew = !obscureNew;
-                          });
-                        },
-                      ),
-                    ),
+                  ChangePasswordField(
+                    currentPassController: newPassController,
+                    obscureCurrent: obscureNew,
+                    onPressed: () {
+                      setStateDialog(() {
+                        obscureNew = !obscureNew;
+                      });
+                    },
                   ),
                 ],
               ),
               actions: [
                 Center(
                   child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF001D39),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 40,
-                        vertical: 12,
-                      ),
-                    ),
+                    style: popupStyle,
                     onPressed: () {
-                      setState(() {
-                        userPassword = newPassController.text;
-                      });
                       Navigator.pop(context);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -373,14 +265,7 @@ class _SettingPageState extends State<AccountScreen> {
                         ),
                       );
                     },
-                    child: const Text(
-                      "SIMPAN",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    child: popupButtonText,
                   ),
                 ),
               ],
@@ -414,57 +299,5 @@ class _SettingPageState extends State<AccountScreen> {
         context,
       ).showSnackBar(SnackBar(content: Text(result.result)));
     }
-  }
-
-  // Kartu info
-  Widget _buildInfoCard({
-    required String title,
-    required String value,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 10),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(color: const Color.fromARGB(71, 0, 0, 0), blurRadius: 5),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Text(
-                "$title : $value",
-                style: const TextStyle(fontSize: 15, color: Colors.black87),
-              ),
-            ),
-            const Icon(Icons.chevron_right, color: Colors.grey),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildStaticCard({required String title, required String value}) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(color: Color.fromARGB(71, 0, 0, 0), blurRadius: 5),
-        ],
-      ),
-      child: Text(
-        "$title : $value",
-        style: const TextStyle(fontSize: 15, color: Colors.black87),
-      ),
-    );
   }
 }

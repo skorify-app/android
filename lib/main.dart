@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:skorify/pages/activity_screen.dart';
 import 'package:skorify/pages/forgot_password_pages.dart';
 import 'package:skorify/pages/homepages.dart';
-import 'package:skorify/pages/questions_screen.dart';
 import 'package:skorify/pages/start_screen.dart';
 import 'pages/onboarding_pages.dart';
 import 'pages/login_pages.dart';
