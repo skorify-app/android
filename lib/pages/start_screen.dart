@@ -25,3 +25,4 @@ class StartScreen extends StatelessWidget {
     Navigator.pushReplacementNamed(ctx, path);
   }
 }
+
