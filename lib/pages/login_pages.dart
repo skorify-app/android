@@ -264,21 +264,6 @@ class _LoginPageState extends State<LoginPage> {
 
                     const SizedBox(height: 12),
 
-                    // Lupa kata sandi
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/forgot_password');
-                      },
-                      child: const Text(
-                        "Lupa kata sandi?",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-
                     Padding(padding: EdgeInsetsGeometry.only(top: 15)),
 
                     // Teks dan tombol register secara horizontal
