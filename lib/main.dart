@@ -32,31 +32,80 @@ class MyApp extends StatelessWidget {
       title: 'Skorify',
       theme: ThemeData(primarySwatch: Colors.blue, fontFamily: 'Poppins'),
 
-      // Halaman pertama saat aplikasi dibuka
       initialRoute: '/',
 
-      // Semua route didefinisikan di sini
-      routes: {
-        '/': (context) => const StartScreen(),
-        '/onboarding_page': (context) => const OnboardingPage(),
-        '/login': (context) => const LoginPage(),
-        '/register': (context) => const RegisterPages(),
-        '/homepages': (context) => const HomePages(),
-        '/activity': (context) => const ActivityScreen(),
-        '/account': (context) => const AccountScreen(),
-        '/test_result_ump': (context) => const TestResultUmp(),
-        '/test_result_sains': (context) => const TestResultSains(),
-        '/test_result_mtk': (context) => const TestResultMtk(),
-        '/test_result_ct': (context) => const TestResultCt(),
-        '/test_result_inggris': (context) => const TestResultInggris(),
-        '/test_result_indonesia': (context) => const TestResultIndonesia(),
-        '/detail_result_ump_mtk': (context) => const DetailResultUmpMtk(),
-        '/detail_result_ump_sains': (context) => const DetailResultUmpSains(),
-        '/detail_result_ump_ct': (context) => const DetailResultUmpCt(),
-        '/detail_result_ump_inggris': (context) => const DetailResultUmpInggris(),
-        '/detail_result_ump_indonesia': (context) => const DetailResultUmpIndonesia(),
+      // ================================
+      //   SMOOTH PAGE TRANSITION GLOBAL
+      // ================================
+      onGenerateRoute: (settings) {
+        Widget page = _getPage(settings.name);
 
+        return PageRouteBuilder(
+          settings: settings,
+          transitionDuration: const Duration(milliseconds: 260),
+          reverseTransitionDuration: const Duration(milliseconds: 260),
+          pageBuilder: (_, __, ___) => page,
+          transitionsBuilder: (_, animation, __, child) {
+            return FadeTransition(
+              opacity: animation,
+              child: child,
+            );
+          },
+        );
       },
     );
+  }
+}
+
+// =======================================
+//   SEMUA ROUTE KAMU DIPINDAH KE SINI
+//   Untuk membuat animasi otomatis
+// =======================================
+
+Widget _getPage(String? route) {
+  switch (route) {
+    case '/':
+      return const StartScreen();
+    case '/onboarding_page':
+      return const OnboardingPage();
+    case '/login':
+      return const LoginPage();
+    case '/register':
+      return const RegisterPages();
+    case '/homepages':
+      return const HomePages();
+    case '/activity':
+      return const ActivityScreen();
+    case '/account':
+      return const AccountScreen();
+
+    // Test Result
+    case '/test_result_ump':
+      return const TestResultUmp();
+    case '/test_result_sains':
+      return const TestResultSains();
+    case '/test_result_mtk':
+      return const TestResultMtk();
+    case '/test_result_ct':
+      return const TestResultCt();
+    case '/test_result_inggris':
+      return const TestResultInggris();
+    case '/test_result_indonesia':
+      return const TestResultIndonesia();
+
+    // Detail Result
+    case '/detail_result_ump_mtk':
+      return const DetailResultUmpMtk();
+    case '/detail_result_ump_sains':
+      return const DetailResultUmpSains();
+    case '/detail_result_ump_ct':
+      return const DetailResultUmpCt();
+    case '/detail_result_ump_inggris':
+      return const DetailResultUmpInggris();
+    case '/detail_result_ump_indonesia':
+      return const DetailResultUmpIndonesia();
+
+    default:
+      return const StartScreen();
   }
 }
