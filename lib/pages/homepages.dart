@@ -440,7 +440,7 @@ class _HomePagesState extends State<HomePages> {
       scaleDown: 0.95,
       child: Container(
         decoration: BoxDecoration(
-          color: const Color(0xFFE7F0FB),
+          color: const Color(0xFFBDD8E9),
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
@@ -490,7 +490,7 @@ class _HomePagesState extends State<HomePages> {
       child: Container(
         padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
-          color: const Color(0xFFE7F0FB), // FULL BIRU MUDA
+          color: const Color(0xFFBDD8E9), // FULL BIRU MUDA
           borderRadius: BorderRadius.circular(18),
           boxShadow: [
             BoxShadow(

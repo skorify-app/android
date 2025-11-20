@@ -268,7 +268,7 @@ class _TestResultUmpState extends State<TestResultUmp> {
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
-          color: const Color(0xFFE7F2FF), // biru muda
+          color: const Color(0xFFBDD8E9), // biru muda
           borderRadius: BorderRadius.circular(22),
           boxShadow: [
             BoxShadow(
