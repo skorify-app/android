@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:skorify/components/misc/bottom_navbar.dart';
 import 'package:skorify/components/misc/top_bar.dart';
 
-class TestResultSains extends StatefulWidget {
-  const TestResultSains({super.key});
+class TestResultCt extends StatefulWidget {
+  const TestResultCt({super.key});
 
   @override
-  State<TestResultSains> createState() => _TestResultSainsState();
+  State<TestResultCt> createState() => _TestResultCtState();
 }
 
-class _TestResultSainsState extends State<TestResultSains> {
+class _TestResultCtState extends State<TestResultCt> {
   int _selectedNavbarIndex = 1;
 
   void _onItemTapped(int index) {
@@ -27,12 +27,11 @@ class _TestResultSainsState extends State<TestResultSains> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffF4F6FA),
+      backgroundColor: const Color(0xFFF5F6F8),
       appBar: TopBar(),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // TOP SECTION
             Container(
               padding: const EdgeInsets.all(20),
               child: Column(
@@ -55,9 +54,9 @@ class _TestResultSainsState extends State<TestResultSains> {
                   const SizedBox(height: 20),
 
                   const Text(
-                    "Sains",
+                    "Computational Thinking",
                     style: TextStyle(
-                      fontSize: 22,
+                      fontSize: 26,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF1F2937),
                     ),
@@ -87,7 +86,7 @@ class _TestResultSainsState extends State<TestResultSains> {
 
                   const SizedBox(height: 12),
                   const Text(
-                    "CBT Potensi Akademik, Sains - #1",
+                    "CBT Potensi Akademik, Computational Thinking - #1",
                     style: TextStyle(fontSize: 14, color: Color(0xFF4B5563)),
                   ),
 
@@ -100,10 +99,7 @@ class _TestResultSainsState extends State<TestResultSains> {
               ),
             ),
 
-            // =============================
-            //           SOAL
-            // =============================
-
+            //SOAL
             _buildQuestionCard(
               soal:
                   "Usia Ayah 3 kali usia Budi. Jika 5 tahun yang akan datang jumlah usia mereka adalah 80 tahun, maka usia Budi sekarang adalah ...",
@@ -117,33 +113,29 @@ class _TestResultSainsState extends State<TestResultSains> {
                   "Usia Ayah 3 kali usia Budi. Jika 5 tahun yang akan datang jumlah usia mereka adalah 80 tahun, maka usia Budi sekarang adalah ...",
               opsi: ["15 Tahun", "16 Tahun", "17 Tahun", "18 Tahun"],
               jawabanBenar: 0,
-              jawabanUser: 1, // SALAH
+              jawabanUser: 1,
             ),
-
-            // =============================
-            //        Soal Tambahan
-            // =============================
 
             _buildQuestionCard(
               soal:
                   "Suhu air mula-mula 25°C. Setelah dipanaskan naik 15°C. Berapa suhu akhirnya?",
               opsi: ["30°C", "35°C", "40°C", "45°C"],
-              jawabanBenar: 2, // 40°C
-              jawabanUser: 1, // salah → 35°C
+              jawabanBenar: 2, 
+              jawabanUser: 1, 
             ),
 
             _buildQuestionCard(
               soal: "Planet manakah yang merupakan pusat tata surya?",
               opsi: ["Bumi", "Matahari", "Mars", "Jupiter"],
               jawabanBenar: 1,
-              jawabanUser: 0, // salah → Bumi
+              jawabanUser: 0, 
             ),
 
             _buildQuestionCard(
               soal: "Makhluk hidup yang bernapas menggunakan insang adalah...",
               opsi: ["Kucing", "Burung", "Ikan", "Ular"],
               jawabanBenar: 2,
-              jawabanUser: 3, // salah → Ular
+              jawabanUser: 3, 
             ),
 
             const SizedBox(height: 40),
@@ -157,10 +149,6 @@ class _TestResultSainsState extends State<TestResultSains> {
       ),
     );
   }
-
-  // ============================================================
-  //                       WIDGET SOAL
-  // ============================================================
 
   Widget _buildQuestionCard({
     required String soal,
@@ -194,7 +182,6 @@ class _TestResultSainsState extends State<TestResultSains> {
           ),
           const SizedBox(height: 16),
 
-          // LIST OPSI
           for (int i = 0; i < opsi.length; i++)
             _buildAnswerOption(
               opsi[i],
@@ -206,10 +193,6 @@ class _TestResultSainsState extends State<TestResultSains> {
     );
   }
 
-  // ============================================================
-  //                     WIDGET OPSI JAWABAN
-  // ============================================================
-
   Widget _buildAnswerOption(
     String text, {
     required bool isCorrect,
@@ -218,9 +201,9 @@ class _TestResultSainsState extends State<TestResultSains> {
     Color dotColor = Colors.grey.shade300;
 
     if (isCorrect) {
-      dotColor = Colors.green; // Jawaban benar
+      dotColor = Colors.green; 
     } else if (isUserAnswer && !isCorrect) {
-      dotColor = Colors.red; // Jawaban user yang salah
+      dotColor = Colors.red; 
     }
 
     return Container(

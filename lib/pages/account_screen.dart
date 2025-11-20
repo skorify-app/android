@@ -61,7 +61,7 @@ class _SettingPageState extends State<AccountScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: Color(0xFFF5F6F8),
       appBar: TopBar(),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),

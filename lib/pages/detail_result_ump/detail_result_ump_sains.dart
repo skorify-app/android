@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:skorify/components/misc/bottom_navbar.dart';
 import 'package:skorify/components/misc/top_bar.dart';
 
-class DetailResultUmp extends StatefulWidget {
-  const DetailResultUmp({super.key});
+class DetailResultUmpSains extends StatefulWidget {
+  const DetailResultUmpSains({super.key});
 
   @override
-  State<DetailResultUmp> createState() => DetailResultUmpState();
+  State<DetailResultUmpSains> createState() => DetailResultUmpSainsState();
 }
 
-class DetailResultUmpState extends State<DetailResultUmp> {
+class DetailResultUmpSainsState extends State<DetailResultUmpSains> {
   int _selectedNavbarIndex = 1;
 
   void _onItemTapped(int index) {
@@ -27,21 +27,19 @@ class DetailResultUmpState extends State<DetailResultUmp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffF4F6FA),
+      backgroundColor: const Color(0xFFF5F6F8),
       appBar: TopBar(),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // HEADER
             Container(
               padding: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // BACK BUTTON
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, '/activity');
+                      Navigator.pushNamed(context, '/test_result_ump');
                     },
                     child: Container(
                       width: 34,
@@ -60,7 +58,7 @@ class DetailResultUmpState extends State<DetailResultUmp> {
                   const SizedBox(height: 20),
 
                   const Text(
-                    "Matematika",
+                    "Sains",
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
@@ -70,7 +68,7 @@ class DetailResultUmpState extends State<DetailResultUmp> {
                   const SizedBox(height: 4),
 
                   const Text(
-                    "Skor 358",
+                    "Skor 387",
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
@@ -80,28 +78,27 @@ class DetailResultUmpState extends State<DetailResultUmp> {
 
                   const SizedBox(height: 8),
 
-                  // STATISTIK
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      _buildStatItem("Benar", 15),
+                      _buildStatItem("Benar", 20),
                       const SizedBox(width: 20),
-                      _buildStatItem("Salah", 15),
+                      _buildStatItem("Salah", 13),
                       const SizedBox(width: 20),
-                      _buildStatItem("Kosong", 5),
+                      _buildStatItem("Kosong", 2),
                     ],
                   ),
                 ],
               ),
             ),
 
-            // LIST SOAL
+            // SOAL
             _buildQuestionCard(
               soal:
                   "Usia Ayah 3 kali usia Budi. Jika 5 tahun yang akan datang jumlah usia mereka adalah 80 tahun, maka usia Budi sekarang adalah ... ",
               options: ["15 Tahun", "16 Tahun", "17 Tahun", "18 Tahun"],
               correctIndex: 1,
-              userAnswer: 1, // benar
+              userAnswer: 1,
             ),
 
             _buildQuestionCard(
@@ -109,7 +106,7 @@ class DetailResultUmpState extends State<DetailResultUmp> {
                   "Usia Ayah 3 kali usia Budi. Jika 5 tahun yang akan datang jumlah usia mereka adalah 80 tahun, maka usia Budi sekarang adalah ... ",
               options: ["15 Tahun", "16 Tahun", "17 Tahun", "18 Tahun"],
               correctIndex: 0,
-              userAnswer: 2, // salah
+              userAnswer: 2,
             ),
 
             _buildQuestionCard(
@@ -117,7 +114,7 @@ class DetailResultUmpState extends State<DetailResultUmp> {
                   "Usia Ayah 3 kali usia Budi. Jika 5 tahun yang akan datang jumlah usia mereka adalah 80 tahun, maka usia Budi sekarang adalah ... ",
               options: ["15 Tahun", "16 Tahun", "17 Tahun", "18 Tahun"],
               correctIndex: 3,
-              userAnswer: -1, // kosong
+              userAnswer: -1,
             ),
 
             const SizedBox(height: 40),
@@ -125,7 +122,6 @@ class DetailResultUmpState extends State<DetailResultUmp> {
         ),
       ),
 
-      // BOTTOM NAVIGATION
       bottomNavigationBar: BottomNavbar(
         index: _selectedNavbarIndex,
         onTap: _onItemTapped,
@@ -133,7 +129,6 @@ class DetailResultUmpState extends State<DetailResultUmp> {
     );
   }
 
-  // Widget statistik
   Widget _buildStatItem(String label, int value) {
     return Row(
       children: [
@@ -155,7 +150,6 @@ class DetailResultUmpState extends State<DetailResultUmp> {
     );
   }
 
-  // Card Soal
   Widget _buildQuestionCard({
     required String soal,
     required List<String> options,
@@ -189,19 +183,16 @@ class DetailResultUmpState extends State<DetailResultUmp> {
           ),
           const SizedBox(height: 12),
 
-          // OPTIONS
           Column(
             children: List.generate(options.length, (index) {
               Color dotColor = Colors.grey.shade300;
 
-              // JAWABAN BENAR
               if (index == correctIndex) {
-                dotColor = const Color(0xFF4ADE80); // hijau
+                dotColor = const Color(0xFF4ADE80); 
               }
 
-              // JAWABAN USER SALAH
               if (userAnswer == index && userAnswer != correctIndex) {
-                dotColor = const Color(0xFFEF4444); // merah
+                dotColor = const Color(0xFFEF4444); 
               }
 
               return Padding(

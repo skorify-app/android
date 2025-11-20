@@ -45,13 +45,11 @@ class _TappableCardState extends State<TappableCard>
     super.dispose();
   }
 
-  // Aksi saat disentuh
   void _onTapDown(TapDownDetails details) {
     _controller.forward();
     HapticFeedback.lightImpact();
   }
 
-  // Aksi saat dilepas
   void _onTapUp(TapUpDetails details) {
     _controller.reverse();
     widget.onTap();
@@ -90,7 +88,6 @@ class HomePages extends StatefulWidget {
 class _HomePagesState extends State<HomePages> {
   int _selectedNavbarIndex = 0;
 
-  // FUNGSI BOTTOM NAV BAR
   void _onItemTapped(int index) {
     setState(() {
       _selectedNavbarIndex = index;
@@ -103,7 +100,6 @@ class _HomePagesState extends State<HomePages> {
     }
   }
 
-  // Dialog Detail Subtes
   void _showSubtestDialog(BuildContext context, String title) {
     showGeneralDialog(
       context: context,
@@ -120,7 +116,7 @@ class _HomePagesState extends State<HomePages> {
               curve: Curves.easeOutBack,
             ),
             child: Dialog(
-              backgroundColor: Colors.white,
+              backgroundColor: const Color(0xFFF5F6F8),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
               ),
@@ -146,6 +142,7 @@ class _HomePagesState extends State<HomePages> {
                         color: const Color(0xFF001D39),
                       ),
                     ),
+
                     const SizedBox(height: 8),
                     Text(
                       "CBT Potensi Akademik, $title - #1\n20 Agustus 2024",
@@ -221,7 +218,6 @@ class _HomePagesState extends State<HomePages> {
     );
   }
 
-  // Helper baris detail
   Widget _buildDetailRow({
     required IconData icon,
     required String label,
@@ -249,7 +245,6 @@ class _HomePagesState extends State<HomePages> {
     );
   }
 
-  // Dialog Simulasi UMPB
   void _showSimulasiDialog(BuildContext context) {
     showGeneralDialog(
       context: context,
@@ -257,9 +252,7 @@ class _HomePagesState extends State<HomePages> {
       barrierDismissible: true,
       barrierColor: Colors.black54,
       transitionDuration: const Duration(milliseconds: 300),
-      pageBuilder: (context, animation1, animation2) {
-        return const SizedBox.shrink();
-      },
+      pageBuilder: (context, animation1, animation2) => const SizedBox.shrink(),
       transitionBuilder: (context, animation, secondaryAnimation, child) {
         final curvedValue = Curves.easeOutBack.transform(animation.value);
         return Transform.scale(
@@ -305,6 +298,7 @@ class _HomePagesState extends State<HomePages> {
                         ),
                       ),
                     ),
+
                     const SizedBox(height: 20),
                     Row(
                       children: [
@@ -316,13 +310,12 @@ class _HomePagesState extends State<HomePages> {
                         ),
                       ],
                     ),
+
                     const SizedBox(height: 6),
                     Row(
                       children: [
-                        const Icon(
-                          Icons.list_alt_rounded,
-                          color: Color(0xFF002855),
-                        ),
+                        const Icon(Icons.list_alt_rounded,
+                            color: Color(0xFF002855)),
                         const SizedBox(width: 8),
                         Text(
                           "Total soal: 125 soal",
@@ -330,20 +323,14 @@ class _HomePagesState extends State<HomePages> {
                         ),
                       ],
                     ),
+
                     const Divider(height: 30, thickness: 1),
                     _buildTimelineItem("Matematika", "30 menit", "25 soal"),
                     _buildTimelineItem("Sains", "30 menit", "25 soal"),
-                    _buildTimelineItem(
-                      "Computational thinking",
-                      "30 menit",
-                      "25 soal",
-                    ),
+                    _buildTimelineItem("Computational thinking", "30 menit", "25 soal"),
                     _buildTimelineItem("Bahasa Inggris", "30 menit", "25 soal"),
-                    _buildTimelineItem(
-                      "Bahasa Indonesia",
-                      "30 menit",
-                      "25 soal",
-                    ),
+                    _buildTimelineItem("Bahasa Indonesia", "30 menit", "25 soal"),
+
                     const SizedBox(height: 20),
                     SizedBox(
                       width: double.infinity,
@@ -385,7 +372,6 @@ class _HomePagesState extends State<HomePages> {
     );
   }
 
-  // Item timeline
   Widget _buildTimelineItem(String title, String waktu, String soal) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -421,32 +407,22 @@ class _HomePagesState extends State<HomePages> {
                 const SizedBox(height: 4),
                 Row(
                   children: [
-                    const Icon(
-                      Icons.timer_outlined,
-                      size: 14,
-                      color: Colors.black54,
-                    ),
+                    const Icon(Icons.timer_outlined,
+                        size: 14, color: Colors.black54),
                     const SizedBox(width: 4),
                     Text(
                       waktu,
                       style: GoogleFonts.inter(
-                        fontSize: 12,
-                        color: Colors.black54,
-                      ),
+                          fontSize: 12, color: Colors.black54),
                     ),
                     const SizedBox(width: 12),
-                    const Icon(
-                      Icons.article_outlined,
-                      size: 14,
-                      color: Colors.black54,
-                    ),
+                    const Icon(Icons.article_outlined,
+                        size: 14, color: Colors.black54),
                     const SizedBox(width: 4),
                     Text(
                       soal,
                       style: GoogleFonts.inter(
-                        fontSize: 12,
-                        color: Colors.black54,
-                      ),
+                          fontSize: 12, color: Colors.black54),
                     ),
                   ],
                 ),
@@ -458,24 +434,23 @@ class _HomePagesState extends State<HomePages> {
     );
   }
 
-  // Subtest Card dengan TappableCard
   Widget _buildSubtestCard(String imagePath, String title) {
     return TappableCard(
       onTap: () => _showSubtestDialog(context, title),
       scaleDown: 0.95,
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          color: const Color(0xFFE7F0FB),
+          borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 4,
+              color: Colors.black.withOpacity(0.07),
+              blurRadius: 6,
               offset: const Offset(2, 3),
             ),
           ],
         ),
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(18),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -483,7 +458,7 @@ class _HomePagesState extends State<HomePages> {
               height: 70,
               width: 70,
               decoration: BoxDecoration(
-                color: const Color(0xFFE7F0FB),
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Padding(
@@ -491,14 +466,14 @@ class _HomePagesState extends State<HomePages> {
                 child: Image.asset(imagePath, fit: BoxFit.contain),
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 10),
             Text(
               title,
               textAlign: TextAlign.center,
               style: GoogleFonts.inter(
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
-                color: const Color(0xFF002855),
+                color: const Color(0xFF001D39),
               ),
             ),
           ],
@@ -507,7 +482,77 @@ class _HomePagesState extends State<HomePages> {
     );
   }
 
-  // Build
+  // CARD SIMULASI UMPB — REPLACED WITH NEW DESIGN
+  Widget _buildSimulasiCard() {
+    return TappableCard(
+      onTap: () => _showSimulasiDialog(context),
+      scaleDown: 0.98,
+      child: Container(
+        padding: const EdgeInsets.all(18),
+        decoration: BoxDecoration(
+          color: const Color(0xFFE7F0FB), // FULL BIRU MUDA
+          borderRadius: BorderRadius.circular(18),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 6,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            /// ICON PUTIH DENGAN ROUNDED
+            Container(
+              width: 70,
+              height: 70,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Image.asset(
+                  'assets/images/UMPB.png',
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
+
+            const SizedBox(width: 14),
+
+            /// TEXT SEBELAH KANAN
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Simulasi Ujian Mandiri Polibatam (UMPB)",
+                    style: GoogleFonts.inter(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFF001D39),
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    "Uji dan asah pengetahuanmu dengan latihan simulasi UMP sungguhan!",
+                    style: GoogleFonts.inter(
+                      fontSize: 13,
+                      height: 1.3,
+                      color: const Color(0xFF001D39),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -538,7 +583,6 @@ class _HomePagesState extends State<HomePages> {
         ),
       ),
 
-      // Body
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -562,66 +606,8 @@ class _HomePagesState extends State<HomePages> {
             ),
             const SizedBox(height: 20),
 
-            // KARTU SIMULASI UMPB DENGAN TappableCard
-            TappableCard(
-              onTap: () => _showSimulasiDialog(context),
-              scaleDown: 0.99,
-              child: Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 4,
-                      offset: const Offset(2, 3),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 60,
-                      height: 60,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFE7F0FB),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Image.asset(
-                        'assets/images/UMPB.png',
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Simulasi Ujian Mandiri Polibatam (UMPB)",
-                            style: GoogleFonts.inter(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: const Color(0xFF001D39),
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            "Uji dan asah pengetahuanmu dengan latihan simulasi UMP sungguhan!",
-                            style: GoogleFonts.inter(
-                              fontSize: 13,
-                              color: const Color(0xFF001D39),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            // SIMULASI CARD (REPLACED)
+            _buildSimulasiCard(),
 
             const SizedBox(height: 24),
             Text(
@@ -634,36 +620,25 @@ class _HomePagesState extends State<HomePages> {
             ),
             const SizedBox(height: 16),
 
-            // Grid Subtes
             GridView.count(
               crossAxisCount: 2,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 12,
+              crossAxisSpacing: 16,
+              mainAxisSpacing: 16,
               childAspectRatio: 1.1,
               children: [
                 _buildSubtestCard('assets/images/sains.png', "Sains"),
                 _buildSubtestCard('assets/images/matematika.png', "Matematika"),
-                _buildSubtestCard(
-                  'assets/images/computer.png',
-                  "Computational thinking",
-                ),
-                _buildSubtestCard(
-                  'assets/images/inggris.png',
-                  "Bahasa Inggris",
-                ),
-                _buildSubtestCard(
-                  'assets/images/indonesia.png',
-                  "Bahasa Indonesia",
-                ),
+                _buildSubtestCard('assets/images/computer.png', "Computational thinking"),
+                _buildSubtestCard('assets/images/inggris.png', "Bahasa Inggris"),
+                _buildSubtestCard('assets/images/indonesia.png', "Bahasa Indonesia"),
               ],
             ),
           ],
         ),
       ),
 
-      // Bottom NavBar
       bottomNavigationBar: BottomNavbar(
         index: _selectedNavbarIndex,
         onTap: _onItemTapped,

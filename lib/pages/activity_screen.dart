@@ -28,12 +28,17 @@ class _ActivityScreenState extends State<ActivityScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFFF5F6F8),
       appBar: TopBar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
+            Text(
+              'Hasil Tes CBT Potensi Akademik',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 16),
             TextField(
               decoration: InputDecoration(
                 hintText: 'Cari disini',
@@ -41,85 +46,180 @@ class _ActivityScreenState extends State<ActivityScreen> {
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
               ),
             ),
-            SizedBox(height: 16),
-            Text(
-              'Hasil tes CBT Potensi akademik',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
             SizedBox(height: 8),
 
-            // ============================
             // UMP
-            // ============================
             ExpansionTile(
-              title: Text('Simulasi Ujian Mandiri Polibatam (UMP)'),
+              title: Text(
+                'Simulasi Ujian Mandiri Polibatam (UMP)',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               shape: Border(),
               collapsedShape: Border(),
               children: [
                 _buildStyledCard(
                   title: 'Simulasi Ujian Mandiri Polibatam (UMP)',
-                  subtitle: 'Simulasi Ujian Mandiri Polibatam (UMP) - #1\n20 Agustus 2024',
+                  subtitle: RichText(
+                    text: TextSpan(
+                      style: TextStyle(color: Colors.grey[700], fontSize: 14),
+                      children: [
+                        TextSpan(
+                          text: 'Simulasi Ujian Mandiri Polibatam (UMP) - #1\n20 Agustus 2024',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
                   benar: 55,
                   salah: 45,
-                  kosong: 10,
+                  kosong: 0,
                   type: "UMP",
                 ),
               ],
             ),
 
-            // ============================
             // SAINS
-            // ============================
             ExpansionTile(
-              title: Text('CBT Potensi akademik - sains'),
+              title: Text(
+                'CBT - Sains',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               shape: Border(),
               collapsedShape: Border(),
               children: [
                 _buildStyledCard(
-                  title: 'CBT Sains',
-                  subtitle: 'CBT Sains - #1\n10 Juli 2024',
+                  title: 'CBT Potensi Akademik - Sains',
+                  subtitle: RichText(
+                    text: TextSpan(
+                      style: TextStyle(color: Colors.grey[700], fontSize: 14),
+                      children: [
+                        TextSpan(
+                          text: 'CBT Potensi Akademik, Sains - #1\n10 Juli 2024',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
                   benar: 50,
-                  salah: 30,
+                  salah: 40,
                   kosong: 10,
-                  type: "SAINS",
+                  type: "Sains",
                 ),
               ],
             ),
 
-            // ============================
-            // MATEMATIKA
-            // ============================
             ExpansionTile(
-              title: Text('CBT Potensi akademik - matematika'),
+              title: Text(
+                'CBT - Matematika',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               shape: Border(),
               collapsedShape: Border(),
               children: [
                 _buildStyledCard(
-                  title: 'CBT Matematika',
-                  subtitle: 'CBT Matematika - #1\n5 Juli 2024',
-                  benar: 40,
+                  title: 'CBT Potensi Akademik - Matematika',
+                  subtitle: RichText(
+                    text: TextSpan(
+                      style: TextStyle(color: Colors.grey[700], fontSize: 14),
+                      children: [
+                        TextSpan(
+                          text: 'CBT Potensi Akademik, Matematika - #1\n5 Juli 2024',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                  benar: 50,
                   salah: 35,
                   kosong: 15,
-                  type: "MATEMATIKA",
+                  type: "Matematika",
                 ),
               ],
             ),
 
-            // ============================
-            // COMPUTATIONAL THINKING
-            // ============================
             ExpansionTile(
-              title: Text('CBT Potensi akademik - computational thinking'),
+              title: Text(
+                'CBT - Computational Thinking',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               shape: Border(),
               collapsedShape: Border(),
               children: [
                 _buildStyledCard(
-                  title: 'CBT Computational Thinking',
-                  subtitle: 'CBT Computational Thinking - #1\n2 Juli 2024',
-                  benar: 45,
-                  salah: 30,
-                  kosong: 15,
+                  title: 'CBT Potensi Akademik Computational Thinking',
+                  subtitle: RichText(
+                    text: TextSpan(
+                      style: TextStyle(color: Colors.grey[700], fontSize: 14),
+                      children: [
+                        TextSpan(
+                          text: 'CBT Potensi Akademik, Computational Thinking - #1\n10 Juni 2024',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                  benar: 80,
+                  salah: 10,
+                  kosong: 10,
                   type: "CT",
+                ),
+              ],
+            ),
+
+            ExpansionTile(
+              title: Text(
+                'CBT - Bahasa Inggris',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              shape: Border(),
+              collapsedShape: Border(),
+              children: [
+                _buildStyledCard(
+                  title: 'CBT Potensi Akademik Bahasa Inggris',
+                  subtitle: RichText(
+                    text: TextSpan(
+                      style: TextStyle(color: Colors.grey[700], fontSize: 14),
+                      children: [
+                        TextSpan(
+                          text: 'CBT Potensi Akademik, Bahasa Inggris - #1\n11 Juni 2024',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                  benar: 60,
+                  salah: 30,
+                  kosong: 10,
+                  type: "Inggris",
+                ),
+              ],
+            ),
+
+            ExpansionTile(
+              title: Text(
+                'CBT - Bahasa Indonesia',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              shape: Border(),
+              collapsedShape: Border(),
+              children: [
+                _buildStyledCard(
+                  title: 'CBT Potensi Akademik Bahasa Indonesia',
+                  subtitle: RichText(
+                    text: TextSpan(
+                      style: TextStyle(color: Colors.grey[700], fontSize: 14),
+                      children: [
+                        TextSpan(
+                          text: 'CBT Potensi Akademik, Bahasa Indonesia - #1\n12 Juni 2024',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                  benar: 70,
+                  salah: 30,
+                  kosong: 0,
+                  type: "Indonesia",
                 ),
               ],
             ),
@@ -134,13 +234,9 @@ class _ActivityScreenState extends State<ActivityScreen> {
     );
   }
 
-  // ===============================================================
-  // CARD BUILDER
-  // SEKARANG SUDAH PUNYA PARAMETER TYPE UNTUK PEMILIHAN HALAMAN
-  // ===============================================================
   Widget _buildStyledCard({
     required String title,
-    required String subtitle,
+    required Widget subtitle,   // ← DIGANTI MENJADI WIDGET
     required int benar,
     required int salah,
     required int kosong,
@@ -177,7 +273,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
           children: [
             Text(title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             SizedBox(height: 4),
-            Text(subtitle, style: TextStyle(fontSize: 14, color: Colors.grey[600])),
+
+            subtitle, // ← SEKARANG JADI WIDGET
             SizedBox(height: 16),
 
             PieChart(
@@ -216,14 +313,19 @@ class _ActivityScreenState extends State<ActivityScreen> {
               alignment: Alignment.centerRight,
               child: TextButton(
                 onPressed: () {
-                  // ============================================
-                  // ROUTING BERDASARKAN TIPE TES
-                  // ============================================
                   if (type == "UMP") {
                     Navigator.pushNamed(context, '/test_result_ump');
-                  } else if (type == "SAINS") {
+                  } else if (type == "Sains") {
                     Navigator.pushNamed(context, '/test_result_sains');
-                  } 
+                  } else if (type == "Matematika") {
+                    Navigator.pushNamed(context, '/test_result_mtk');
+                  } else if (type == "CT") {
+                    Navigator.pushNamed(context, '/test_result_ct');
+                  } else if (type == "Inggris") {
+                    Navigator.pushNamed(context, '/test_result_inggris');
+                  } else if (type == "Indonesia") {
+                    Navigator.pushNamed(context, '/test_result_indonesia');
+                  }
                 },
                 child: const Text('Lihat jawaban'),
               ),

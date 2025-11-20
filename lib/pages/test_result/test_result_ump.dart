@@ -27,7 +27,7 @@ class _TestResultUmpState extends State<TestResultUmp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffF4F6FA),
+      backgroundColor: const Color(0xFFF5F6F8),
       appBar: TopBar(),
       body: SingleChildScrollView(
         child: Column(
@@ -35,7 +35,7 @@ class _TestResultUmpState extends State<TestResultUmp> {
           children: [
             const SizedBox(height: 10),
 
-            // Back button
+            /// BACK BUTTON
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Align(
@@ -63,9 +63,9 @@ class _TestResultUmpState extends State<TestResultUmp> {
 
             const SizedBox(height: 20),
 
-            // Title
+            /// TITLE
             const Text(
-              "Hasil tes CBT Potensi akademik",
+              "Hasil Tes CBT Potensi Akademik",
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -75,7 +75,7 @@ class _TestResultUmpState extends State<TestResultUmp> {
 
             const SizedBox(height: 25),
 
-            // Skor label
+            /// LABEL SKOR
             Text(
               "SKOR",
               style: TextStyle(
@@ -85,9 +85,10 @@ class _TestResultUmpState extends State<TestResultUmp> {
                 letterSpacing: 2,
               ),
             ),
+
             const SizedBox(height: 5),
 
-            // Skor angka
+            /// NUMERIC SKOR
             const Text(
               "1000",
               style: TextStyle(
@@ -100,7 +101,7 @@ class _TestResultUmpState extends State<TestResultUmp> {
 
             const SizedBox(height: 10),
 
-            // Nama tes
+            /// TEST NAME
             const Text(
               "Simulasi Ujian Mandiri Polibatam (UMP) - #1",
               style: TextStyle(
@@ -113,7 +114,7 @@ class _TestResultUmpState extends State<TestResultUmp> {
 
             const SizedBox(height: 10),
 
-            // Statistik
+            /// SUMMARY ROW
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -127,7 +128,7 @@ class _TestResultUmpState extends State<TestResultUmp> {
 
             const SizedBox(height: 20),
 
-            // LESSON CARDS
+            /// SUBJECT CARDS
             _buildLessonCard(
               context,
               image: "assets/images/matematika.png",
@@ -190,9 +191,9 @@ class _TestResultUmpState extends State<TestResultUmp> {
     );
   }
 
-  // ======================
-  //      STAT ITEM
-  // ======================
+  /// ========================
+  /// STAT ITEM
+  /// ========================
   Widget _buildStatItem(String label, int value) {
     return Row(
       children: [
@@ -215,9 +216,9 @@ class _TestResultUmpState extends State<TestResultUmp> {
     );
   }
 
-  // ======================
-  //      LESSON CARD
-  // ======================
+  /// ========================
+  /// LESSON CARD (NEW STYLE)
+  /// ========================
   Widget _buildLessonCard(
     BuildContext context, {
     required String image,
@@ -229,9 +230,31 @@ class _TestResultUmpState extends State<TestResultUmp> {
   }) {
     return GestureDetector(
       onTap: () {
+        String route = '';
+
+        switch (title) {
+          case "Matematika":
+            route = '/detail_result_ump_mtk';
+            break;
+          case "Sains":
+            route = '/detail_result_ump_sains';
+            break;
+          case "Computational thinking":
+            route = '/detail_result_ump_ct';
+            break;
+          case "Bahasa Inggris":
+            route = '/detail_result_ump_inggris';
+            break;
+          case "Bahasa Indonesia":
+            route = '/detail_result_ump_indonesia';
+            break;
+          default:
+            route = '/detail_result_ump_mtk';
+        }
+
         Navigator.pushNamed(
           context,
-          '/detail_result_ump',
+          route,
           arguments: {
             "title": title,
             "skor": skor,
@@ -242,36 +265,33 @@ class _TestResultUmpState extends State<TestResultUmp> {
         );
       },
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 7),
-        padding: const EdgeInsets.all(16),
+        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(18),
+          color: const Color(0xFFE7F2FF), // biru muda
+          borderRadius: BorderRadius.circular(22),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.06),
+              color: Colors.black.withOpacity(0.05),
               blurRadius: 12,
-              offset: const Offset(0, 3),
+              offset: const Offset(0, 4),
             ),
           ],
         ),
         child: Row(
           children: [
             Container(
-              height: 55,
-              width: 55,
+              height: 60,
+              width: 60,
               decoration: BoxDecoration(
-                color: const Color(0xFFE0F2FE),
-                borderRadius: BorderRadius.circular(12),
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(18),
               ),
-              padding: const EdgeInsets.all(8),
-              child: Image.asset(
-                image,
-                fit: BoxFit.contain,
-              ),
+              padding: const EdgeInsets.all(10),
+              child: Image.asset(image, fit: BoxFit.contain),
             ),
 
-            const SizedBox(width: 15),
+            const SizedBox(width: 18),
 
             Expanded(
               child: Column(
@@ -280,17 +300,18 @@ class _TestResultUmpState extends State<TestResultUmp> {
                   Text(
                     title,
                     style: const TextStyle(
-                      fontSize: 16,
+                      fontSize: 17,
                       fontWeight: FontWeight.w700,
+                      color: Color(0xFF1F2937),
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 2),
                   Text(
                     "Skor $skor",
                     style: const TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xFF4B5563),
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF374151),
                     ),
                   ),
                   const SizedBox(height: 2),
@@ -298,7 +319,7 @@ class _TestResultUmpState extends State<TestResultUmp> {
                     "Benar : $benar   Salah : $salah   Kosong : $kosong",
                     style: TextStyle(
                       fontSize: 12,
-                      color: Colors.grey.shade600,
+                      color: Colors.grey.shade700,
                     ),
                   ),
                 ],
@@ -307,9 +328,9 @@ class _TestResultUmpState extends State<TestResultUmp> {
 
             Icon(
               Icons.chevron_right,
-              color: Colors.grey.shade400,
-              size: 24,
-            ),
+              color: Colors.grey.shade500,
+              size: 26,
+            )
           ],
         ),
       ),
