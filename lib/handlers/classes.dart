@@ -12,6 +12,13 @@ class StringAPIResult {
   StringAPIResult({required this.result, required this.success});
 }
 
+class EmptyAPIResult {
+  final String error;
+  final bool success;
+
+  EmptyAPIResult({required this.success, required this.error});
+}
+
 class QuestionAPIResult {
   final bool success;
   final List<Map<String, dynamic>> result;

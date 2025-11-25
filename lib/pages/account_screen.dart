@@ -8,6 +8,7 @@ import 'package:skorify/components/misc/bottom_navbar.dart';
 import 'package:skorify/components/misc/top_bar.dart';
 import 'package:skorify/handlers/api/account/info.dart';
 import 'package:skorify/handlers/api/account/logout.dart';
+import 'package:skorify/handlers/api/account/update.dart';
 import 'package:skorify/handlers/classes.dart';
 import 'package:skorify/handlers/secure_storage_service.dart';
 import 'package:skorify/pages/login_pages.dart';
@@ -138,11 +139,9 @@ class _SettingPageState extends State<AccountScreen> {
             child: ElevatedButton(
               style: popupStyle,
               onPressed: () {
-                setState(() {
-                  fullName = nameController.text;
-                });
+                _processUpdate('fullName', nameController.text);
                 Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
+                /*ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: const Text("Nama berhasil diperbarui!"),
                     behavior: SnackBarBehavior.floating,
@@ -151,7 +150,7 @@ class _SettingPageState extends State<AccountScreen> {
                     ),
                     margin: const EdgeInsets.all(16),
                   ),
-                );
+                );*/
               },
               child: popupButtonText,
             ),
@@ -274,6 +273,31 @@ class _SettingPageState extends State<AccountScreen> {
         );
       },
     );
+  }
+
+  void _processUpdate(String key, String value) async {
+    String sessionId = await _secureStorage.getSession() ?? '';
+
+    Map<String, String> data = {key: value};
+    EmptyAPIResult result = await update(sessionId, data);
+
+    if (result.success) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Berhasil mengubah $key.')));
+
+      setState(() {
+        fullName = value;
+      });
+    } else {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(result.error)));
+    }
   }
 
   void _processLogout() async {
