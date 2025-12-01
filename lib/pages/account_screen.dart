@@ -141,16 +141,6 @@ class _SettingPageState extends State<AccountScreen> {
               onPressed: () {
                 _processUpdate('fullName', nameController.text);
                 Navigator.pop(context);
-                /*ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: const Text("Nama berhasil diperbarui!"),
-                    behavior: SnackBarBehavior.floating,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    margin: const EdgeInsets.all(16),
-                  ),
-                );*/
               },
               child: popupButtonText,
             ),
@@ -173,7 +163,7 @@ class _SettingPageState extends State<AccountScreen> {
           keyboardType: TextInputType.emailAddress,
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
-            hintText: "Masukkan email (contoh: user@gmail.com)",
+            hintText: "Masukkan email",
           ),
         ),
         actions: [
@@ -181,20 +171,8 @@ class _SettingPageState extends State<AccountScreen> {
             child: ElevatedButton(
               style: popupStyle,
               onPressed: () {
-                setState(() {
-                  email = emailController.text;
-                });
+                _processUpdate('email', emailController.text);
                 Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: const Text("Email berhasil diperbarui!"),
-                    behavior: SnackBarBehavior.floating,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    margin: const EdgeInsets.all(16),
-                  ),
-                );
               },
               child: popupButtonText,
             ),
@@ -224,6 +202,7 @@ class _SettingPageState extends State<AccountScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ChangePasswordField(
+                    label: 'Kata sandi sekarang',
                     currentPassController: currentPassController,
                     obscureCurrent: obscureCurrent,
                     onPressed: () {
@@ -235,6 +214,7 @@ class _SettingPageState extends State<AccountScreen> {
 
                   const SizedBox(height: 12),
                   ChangePasswordField(
+                    label: 'Kata sandi baru',
                     currentPassController: newPassController,
                     obscureCurrent: obscureNew,
                     onPressed: () {
@@ -250,19 +230,12 @@ class _SettingPageState extends State<AccountScreen> {
                   child: ElevatedButton(
                     style: popupStyle,
                     onPressed: () {
-                      Navigator.pop(context);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: const Text(
-                            "Kata sandi berhasil diperbarui!",
-                          ),
-                          behavior: SnackBarBehavior.floating,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          margin: const EdgeInsets.all(16),
-                        ),
+                      _processUpdate(
+                        'currentPassword',
+                        currentPassController.text,
+                        newPassword: newPassController.text,
                       );
+                      Navigator.pop(context);
                     },
                     child: popupButtonText,
                   ),
@@ -275,22 +248,38 @@ class _SettingPageState extends State<AccountScreen> {
     );
   }
 
-  void _processUpdate(String key, String value) async {
+  void _processUpdate(String key, String value, {String? newPassword}) async {
     String sessionId = await _secureStorage.getSession() ?? '';
 
     Map<String, String> data = {key: value};
+
+    if (newPassword != null && newPassword.isNotEmpty) {
+      data = {'currentPassword': value, 'newPassword': newPassword};
+    }
+
     EmptyAPIResult result = await update(sessionId, data);
 
     if (result.success) {
       if (!mounted) return;
 
+      String keyName = '';
+      if (key == 'fullName') {
+        keyName = 'nama lengkap';
+        setState(() {
+          fullName = value;
+        });
+      } else if (key == 'email') {
+        keyName = 'alamat email';
+        setState(() {
+          email = value;
+        });
+      } else {
+        keyName = 'kata sandi';
+      }
+
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('Berhasil mengubah $key.')));
-
-      setState(() {
-        fullName = value;
-      });
+      ).showSnackBar(SnackBar(content: Text('Berhasil mengubah $keyName.')));
     } else {
       if (!mounted) return;
 
