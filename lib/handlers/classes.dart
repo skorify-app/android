@@ -26,6 +26,13 @@ class QuestionAPIResult {
   QuestionAPIResult({required this.success, required this.result});
 }
 
+class SubstestListAPIResult {
+  final bool success;
+  final List<Map<String, dynamic>> subtests;
+
+  SubstestListAPIResult({required this.subtests, required this.success});
+}
+
 class QuestionData {
   final int id;
   final String text;
@@ -39,4 +46,12 @@ class Questions {
   final List<QuestionData> questions;
 
   Questions({required this.subtestId, required this.questions});
+}
+
+class Subtest {
+  final int id;
+  final String name;
+  final String imageName;
+
+  Subtest({required this.id, required this.name, required this.imageName});
 }
