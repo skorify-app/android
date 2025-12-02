@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:skorify/handlers/api/account/register.dart';
 import 'package:skorify/handlers/classes.dart';
 import 'package:skorify/handlers/secure_storage_service.dart';
-import 'package:skorify/pages/homepage.dart';
 
 class RegisterPages extends StatefulWidget {
   const RegisterPages({super.key});
