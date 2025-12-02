@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:skorify/components/misc/bottom_navbar.dart';
+import 'package:skorify/handlers/api/session/validate.dart';
+import 'package:skorify/handlers/classes.dart';
+import 'package:skorify/handlers/secure_storage_service.dart';
 import 'questions_screen.dart';
 
 class TappableCard extends StatefulWidget {
@@ -86,7 +89,36 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final SecureStorageService _secureStorage = getStorage();
+
   int _selectedNavbarIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkSessionValidation();
+
+    _fetchSubtestList();
+  }
+
+  void _checkSessionValidation() async {
+    String sessionId = await _secureStorage.get('session') ?? '';
+    EmptyAPIResult result = await validateSession(sessionId);
+    if (!result.success && result.error == 'INVALID') {
+      _secureStorage.delete('session');
+
+      if (!mounted) return;
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        '/onboarding_page',
+        (Route<dynamic> route) => false,
+      );
+    }
+  }
+
+  void _fetchSubtestList() async {
+    //
+  }
 
   void _onItemTapped(int index) {
     setState(() {

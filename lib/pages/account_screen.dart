@@ -43,11 +43,19 @@ class _SettingPageState extends State<AccountScreen> {
       return;
     }
 
+    String? savedFullName = await _secureStorage.get('fullName') ?? '';
+    String? savedEmail = await _secureStorage.get('email') ?? '';
+    String? savedRole = await _secureStorage.get('role') ?? '';
+
+    setState(() {
+      fullName = savedFullName;
+      email = savedEmail;
+      role = savedRole;
+    });
+
     DefaultAPIResult account = await getAccountInfo(sessionId);
     if (account.success) {
       String resFullName = account.result['full_name'];
-      String? savedFullName = await _secureStorage.get('fullName');
-
       // If the full name is updated
       if (resFullName != savedFullName) {
         await _secureStorage.set('fullName', resFullName);
@@ -57,8 +65,6 @@ class _SettingPageState extends State<AccountScreen> {
       }
 
       String resEmail = account.result['email'];
-      String? savedEmail = await _secureStorage.get('email');
-
       if (resEmail != savedEmail) {
         await _secureStorage.set('email', resEmail);
         setState(() {
@@ -67,8 +73,6 @@ class _SettingPageState extends State<AccountScreen> {
       }
 
       String resRole = account.result['role'];
-      String? savedRole = await _secureStorage.get('role');
-
       if (resRole != savedRole) {
         await _secureStorage.set('role', resRole);
         setState(() {
@@ -288,7 +292,7 @@ class _SettingPageState extends State<AccountScreen> {
       if (label == 'fullName') {
         labelName = 'nama lengkap';
         String dataResult = data['fullName'] ?? '';
-        _secureStorage.set('full_name', dataResult);
+        _secureStorage.set('fullName', dataResult);
 
         setState(() {
           fullName = dataResult;
