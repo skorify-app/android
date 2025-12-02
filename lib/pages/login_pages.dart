@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:skorify/handlers/api/account/login.dart';
 import 'package:skorify/handlers/classes.dart';
 import 'package:skorify/handlers/secure_storage_service.dart';
-import 'homepage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
