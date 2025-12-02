@@ -19,7 +19,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
     });
 
     if (index == 0) {
-      Navigator.pushNamed(context, '/homepages');
+      Navigator.pushNamed(context, '/homepage');
     } else if (index == 2) {
       Navigator.pushNamed(context, '/account');
     }
@@ -43,7 +43,9 @@ class _ActivityScreenState extends State<ActivityScreen> {
               decoration: InputDecoration(
                 hintText: 'Cari disini',
                 prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
             ),
             SizedBox(height: 8),
@@ -64,7 +66,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
                       style: TextStyle(color: Colors.grey[700], fontSize: 14),
                       children: [
                         TextSpan(
-                          text: 'Simulasi Ujian Mandiri Polibatam (UMP) - #1\n20 Agustus 2024',
+                          text:
+                              'Simulasi Ujian Mandiri Polibatam (UMP) - #1\n20 Agustus 2024',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -94,7 +97,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
                       style: TextStyle(color: Colors.grey[700], fontSize: 14),
                       children: [
                         TextSpan(
-                          text: 'CBT Potensi Akademik, Sains - #1\n10 Juli 2024',
+                          text:
+                              'CBT Potensi Akademik, Sains - #1\n10 Juli 2024',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -123,7 +127,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
                       style: TextStyle(color: Colors.grey[700], fontSize: 14),
                       children: [
                         TextSpan(
-                          text: 'CBT Potensi Akademik, Matematika - #1\n5 Juli 2024',
+                          text:
+                              'CBT Potensi Akademik, Matematika - #1\n5 Juli 2024',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -152,7 +157,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
                       style: TextStyle(color: Colors.grey[700], fontSize: 14),
                       children: [
                         TextSpan(
-                          text: 'CBT Potensi Akademik, Computational Thinking - #1\n10 Juni 2024',
+                          text:
+                              'CBT Potensi Akademik, Computational Thinking - #1\n10 Juni 2024',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -181,7 +187,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
                       style: TextStyle(color: Colors.grey[700], fontSize: 14),
                       children: [
                         TextSpan(
-                          text: 'CBT Potensi Akademik, Bahasa Inggris - #1\n11 Juni 2024',
+                          text:
+                              'CBT Potensi Akademik, Bahasa Inggris - #1\n11 Juni 2024',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -210,7 +217,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
                       style: TextStyle(color: Colors.grey[700], fontSize: 14),
                       children: [
                         TextSpan(
-                          text: 'CBT Potensi Akademik, Bahasa Indonesia - #1\n12 Juni 2024',
+                          text:
+                              'CBT Potensi Akademik, Bahasa Indonesia - #1\n12 Juni 2024',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -236,7 +244,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
 
   Widget _buildStyledCard({
     required String title,
-    required Widget subtitle,   // ← DIGANTI MENJADI WIDGET
+    required Widget subtitle, // ← DIGANTI MENJADI WIDGET
     required int benar,
     required int salah,
     required int kosong,
@@ -253,10 +261,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Colors.grey.shade300,
-          width: 1,
-        ),
+        border: Border.all(color: Colors.grey.shade300, width: 1),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.08),
@@ -271,7 +276,10 @@ class _ActivityScreenState extends State<ActivityScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            Text(
+              title,
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
             SizedBox(height: 4),
 
             subtitle, // ← SEKARANG JADI WIDGET

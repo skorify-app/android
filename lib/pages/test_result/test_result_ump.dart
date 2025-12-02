@@ -18,7 +18,7 @@ class _TestResultUmpState extends State<TestResultUmp> {
     });
 
     if (index == 0) {
-      Navigator.pushNamed(context, '/homepages');
+      Navigator.pushNamed(context, '/homepage');
     } else if (index == 2) {
       Navigator.pushNamed(context, '/account');
     }
@@ -199,10 +199,7 @@ class _TestResultUmpState extends State<TestResultUmp> {
       children: [
         Text(
           "$label : ",
-          style: TextStyle(
-            fontSize: 13,
-            color: Colors.grey.shade600,
-          ),
+          style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
         ),
         Text(
           "$value",
@@ -317,20 +314,13 @@ class _TestResultUmpState extends State<TestResultUmp> {
                   const SizedBox(height: 2),
                   Text(
                     "Benar : $benar   Salah : $salah   Kosong : $kosong",
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey.shade700,
-                    ),
+                    style: TextStyle(fontSize: 12, color: Colors.grey.shade700),
                   ),
                 ],
               ),
             ),
 
-            Icon(
-              Icons.chevron_right,
-              color: Colors.grey.shade500,
-              size: 26,
-            )
+            Icon(Icons.chevron_right, color: Colors.grey.shade500, size: 26),
           ],
         ),
       ),

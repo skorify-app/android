@@ -18,7 +18,7 @@ class DetailResultUmpCtState extends State<DetailResultUmpCt> {
     });
 
     if (index == 0) {
-      Navigator.pushNamed(context, '/homepages');
+      Navigator.pushNamed(context, '/homepage');
     } else if (index == 2) {
       Navigator.pushNamed(context, '/account');
     }
@@ -134,17 +134,11 @@ class DetailResultUmpCtState extends State<DetailResultUmpCt> {
       children: [
         Text(
           '$label : ',
-          style: TextStyle(
-            fontSize: 13,
-            color: Colors.grey.shade600,
-          ),
+          style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
         ),
         Text(
           '$value',
-          style: const TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w600,
-          ),
+          style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
         ),
       ],
     );
@@ -168,7 +162,7 @@ class DetailResultUmpCtState extends State<DetailResultUmpCt> {
             color: Colors.black.withOpacity(0.06),
             blurRadius: 8,
             offset: const Offset(0, 3),
-          )
+          ),
         ],
       ),
       child: Column(
@@ -176,10 +170,7 @@ class DetailResultUmpCtState extends State<DetailResultUmpCt> {
         children: [
           Text(
             soal,
-            style: const TextStyle(
-              fontSize: 14,
-              color: Color(0xFF1F2937),
-            ),
+            style: const TextStyle(fontSize: 14, color: Color(0xFF1F2937)),
           ),
           const SizedBox(height: 12),
 
@@ -188,36 +179,38 @@ class DetailResultUmpCtState extends State<DetailResultUmpCt> {
               Color dotColor = Colors.grey.shade300;
 
               if (index == correctIndex) {
-                dotColor = const Color(0xFF4ADE80); 
+                dotColor = const Color(0xFF4ADE80);
               }
 
               if (userAnswer == index && userAnswer != correctIndex) {
-                dotColor = const Color(0xFFEF4444); 
+                dotColor = const Color(0xFFEF4444);
               }
 
               return Padding(
                 padding: const EdgeInsets.only(bottom: 10),
-                child: Row(children: [
-                  Container(
-                    width: 18,
-                    height: 18,
-                    decoration: BoxDecoration(
-                      color: dotColor,
-                      shape: BoxShape.circle,
+                child: Row(
+                  children: [
+                    Container(
+                      width: 18,
+                      height: 18,
+                      decoration: BoxDecoration(
+                        color: dotColor,
+                        shape: BoxShape.circle,
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    options[index],
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Color(0xFF374151),
+                    const SizedBox(width: 10),
+                    Text(
+                      options[index],
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Color(0xFF374151),
+                      ),
                     ),
-                  )
-                ]),
+                  ],
+                ),
               );
             }),
-          )
+          ),
         ],
       ),
     );
