@@ -27,6 +27,7 @@ class _SettingPageState extends State<AccountScreen> {
   var fullName = 'Loading...';
   var email = 'Loading...';
   var role = 'Loading...';
+  late String sessionId;
 
   @override
   void initState() {
@@ -35,15 +36,45 @@ class _SettingPageState extends State<AccountScreen> {
   }
 
   void _loadAccountInfo() async {
-    String sessionId = await _secureStorage.getSession() ?? '';
-    DefaultAPIResult account = await getAccountInfo(sessionId);
+    sessionId = await _secureStorage.get('session') ?? '';
+    if (sessionId.isEmpty) {
+      if (!mounted) return;
+      Navigator.pushNamed(context, '/homepage');
+      return;
+    }
 
+    DefaultAPIResult account = await getAccountInfo(sessionId);
     if (account.success) {
-      setState(() {
-        fullName = account.result['full_name'];
-        email = account.result['email'];
-        role = account.result['role'];
-      });
+      String resFullName = account.result['full_name'];
+      String? savedFullName = await _secureStorage.get('fullName');
+
+      // If the full name is updated
+      if (resFullName != savedFullName) {
+        await _secureStorage.set('fullName', resFullName);
+        setState(() {
+          fullName = resFullName;
+        });
+      }
+
+      String resEmail = account.result['email'];
+      String? savedEmail = await _secureStorage.get('email');
+
+      if (resEmail != savedEmail) {
+        await _secureStorage.set('email', resEmail);
+        setState(() {
+          email = resEmail;
+        });
+      }
+
+      String resRole = account.result['role'];
+      String? savedRole = await _secureStorage.get('role');
+
+      if (resRole != savedRole) {
+        await _secureStorage.set('role', resRole);
+        setState(() {
+          role = resRole;
+        });
+      }
     }
   }
 
@@ -53,7 +84,7 @@ class _SettingPageState extends State<AccountScreen> {
     });
 
     if (index == 0) {
-      Navigator.pushNamed(context, '/homepages');
+      Navigator.pushNamed(context, '/homepage');
     } else if (index == 1) {
       Navigator.pushNamed(context, '/activity');
     }
@@ -139,7 +170,7 @@ class _SettingPageState extends State<AccountScreen> {
             child: ElevatedButton(
               style: popupStyle,
               onPressed: () {
-                _processUpdate('fullName', nameController.text);
+                _processUpdate({'fullName': nameController.text}, 'fullName');
                 Navigator.pop(context);
               },
               child: popupButtonText,
@@ -171,7 +202,7 @@ class _SettingPageState extends State<AccountScreen> {
             child: ElevatedButton(
               style: popupStyle,
               onPressed: () {
-                _processUpdate('email', emailController.text);
+                _processUpdate({'email': emailController.text}, 'email');
                 Navigator.pop(context);
               },
               child: popupButtonText,
@@ -230,11 +261,10 @@ class _SettingPageState extends State<AccountScreen> {
                   child: ElevatedButton(
                     style: popupStyle,
                     onPressed: () {
-                      _processUpdate(
-                        'currentPassword',
-                        currentPassController.text,
-                        newPassword: newPassController.text,
-                      );
+                      _processUpdate({
+                        'currentPassword': currentPassController.text,
+                        'newPassword': newPassController.text,
+                      }, 'password');
                       Navigator.pop(context);
                     },
                     child: popupButtonText,
@@ -248,38 +278,36 @@ class _SettingPageState extends State<AccountScreen> {
     );
   }
 
-  void _processUpdate(String key, String value, {String? newPassword}) async {
-    String sessionId = await _secureStorage.getSession() ?? '';
-
-    Map<String, String> data = {key: value};
-
-    if (newPassword != null && newPassword.isNotEmpty) {
-      data = {'currentPassword': value, 'newPassword': newPassword};
-    }
-
+  void _processUpdate(Map<String, String> data, String label) async {
     EmptyAPIResult result = await update(sessionId, data);
 
     if (result.success) {
       if (!mounted) return;
 
-      String keyName = '';
-      if (key == 'fullName') {
-        keyName = 'nama lengkap';
+      String labelName = '';
+      if (label == 'fullName') {
+        labelName = 'nama lengkap';
+        String dataResult = data['fullName'] ?? '';
+        _secureStorage.set('full_name', dataResult);
+
         setState(() {
-          fullName = value;
+          fullName = dataResult;
         });
-      } else if (key == 'email') {
-        keyName = 'alamat email';
+      } else if (label == 'email') {
+        labelName = 'alamat email';
+        String dataResult = data['email'] ?? '';
+        _secureStorage.set('email', dataResult);
+
         setState(() {
-          email = value;
+          email = dataResult;
         });
-      } else {
-        keyName = 'kata sandi';
+      } else if (label == 'password') {
+        labelName = 'kata sandi';
       }
 
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('Berhasil mengubah $keyName.')));
+      ).showSnackBar(SnackBar(content: Text('Berhasil mengubah $labelName.')));
     } else {
       if (!mounted) return;
 
@@ -290,11 +318,10 @@ class _SettingPageState extends State<AccountScreen> {
   }
 
   void _processLogout() async {
-    String sessionId = await _secureStorage.getSession() ?? '';
     StringAPIResult result = await logout(sessionId);
 
     if (result.success) {
-      await _secureStorage.deleteSession();
+      await _secureStorage.delete('session');
       if (!mounted) return;
 
       ScaffoldMessenger.of(

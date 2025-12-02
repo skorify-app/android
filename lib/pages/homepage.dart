@@ -78,14 +78,14 @@ class _TappableCardState extends State<TappableCard>
   }
 }
 
-class HomePages extends StatefulWidget {
-  const HomePages({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<HomePages> createState() => _HomePagesState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePagesState extends State<HomePages> {
+class _HomePageState extends State<HomePage> {
   int _selectedNavbarIndex = 0;
 
   void _onItemTapped(int index) {
@@ -314,8 +314,10 @@ class _HomePagesState extends State<HomePages> {
                     const SizedBox(height: 6),
                     Row(
                       children: [
-                        const Icon(Icons.list_alt_rounded,
-                            color: Color(0xFF002855)),
+                        const Icon(
+                          Icons.list_alt_rounded,
+                          color: Color(0xFF002855),
+                        ),
                         const SizedBox(width: 8),
                         Text(
                           "Total soal: 125 soal",
@@ -327,9 +329,17 @@ class _HomePagesState extends State<HomePages> {
                     const Divider(height: 30, thickness: 1),
                     _buildTimelineItem("Matematika", "30 menit", "25 soal"),
                     _buildTimelineItem("Sains", "30 menit", "25 soal"),
-                    _buildTimelineItem("Computational thinking", "30 menit", "25 soal"),
+                    _buildTimelineItem(
+                      "Computational thinking",
+                      "30 menit",
+                      "25 soal",
+                    ),
                     _buildTimelineItem("Bahasa Inggris", "30 menit", "25 soal"),
-                    _buildTimelineItem("Bahasa Indonesia", "30 menit", "25 soal"),
+                    _buildTimelineItem(
+                      "Bahasa Indonesia",
+                      "30 menit",
+                      "25 soal",
+                    ),
 
                     const SizedBox(height: 20),
                     SizedBox(
@@ -407,22 +417,32 @@ class _HomePagesState extends State<HomePages> {
                 const SizedBox(height: 4),
                 Row(
                   children: [
-                    const Icon(Icons.timer_outlined,
-                        size: 14, color: Colors.black54),
+                    const Icon(
+                      Icons.timer_outlined,
+                      size: 14,
+                      color: Colors.black54,
+                    ),
                     const SizedBox(width: 4),
                     Text(
                       waktu,
                       style: GoogleFonts.inter(
-                          fontSize: 12, color: Colors.black54),
+                        fontSize: 12,
+                        color: Colors.black54,
+                      ),
                     ),
                     const SizedBox(width: 12),
-                    const Icon(Icons.article_outlined,
-                        size: 14, color: Colors.black54),
+                    const Icon(
+                      Icons.article_outlined,
+                      size: 14,
+                      color: Colors.black54,
+                    ),
                     const SizedBox(width: 4),
                     Text(
                       soal,
                       style: GoogleFonts.inter(
-                          fontSize: 12, color: Colors.black54),
+                        fontSize: 12,
+                        color: Colors.black54,
+                      ),
                     ),
                   ],
                 ),
@@ -630,9 +650,18 @@ class _HomePagesState extends State<HomePages> {
               children: [
                 _buildSubtestCard('assets/images/sains.png', "Sains"),
                 _buildSubtestCard('assets/images/matematika.png', "Matematika"),
-                _buildSubtestCard('assets/images/computer.png', "Computational thinking"),
-                _buildSubtestCard('assets/images/inggris.png', "Bahasa Inggris"),
-                _buildSubtestCard('assets/images/indonesia.png', "Bahasa Indonesia"),
+                _buildSubtestCard(
+                  'assets/images/computer.png',
+                  "Computational thinking",
+                ),
+                _buildSubtestCard(
+                  'assets/images/inggris.png',
+                  "Bahasa Inggris",
+                ),
+                _buildSubtestCard(
+                  'assets/images/indonesia.png',
+                  "Bahasa Indonesia",
+                ),
               ],
             ),
           ],

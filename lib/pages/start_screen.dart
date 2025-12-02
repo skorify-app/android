@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:skorify/handlers/secure_storage_service.dart';
 
-// This "screen" will show dashboard if user is already logged in
+// Screen ini akan menentukan halaman pertama yang user lihat.
+// Jika sudah masuk akun, maka akan langsung ke /homepage.
 class StartScreen extends StatelessWidget {
   const StartScreen({super.key});
 
@@ -13,16 +14,11 @@ class StartScreen extends StatelessWidget {
 
   void _sessionExist(BuildContext ctx) async {
     final SecureStorageService secureStorage = getStorage();
-    bool sessionExists = await secureStorage.getSession() != null;
+    String? sessionExists = await secureStorage.get('session');
 
     if (!ctx.mounted) return;
 
-    String path = '/onboarding_page';
-    if (sessionExists) {
-      path = '/homepages';
-    }
-
+    String path = sessionExists != null ? '/homepage' : '/onboarding_page';
     Navigator.pushReplacementNamed(ctx, path);
   }
 }
-

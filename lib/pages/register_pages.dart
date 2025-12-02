@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:skorify/handlers/api/account/register.dart';
 import 'package:skorify/handlers/classes.dart';
 import 'package:skorify/handlers/secure_storage_service.dart';
-import 'package:skorify/pages/homepages.dart';
+import 'package:skorify/pages/homepage.dart';
 
 class RegisterPages extends StatefulWidget {
   const RegisterPages({super.key});
@@ -37,7 +37,7 @@ class _RegisterPagesState extends State<RegisterPages> {
       });
 
       if (result.success) {
-        await _secureStorage.saveSession(result.result);
+        await _secureStorage.set('session', result.result);
 
         if (!mounted) return;
 
@@ -45,10 +45,7 @@ class _RegisterPagesState extends State<RegisterPages> {
           context,
         ).showSnackBar(const SnackBar(content: Text("Berhasil daftar akun!")));
 
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const HomePages()),
-        );
+        Navigator.pushReplacementNamed(context, '/homepage');
       } else {
         if (!mounted) return;
 

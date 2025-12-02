@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:skorify/handlers/api/account/login.dart';
 import 'package:skorify/handlers/classes.dart';
 import 'package:skorify/handlers/secure_storage_service.dart';
-import 'homepages.dart';
+import 'homepage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -34,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
       });
 
       if (result.success) {
-        await _secureStorage.saveSession(result.result);
+        await _secureStorage.set('session', result.result);
 
         if (!mounted) return;
 
@@ -42,10 +42,7 @@ class _LoginPageState extends State<LoginPage> {
           context,
         ).showSnackBar(const SnackBar(content: Text("Login berhasil!")));
 
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const HomePages()),
-        );
+        Navigator.pushReplacementNamed(context, '/homepage');
       } else {
         if (!mounted) return;
 

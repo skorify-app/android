@@ -18,7 +18,7 @@ class _TestResultSainsState extends State<TestResultSains> {
     });
 
     if (index == 0) {
-      Navigator.pushNamed(context, '/homepages');
+      Navigator.pushNamed(context, '/homepage');
     } else if (index == 2) {
       Navigator.pushNamed(context, '/account');
     }
@@ -47,7 +47,11 @@ class _TestResultSainsState extends State<TestResultSains> {
                           color: Color(0xFF1E293B),
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(Icons.arrow_back, color: Colors.white, size: 18),
+                        child: const Icon(
+                          Icons.arrow_back,
+                          color: Colors.white,
+                          size: 18,
+                        ),
                       ),
                     ),
                   ),
@@ -113,29 +117,29 @@ class _TestResultSainsState extends State<TestResultSains> {
                   "Usia Ayah 3 kali usia Budi. Jika 5 tahun yang akan datang jumlah usia mereka adalah 80 tahun, maka usia Budi sekarang adalah ...",
               opsi: ["15 Tahun", "16 Tahun", "17 Tahun", "18 Tahun"],
               jawabanBenar: 0,
-              jawabanUser: 1, 
+              jawabanUser: 1,
             ),
 
             _buildQuestionCard(
               soal:
                   "Suhu air mula-mula 25°C. Setelah dipanaskan naik 15°C. Berapa suhu akhirnya?",
               opsi: ["30°C", "35°C", "40°C", "45°C"],
-              jawabanBenar: 2, 
-              jawabanUser: 1, 
+              jawabanBenar: 2,
+              jawabanUser: 1,
             ),
 
             _buildQuestionCard(
               soal: "Planet manakah yang merupakan pusat tata surya?",
               opsi: ["Bumi", "Matahari", "Mars", "Jupiter"],
               jawabanBenar: 1,
-              jawabanUser: 0, 
+              jawabanUser: 0,
             ),
 
             _buildQuestionCard(
               soal: "Makhluk hidup yang bernapas menggunakan insang adalah...",
               opsi: ["Kucing", "Burung", "Ikan", "Ular"],
               jawabanBenar: 2,
-              jawabanUser: 3, 
+              jawabanUser: 3,
             ),
 
             const SizedBox(height: 40),
@@ -149,7 +153,6 @@ class _TestResultSainsState extends State<TestResultSains> {
       ),
     );
   }
-
 
   Widget _buildQuestionCard({
     required String soal,
@@ -165,9 +168,10 @@ class _TestResultSainsState extends State<TestResultSains> {
         borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
-              color: Colors.black.withOpacity(0.07),
-              blurRadius: 8,
-              offset: const Offset(0, 3))
+            color: Colors.black.withOpacity(0.07),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
+          ),
         ],
       ),
       child: Column(
@@ -201,9 +205,9 @@ class _TestResultSainsState extends State<TestResultSains> {
     Color dotColor = Colors.grey.shade300;
 
     if (isCorrect) {
-      dotColor = Colors.green; 
+      dotColor = Colors.green;
     } else if (isUserAnswer && !isCorrect) {
-      dotColor = Colors.red; 
+      dotColor = Colors.red;
     }
 
     return Container(
@@ -213,16 +217,10 @@ class _TestResultSainsState extends State<TestResultSains> {
           Container(
             width: 18,
             height: 18,
-            decoration: BoxDecoration(
-              color: dotColor,
-              shape: BoxShape.circle,
-            ),
+            decoration: BoxDecoration(color: dotColor, shape: BoxShape.circle),
           ),
           const SizedBox(width: 12),
-          Text(
-            text,
-            style: const TextStyle(fontSize: 15),
-          ),
+          Text(text, style: const TextStyle(fontSize: 15)),
         ],
       ),
     );
