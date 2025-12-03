@@ -326,6 +326,10 @@ class _SettingPageState extends State<AccountScreen> {
 
     if (result.success) {
       await _secureStorage.delete('session');
+      await _secureStorage.delete('fullName');
+      await _secureStorage.delete('email');
+      await _secureStorage.delete('role');
+
       if (!mounted) return;
 
       ScaffoldMessenger.of(
