@@ -5,6 +5,13 @@ class DefaultAPIResult {
   DefaultAPIResult({required this.result, required this.success});
 }
 
+class SubtestListAPIResult {
+  final List<Map<String, dynamic>> result;
+  final bool success;
+
+  SubtestListAPIResult({required this.result, required this.success});
+}
+
 class StringAPIResult {
   final String result;
   final bool success;
@@ -24,13 +31,6 @@ class QuestionAPIResult {
   final List<Map<String, dynamic>> result;
 
   QuestionAPIResult({required this.success, required this.result});
-}
-
-class SubstestListAPIResult {
-  final bool success;
-  final List<Map<String, dynamic>> subtests;
-
-  SubstestListAPIResult({required this.subtests, required this.success});
 }
 
 class QuestionData {

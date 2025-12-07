@@ -1,8 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:skorify/components/misc/bottom_navbar.dart';
+import 'package:skorify/components/misc/top_bar.dart';
 import 'package:skorify/handlers/api/session/validate.dart';
+import 'package:skorify/handlers/api/subtest/fetch_list.dart';
 import 'package:skorify/handlers/classes.dart';
 import 'package:skorify/handlers/secure_storage_service.dart';
 import 'questions_screen.dart';
@@ -92,17 +95,19 @@ class _HomePageState extends State<HomePage> {
   final SecureStorageService _secureStorage = getStorage();
 
   int _selectedNavbarIndex = 0;
+  late String sessionId;
+  late List<Map<String, dynamic>> subtests = [];
+  late List<Widget> _subtests = [];
 
   @override
   void initState() {
     super.initState();
     _checkSessionValidation();
-
     _fetchSubtestList();
   }
 
   void _checkSessionValidation() async {
-    String sessionId = await _secureStorage.get('session') ?? '';
+    sessionId = await _secureStorage.get('session') ?? '';
     EmptyAPIResult result = await validateSession(sessionId);
     if (!result.success && result.error == 'INVALID') {
       _secureStorage.delete('session');
@@ -117,7 +122,20 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _fetchSubtestList() async {
-    //
+    sessionId = await _secureStorage.get('session') ?? '';
+    SubtestListAPIResult subtestsResult = await fetchList(sessionId);
+    if (subtestsResult.success) subtests = subtestsResult.result;
+
+    setState(() {
+      _subtests = List.from(
+        subtests.map((subtest) {
+          return _buildSubtestCard(
+            subtest['subtest_image_name'],
+            subtest['subtest_name'],
+          );
+        }),
+      );
+    });
   }
 
   void _onItemTapped(int index) {
@@ -496,7 +514,7 @@ class _HomePageState extends State<HomePage> {
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.07),
+              color: Color.fromRGBO(0, 0, 0, 0.07),
               blurRadius: 6,
               offset: const Offset(2, 3),
             ),
@@ -515,7 +533,10 @@ class _HomePageState extends State<HomePage> {
               ),
               child: Padding(
                 padding: const EdgeInsets.all(10),
-                child: Image.asset(imagePath, fit: BoxFit.contain),
+                child: CachedNetworkImage(
+                  imageUrl:
+                      'https://skorify-web.hosea.dev/images/subtest/$imagePath',
+                ),
               ),
             ),
             const SizedBox(height: 10),
@@ -546,7 +567,7 @@ class _HomePageState extends State<HomePage> {
           borderRadius: BorderRadius.circular(18),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Color.fromRGBO(0, 0, 0, 0.05),
               blurRadius: 6,
               offset: const Offset(0, 3),
             ),
@@ -609,31 +630,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
-      appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16.0),
-          child: Image.asset('assets/images/logo.png', height: 20, width: 20),
-        ),
-        title: const Text(
-          "Skorify",
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-          ),
-        ),
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/images/home-background.png"),
-              fit: BoxFit.fitWidth,
-              alignment: Alignment.topCenter,
-            ),
-          ),
-        ),
-      ),
+      appBar: TopBar(),
 
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -679,8 +676,9 @@ class _HomePageState extends State<HomePage> {
               crossAxisSpacing: 16,
               mainAxisSpacing: 16,
               childAspectRatio: 1.1,
-              children: [
-                _buildSubtestCard('assets/images/sains.png', "Sains"),
+              children: _subtests,
+              /*
+              _buildSubtestCard('assets/images/sains.png', "Sains"),
                 _buildSubtestCard('assets/images/matematika.png', "Matematika"),
                 _buildSubtestCard(
                   'assets/images/computer.png',
@@ -694,7 +692,7 @@ class _HomePageState extends State<HomePage> {
                   'assets/images/indonesia.png',
                   "Bahasa Indonesia",
                 ),
-              ],
+                */
             ),
           ],
         ),

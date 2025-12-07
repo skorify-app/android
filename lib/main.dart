@@ -44,8 +44,8 @@ class MyApp extends StatelessWidget {
           settings: settings,
           transitionDuration: const Duration(milliseconds: 260),
           reverseTransitionDuration: const Duration(milliseconds: 260),
-          pageBuilder: (_, __, ___) => page,
-          transitionsBuilder: (_, animation, __, child) {
+          pageBuilder: (_, _, _) => page,
+          transitionsBuilder: (_, animation, _, child) {
             return FadeTransition(opacity: animation, child: child);
           },
         );
