@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive_ce_flutter/adapters.dart';
 import 'package:skorify/components/account/change_password_field.dart';
 import 'package:skorify/components/account/info_card.dart';
 import 'package:skorify/components/account/logout_button.dart';
@@ -22,6 +23,7 @@ class AccountScreen extends StatefulWidget {
 
 class _SettingPageState extends State<AccountScreen> {
   final SecureStorageService _secureStorage = getStorage();
+  final box = Hive.box('storageBox');
 
   int _selectedIndex = 2;
   var fullName = 'Loading...';
@@ -43,9 +45,9 @@ class _SettingPageState extends State<AccountScreen> {
       return;
     }
 
-    String? savedFullName = await _secureStorage.get('fullName') ?? '';
-    String? savedEmail = await _secureStorage.get('email') ?? '';
-    String? savedRole = await _secureStorage.get('role') ?? '';
+    String savedFullName = await box.get('full_name') ?? fullName;
+    String savedEmail = await box.get('email') ?? email;
+    String savedRole = await box.get('role') ?? role;
 
     setState(() {
       fullName = savedFullName;
@@ -58,7 +60,7 @@ class _SettingPageState extends State<AccountScreen> {
       String resFullName = account.result['full_name'];
       // If the full name is updated
       if (resFullName != savedFullName) {
-        await _secureStorage.set('fullName', resFullName);
+        await box.put('full_name', resFullName);
         setState(() {
           fullName = resFullName;
         });
@@ -66,7 +68,7 @@ class _SettingPageState extends State<AccountScreen> {
 
       String resEmail = account.result['email'];
       if (resEmail != savedEmail) {
-        await _secureStorage.set('email', resEmail);
+        await box.put('email', resEmail);
         setState(() {
           email = resEmail;
         });
@@ -74,7 +76,7 @@ class _SettingPageState extends State<AccountScreen> {
 
       String resRole = account.result['role'];
       if (resRole != savedRole) {
-        await _secureStorage.set('role', resRole);
+        await box.put('role', resRole);
         setState(() {
           role = resRole;
         });
@@ -174,7 +176,7 @@ class _SettingPageState extends State<AccountScreen> {
             child: ElevatedButton(
               style: popupStyle,
               onPressed: () {
-                _processUpdate({'fullName': nameController.text}, 'fullName');
+                _processUpdate({'fullName': nameController.text}, 'full_name');
                 Navigator.pop(context);
               },
               child: popupButtonText,
@@ -289,10 +291,10 @@ class _SettingPageState extends State<AccountScreen> {
       if (!mounted) return;
 
       String labelName = '';
-      if (label == 'fullName') {
+      if (label == 'full_name') {
         labelName = 'nama lengkap';
-        String dataResult = data['fullName'] ?? '';
-        _secureStorage.set('fullName', dataResult);
+        String dataResult = data['full_name'] ?? '';
+        box.put('full_name', dataResult);
 
         setState(() {
           fullName = dataResult;
@@ -300,7 +302,7 @@ class _SettingPageState extends State<AccountScreen> {
       } else if (label == 'email') {
         labelName = 'alamat email';
         String dataResult = data['email'] ?? '';
-        _secureStorage.set('email', dataResult);
+        box.put('email', dataResult);
 
         setState(() {
           email = dataResult;
@@ -326,9 +328,9 @@ class _SettingPageState extends State<AccountScreen> {
 
     if (result.success) {
       await _secureStorage.delete('session');
-      await _secureStorage.delete('fullName');
-      await _secureStorage.delete('email');
-      await _secureStorage.delete('role');
+      await box.delete('full_name');
+      await box.delete('email');
+      await box.delete('role');
 
       if (!mounted) return;
 
