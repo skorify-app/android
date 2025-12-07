@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:skorify/pages/activity_screen.dart';
 import 'package:skorify/pages/detail_result_ump/detail_result_ump_inggris.dart';
 import 'package:skorify/pages/detail_result_ump/detail_result_ump_ct.dart';
@@ -18,8 +19,11 @@ import 'pages/login_pages.dart';
 import 'pages/register_pages.dart';
 import 'pages/account_screen.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
+
+  await Hive.initFlutter();
+  await Hive.openBox('storageBox');
 }
 
 class MyApp extends StatelessWidget {
