@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:skorify/components/homepage/timeline_item.dart';
-import 'package:skorify/pages/questions_screen.dart';
+import 'package:skorify/pages/loading_screen.dart';
 
 class SimulationDialog extends StatelessWidget {
   const SimulationDialog({
@@ -98,7 +98,7 @@ class SimulationDialog extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            const QuestionsScreen(subtestId: '3'),
+                            const LoadingScreen(subtestId: '3'),
                       ),
                     );
                   },

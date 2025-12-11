@@ -1,42 +1,93 @@
 import 'package:flutter/material.dart';
 import 'package:skorify/components/questions/answer_option_button.dart';
 import 'package:skorify/components/questions/color_indication_text.dart';
+import 'package:skorify/components/questions/question_background.dart';
 import 'package:skorify/components/questions/question_nav.dart';
 import 'package:skorify/components/questions/question_nav_button.dart';
 import 'package:skorify/components/questions/question_number.dart';
 import 'package:skorify/components/questions/timer.dart';
 import 'package:skorify/components/misc/top_bar.dart';
+import 'package:skorify/handlers/classes.dart';
+import 'package:skorify/pages/submitting_answers_page.dart';
+
+List<Map<String, String>> userAnswers = [];
 
 class QuestionsScreen extends StatefulWidget {
-  const QuestionsScreen({super.key, required this.subtestId});
+  const QuestionsScreen({
+    super.key,
+    required this.questions,
+    required this.subtestId,
+  });
 
-  final int questionNumber = 1;
   final String subtestId;
+  final int questionNumber = 1;
+  final Questions questions;
 
   @override
   State<QuestionsScreen> createState() => _QuestionsScreenState();
 }
 
 class _QuestionsScreenState extends State<QuestionsScreen> {
-  late int _questionNumber;
   bool showQuestionNav = false;
+
+  late int totalQuestions = widget.questions.questions.length;
+
+  late int _questionNumber = widget.questionNumber;
+  late QuestionData question = widget.questions.questions[_questionNumber - 1];
+
+  List<Widget> choices = [];
+  late String? _selectedLabel = _getAnswer(_questionNumber.toString());
 
   @override
   void initState() {
     super.initState();
-    _questionNumber = widget.questionNumber;
+    userAnswers = [];
   }
 
   void nextQuestion() {
     setState(() {
       _questionNumber++;
+      question = widget.questions.questions[_questionNumber - 1];
+      _selectedLabel = _getAnswer(_questionNumber.toString());
     });
   }
 
   void previousQuestion() {
     setState(() {
       _questionNumber--;
+      question = widget.questions.questions[_questionNumber - 1];
+      _selectedLabel = _getAnswer(_questionNumber.toString());
     });
+  }
+
+  void choiceClick({
+    required int id,
+    required String questionNumber,
+    required String answerLabel,
+  }) {
+    setState(() {
+      _selectedLabel = (_selectedLabel == answerLabel) ? null : answerLabel;
+    });
+
+    String? currentAnswer = _getAnswer(questionNumber);
+
+    if (currentAnswer != null && answerLabel == currentAnswer) {
+      _removeAnswer(questionNumber);
+      return;
+    }
+
+    _setAnswer(id, questionNumber, answerLabel);
+  }
+
+  void submitAnswers() {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => SubmittingAnswersPage(
+          subtestId: widget.subtestId,
+          answers: userAnswers,
+        ),
+      ),
+    );
   }
 
   @override
@@ -55,17 +106,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                       Container(
                         margin: const EdgeInsets.all(16),
                         padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color.fromARGB(41, 158, 158, 158),
-                              spreadRadius: 1,
-                              blurRadius: 10,
-                            ),
-                          ],
-                        ),
+                        decoration: questionBackground,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -78,9 +119,8 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                             const SizedBox(height: 20),
 
                             // Teks Soal
-                            const Text(
-                              '''Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.''',
+                            Text(
+                              question.text,
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.black87,
@@ -90,18 +130,27 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                             const SizedBox(height: 24),
 
                             // Opsi Jawaban
-                            ...List.generate(
-                                  4,
-                                  (i) => AnswerOptionButton(
-                                    text:
-                                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-                                  ),
-                                )
-                                .expand<Widget>(
-                                  (w) => [w, const SizedBox(height: 10)],
-                                )
-                                .toList()
-                              ..removeLast(),
+                            for (
+                              var i = 0;
+                              i < question.choices.length;
+                              i++
+                            ) ...[
+                              AnswerOptionButton(
+                                key: ValueKey(
+                                  'q$_questionNumber:a${question.choices[i].label}',
+                                ),
+                                label: question.choices[i].label,
+                                text: question.choices[i].choiceValue,
+                                selected:
+                                    _selectedLabel == question.choices[i].label,
+                                onTap: () => choiceClick(
+                                  id: question.id,
+                                  questionNumber: _questionNumber.toString(),
+                                  answerLabel: question.choices[i].label,
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                            ],
                           ],
                         ),
                       ),
@@ -114,7 +163,10 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
               QuestionNav(
                 previousQuestionMethod: previousQuestion,
                 nextQuestionMethod: nextQuestion,
+                submitMethod: submitAnswers,
                 questionNumber: _questionNumber,
+                totalQuestions: totalQuestions,
+                showSubmitButton: totalQuestions == userAnswers.length,
               ),
             ],
           ),
@@ -259,4 +311,31 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
       ),
     );
   }
+}
+
+void _setAnswer(int id, String number, String label) {
+  for (var answer in userAnswers) {
+    if (answer['number'] == number) {
+      answer['answerLabel'] = label;
+      return;
+    }
+  }
+
+  userAnswers.add({
+    'id': id.toString(),
+    'number': number,
+    'answerLabel': label,
+  });
+}
+
+String? _getAnswer(String number) {
+  for (var answer in userAnswers) {
+    if (answer['number'] == number) return answer['answerLabel'];
+  }
+
+  return null;
+}
+
+void _removeAnswer(String number) {
+  userAnswers.removeWhere((answer) => answer['answerLabel'] == number);
 }

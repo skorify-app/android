@@ -264,7 +264,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
         border: Border.all(color: Colors.grey.shade300, width: 1),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
+            color: const Color.fromRGBO(0, 0, 0, 0.08),
             blurRadius: 12,
             spreadRadius: 1,
             offset: Offset(0, 4),

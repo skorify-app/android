@@ -14,7 +14,7 @@ import 'package:skorify/pages/test_result/test_result_inggris.dart';
 import 'package:skorify/pages/test_result/test_result_mtk.dart';
 import 'package:skorify/pages/test_result/test_result_sains.dart';
 import 'package:skorify/pages/test_result/test_result_ump.dart';
-import 'pages/onboarding_pages.dart';
+import 'pages/onboarding_page.dart';
 import 'pages/login_pages.dart';
 import 'pages/register_pages.dart';
 import 'pages/account_screen.dart';

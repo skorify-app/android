@@ -13,7 +13,7 @@ Future<QuestionAPIResult> fetchQuestions(
   try {
     final res = await http.get(Uri.parse(completeURL), headers: headers);
 
-    final List<Map<String, String>> jsonResponse = jsonDecode(res.body);
+    final List<dynamic> jsonResponse = jsonDecode(res.body);
 
     if (jsonResponse[0].containsKey('message')) {
       final List<Map<String, String>> error = [

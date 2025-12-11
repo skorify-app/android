@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:skorify/components/homepage/subtest_details.dart';
-import 'package:skorify/pages/questions_screen.dart';
+import 'package:skorify/pages/loading_screen.dart';
 
 class SubtestCardDialog extends StatelessWidget {
   const SubtestCardDialog({
@@ -74,9 +74,8 @@ class SubtestCardDialog extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => QuestionsScreen(
-                        subtestId: '${subtest['subtest_id']}',
-                      ),
+                      builder: (context) =>
+                          LoadingScreen(subtestId: '${subtest['subtest_id']}'),
                     ),
                   );
                 },

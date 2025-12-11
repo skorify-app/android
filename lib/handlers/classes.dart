@@ -28,15 +28,22 @@ class EmptyAPIResult {
 
 class QuestionAPIResult {
   final bool success;
-  final List<Map<String, dynamic>> result;
+  final List<dynamic> result;
 
   QuestionAPIResult({required this.success, required this.result});
+}
+
+class Choice {
+  final String label;
+  final String choiceValue;
+
+  Choice({required this.label, required this.choiceValue});
 }
 
 class QuestionData {
   final int id;
   final String text;
-  final List<Map<String, String>> choices;
+  final List<Choice> choices;
 
   QuestionData({required this.id, required this.text, required this.choices});
 }
