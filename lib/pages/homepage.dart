@@ -140,7 +140,7 @@ class _HomePageState extends State<HomePage> {
           return _buildSubtestCard(
             subtest['subtest_id'],
             subtest['subtest_name'],
-            subtest['subtest_image_name'] ?? 'default.png',
+            subtest['subtest_image_name'].toString(),
           );
         }),
       );
@@ -241,7 +241,7 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.all(10),
                 child: CachedNetworkImage(
                   imageUrl:
-                      'https://skorify-web.hosea.dev/images/subtest/$imageName',
+                      'https://skorify-web.hosea.dev/images/subtest/${imageName.isEmpty ? 'default.png' : imageName}',
                 ),
               ),
             ),

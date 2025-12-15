@@ -11,6 +11,7 @@ import 'package:skorify/handlers/classes.dart';
 import 'package:skorify/pages/submitting_answers_page.dart';
 
 List<Map<String, String>> userAnswers = [];
+List<int> unsureQuestions = [];
 
 class QuestionsScreen extends StatefulWidget {
   const QuestionsScreen({
@@ -37,11 +38,13 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
 
   List<Widget> choices = [];
   late String? _selectedLabel = _getAnswer(_questionNumber.toString());
+  late IconData unsureButtonIcon = Icons.bookmark_add;
 
   @override
   void initState() {
     super.initState();
     userAnswers = [];
+    unsureQuestions = [];
   }
 
   void nextQuestion() {
@@ -57,6 +60,21 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
       _questionNumber--;
       question = widget.questions.questions[_questionNumber - 1];
       _selectedLabel = _getAnswer(_questionNumber.toString());
+    });
+  }
+
+  void unsure() {
+    if (unsureQuestions.contains(_questionNumber)) {
+      unsureQuestions.remove(_questionNumber);
+      unsureButtonIcon = Icons.bookmark_add;
+      return;
+    }
+
+    unsureButtonIcon = Icons.bookmark_remove;
+    unsureQuestions.add(_questionNumber);
+
+    setState(() {
+      unsureButtonIcon = unsureButtonIcon;
     });
   }
 
@@ -163,7 +181,9 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
               QuestionNav(
                 previousQuestionMethod: previousQuestion,
                 nextQuestionMethod: nextQuestion,
+                unsureMethod: unsure,
                 submitMethod: submitAnswers,
+                unsureButtonIcon: unsureButtonIcon,
                 questionNumber: _questionNumber,
                 totalQuestions: totalQuestions,
                 showSubmitButton: totalQuestions == userAnswers.length,
@@ -337,5 +357,5 @@ String? _getAnswer(String number) {
 }
 
 void _removeAnswer(String number) {
-  userAnswers.removeWhere((answer) => answer['answerLabel'] == number);
+  userAnswers.removeWhere((answer) => answer['number'] == number);
 }

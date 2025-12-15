@@ -9,7 +9,9 @@ class QuestionNav extends StatelessWidget {
     super.key,
     required this.previousQuestionMethod,
     required this.nextQuestionMethod,
+    required this.unsureMethod,
     required this.submitMethod,
+    required this.unsureButtonIcon,
     required this.questionNumber,
     required this.totalQuestions,
     this.showSubmitButton,
@@ -17,7 +19,9 @@ class QuestionNav extends StatelessWidget {
 
   final VoidCallback previousQuestionMethod;
   final VoidCallback nextQuestionMethod;
+  final VoidCallback unsureMethod;
   final VoidCallback submitMethod;
+  final IconData unsureButtonIcon;
   final int questionNumber;
   final int totalQuestions;
   final bool? showSubmitButton;
@@ -44,7 +48,11 @@ class QuestionNav extends StatelessWidget {
             onPressed: previousQuestionMethod,
             questionNumber: questionNumber,
           ),
-          UnsureButton(questionNumber: questionNumber),
+          UnsureButton(
+            onPressed: unsureMethod,
+            icon: unsureButtonIcon,
+            questionNumber: questionNumber,
+          ),
           NextButton(
             onPressed: nextQuestionMethod,
             questionNumber: questionNumber,

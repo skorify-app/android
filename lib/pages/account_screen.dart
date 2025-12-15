@@ -329,7 +329,6 @@ class _SettingPageState extends State<AccountScreen> {
     if (result.success) {
       await _secureStorage.delete('session');
       await box.delete('full_name');
-      await box.delete('email');
       await box.delete('role');
 
       if (!mounted) return;
