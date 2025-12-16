@@ -4,15 +4,18 @@ import 'package:skorify/components/misc/top_bar.dart';
 import 'package:skorify/components/test_result/question_card.dart';
 
 class ResultScreen extends StatefulWidget {
-  const ResultScreen({super.key});
+  const ResultScreen({super.key, required this.scoreId});
+
+  final String scoreId;
 
   @override
   State<ResultScreen> createState() => _ResultScreenState();
 }
 
 class _ResultScreenState extends State<ResultScreen> {
-  int _selectedNavbarIndex = 1;
+  late String scoreId = widget.scoreId;
 
+  int _selectedNavbarIndex = 1;
   void _onItemTapped(int index) {
     setState(() {
       _selectedNavbarIndex = index;
@@ -58,8 +61,8 @@ class _ResultScreenState extends State<ResultScreen> {
                   ),
                   const SizedBox(height: 20),
 
-                  const Text(
-                    "Bahasa Indonesia",
+                  Text(
+                    scoreId,
                     style: TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.bold,
@@ -166,7 +169,7 @@ class _ResultScreenState extends State<ResultScreen> {
         borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.07),
+            color: Color.fromRGBO(0, 0, 0, 0.07),
             blurRadius: 8,
             offset: const Offset(0, 3),
           ),

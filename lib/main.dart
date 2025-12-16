@@ -7,6 +7,7 @@ import 'package:skorify/pages/detail_result_ump/detail_result_ump_indonesia.dart
 import 'package:skorify/pages/detail_result_ump/detail_result_ump_mtk.dart';
 import 'package:skorify/pages/detail_result_ump/detail_result_ump_sains.dart';
 import 'package:skorify/pages/homepage.dart';
+import 'package:skorify/pages/result_screen.dart';
 import 'package:skorify/pages/start_screen.dart';
 import 'package:skorify/pages/test_result/test_result_ct.dart';
 import 'package:skorify/pages/test_result/test_result_indonesia.dart';
@@ -64,6 +65,13 @@ class MyApp extends StatelessWidget {
 // =======================================
 
 Widget _getPage(String? route) {
+  if (route != null && route.startsWith('/result/')) {
+    final Uri uri = Uri.parse(route);
+    final String scoreId = uri.pathSegments[1];
+
+    return ResultScreen(scoreId: scoreId);
+  }
+
   switch (route) {
     case '/':
       return const StartScreen();

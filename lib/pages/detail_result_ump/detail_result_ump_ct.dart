@@ -159,7 +159,7 @@ class DetailResultUmpCtState extends State<DetailResultUmpCt> {
         border: Border.all(color: const Color(0xFFF1F1F1)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.06),
+            color: Color.fromRGBO(0, 0, 0, 0.06),
             blurRadius: 8,
             offset: const Offset(0, 3),
           ),

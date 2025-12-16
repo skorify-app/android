@@ -4,7 +4,6 @@ import 'package:skorify/handlers/api/questions/submit.dart';
 import 'package:skorify/handlers/classes.dart';
 import 'package:skorify/handlers/secure_storage_service.dart';
 import 'package:skorify/pages/error_page.dart';
-import 'package:skorify/pages/result_screen.dart';
 
 class SubmittingAnswersPage extends StatefulWidget {
   const SubmittingAnswersPage({
@@ -50,9 +49,7 @@ class _SubmittingAnswersPageState extends State<SubmittingAnswersPage> {
       return;
     }
 
-    Navigator.of(
-      context,
-    ).pushReplacement(MaterialPageRoute(builder: (context) => ResultScreen()));
+    Navigator.of(context).pushReplacementNamed('/result/test');
   }
 
   @override

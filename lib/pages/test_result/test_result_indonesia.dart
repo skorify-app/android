@@ -168,7 +168,7 @@ class _TestResultIndonesiaState extends State<TestResultIndonesia> {
         borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.07),
+            color: Color.fromRGBO(0, 0, 0, 0.06),
             blurRadius: 8,
             offset: const Offset(0, 3),
           ),

@@ -129,7 +129,7 @@ class _HomePageState extends State<HomePage> {
 
   void _fetchSubtestList() async {
     sessionId = await _secureStorage.get('session') ?? '';
-    SubtestListAPIResult subtestsResult = await fetchList(sessionId);
+    ListAPIResult subtestsResult = await fetchList(sessionId);
     if (subtestsResult.success) subtests = subtestsResult.result;
 
     await box.put('subtest_data', jsonEncode(subtests));
