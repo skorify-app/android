@@ -5,11 +5,11 @@ class DefaultAPIResult {
   DefaultAPIResult({required this.result, required this.success});
 }
 
-class SubtestListAPIResult {
+class ListAPIResult {
   final List<Map<String, dynamic>> result;
   final bool success;
 
-  SubtestListAPIResult({required this.result, required this.success});
+  ListAPIResult({required this.result, required this.success});
 }
 
 class StringAPIResult {

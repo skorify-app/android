@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:skorify/handlers/classes.dart';
 
-Future<EmptyAPIResult> submit(String session, Object data) async {
+Future<StringAPIResult> submit(String session, Object data) async {
   final String completeURL = 'https://skorify-api.hosea.dev/questions/submit';
   final Map<String, String> headers = {
     'Content-Type': 'application/json',
@@ -17,20 +17,16 @@ Future<EmptyAPIResult> submit(String session, Object data) async {
       body: body,
     );
 
-    String error = '';
+    String result = res.body;
     bool success = true;
 
     if (res.statusCode != 200) {
       success = false;
-      final Map<String, dynamic> jsonResponse = jsonDecode(res.body);
-      error = jsonResponse['message'];
+      result = '';
     }
 
-    return EmptyAPIResult(error: error, success: success);
+    return StringAPIResult(result: result, success: success);
   } catch (err) {
-    return EmptyAPIResult(
-      error: 'Maaf, terjadi kesalahan pada sistem.',
-      success: false,
-    );
+    return StringAPIResult(result: '', success: false);
   }
 }

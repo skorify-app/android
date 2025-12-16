@@ -293,7 +293,7 @@ class _SettingPageState extends State<AccountScreen> {
       String labelName = '';
       if (label == 'full_name') {
         labelName = 'nama lengkap';
-        String dataResult = data['full_name'] ?? '';
+        String dataResult = data['fullName'] ?? '';
         box.put('full_name', dataResult);
 
         setState(() {
