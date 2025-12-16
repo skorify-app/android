@@ -103,7 +103,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                     benar: int.parse(scores[i]['correct_answers']),
                     salah: int.parse(scores[i]['incorrect_answers']),
                     kosong: int.parse(scores[i]['empty_answers']),
-                    type: "Sains",
+                    scoreId: scores[i]['score_id'],
                   ),
                 ],
               ),
@@ -124,7 +124,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
     required int benar,
     required int salah,
     required int kosong,
-    required String type,
+    required String scoreId,
   }) {
     final dataMap = {
       "Benar": benar.toDouble(),
@@ -177,7 +177,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
               alignment: Alignment.centerRight,
               child: TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/result/test');
+                  Navigator.pushNamed(context, '/result/$scoreId');
                 },
                 child: const Text('Lihat jawaban'),
               ),

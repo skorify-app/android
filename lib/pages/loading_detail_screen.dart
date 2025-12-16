@@ -1,57 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:skorify/components/misc/top_bar.dart';
-import 'package:skorify/handlers/api/questions/submit.dart';
+import 'package:skorify/handlers/api/scores/detail.dart';
 import 'package:skorify/handlers/classes.dart';
 import 'package:skorify/handlers/secure_storage_service.dart';
 import 'package:skorify/pages/error_page.dart';
+import 'package:skorify/pages/result_screen.dart';
 
-class SubmittingAnswersPage extends StatefulWidget {
-  const SubmittingAnswersPage({
-    super.key,
-    required this.subtestId,
-    required this.answers,
-  });
+class LoadingDetailScreen extends StatefulWidget {
+  const LoadingDetailScreen({super.key, required this.scoreId});
 
-  final String subtestId;
-  final List<Map<String, String>> answers;
+  final String scoreId;
 
   @override
-  State<SubmittingAnswersPage> createState() => _SubmittingAnswersPageState();
+  State<LoadingDetailScreen> createState() => _LoadingDetailScreenState();
 }
 
-class _SubmittingAnswersPageState extends State<SubmittingAnswersPage> {
+class _LoadingDetailScreenState extends State<LoadingDetailScreen> {
   @override
   void initState() {
     super.initState();
-    fetchQuestionsFromAPI();
+    fetchDetail();
   }
 
-  Future<void> fetchQuestionsFromAPI() async {
+  void fetchDetail() async {
     final SecureStorageService secureStorage = getStorage();
-    String sessionId = await secureStorage.get('session') ?? '';
-
-    StringAPIResult rawResult = await submit(sessionId, {
-      'subtestId': widget.subtestId,
-      'answers': widget.answers,
-    });
+    String session = await secureStorage.get('session') ?? '';
+    DefaultAPIResult apiRes = await detail(session, widget.scoreId);
 
     if (!mounted) return;
 
-    if (!rawResult.success) {
+    if (!apiRes.success) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => ErrorPage(
             message:
-                'Maaf, terjadi kesalahan pada sistem saat mencoba mengirim jawaban kamu.',
+                'Maaf, terjadi kesalahan saat melihat informasi hasil pengerjaan subtes',
           ),
         ),
       );
       return;
     }
 
-    String scoreId = rawResult.result;
-
-    Navigator.of(context).pushReplacementNamed('/result/$scoreId');
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => ResultScreen(scoreData: apiRes.result),
+      ),
+    );
   }
 
   @override
@@ -66,7 +60,7 @@ class _SubmittingAnswersPageState extends State<SubmittingAnswersPage> {
             CircularProgressIndicator(color: Colors.black),
             SizedBox(height: 20),
             Text(
-              'Sedang memeriksa jawaban kamu...',
+              'Sedang mengunduh jawaban kamu...',
               style: TextStyle(color: Colors.black),
             ),
           ],
