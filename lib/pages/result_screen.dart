@@ -31,6 +31,8 @@ class _ResultScreenState extends State<ResultScreen> {
 
     if (index == 0) {
       Navigator.pushNamed(context, '/homepage');
+    } else if (index == 1) {
+      Navigator.pushNamed(context, '/activity');
     } else if (index == 2) {
       Navigator.pushNamed(context, '/account');
     }

@@ -49,7 +49,6 @@ class _ActivityScreenState extends State<ActivityScreen> {
     setState(() {
       _selectedNavbarIndex = index;
     });
-
     if (index == 0) {
       Navigator.pushNamed(context, '/homepage');
     } else if (index == 2) {
@@ -62,54 +61,65 @@ class _ActivityScreenState extends State<ActivityScreen> {
     return Scaffold(
       backgroundColor: Color(0xFFF5F6F8),
       appBar: TopBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          children: [
-            Text(
-              'Aktivitas',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 16),
-
-            for (var i = 0; i < scores.length; i++) ...[
-              ExpansionTile(
-                backgroundColor: const Color(0xFFBDD8E9),
-                collapsedBackgroundColor: const Color(0xFFBDD8E9),
-                title: Padding(
-                  padding: EdgeInsetsGeometry.only(left: 10, top: 5, bottom: 5),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        scores[i]['subtest_name'],
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        scores[i]['recorded_at'],
-                        style: TextStyle(fontSize: 13),
-                      ),
-                    ],
-                  ),
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                ),
-                collapsedShape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                ),
-                children: [
-                  _buildStyledCard(
-                    benar: int.parse(scores[i]['correct_answers']),
-                    salah: int.parse(scores[i]['incorrect_answers']),
-                    kosong: int.parse(scores[i]['empty_answers']),
-                    scoreId: scores[i]['score_id'],
-                  ),
-                ],
+      body: RefreshIndicator(
+        color: const Color.fromRGBO(70, 121, 159, 1.0),
+        backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
+        onRefresh: () async {
+          fetchScores();
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ListView(
+            children: [
+              Text(
+                'Aktivitas',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: 16),
+
+              for (var i = 0; i < scores.length; i++) ...[
+                ExpansionTile(
+                  backgroundColor: const Color(0xFFBDD8E9),
+                  collapsedBackgroundColor: const Color(0xFFBDD8E9),
+                  title: Padding(
+                    padding: EdgeInsetsGeometry.only(
+                      left: 10,
+                      top: 5,
+                      bottom: 5,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          scores[i]['subtest_name'],
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          scores[i]['recorded_at'],
+                          style: TextStyle(fontSize: 13),
+                        ),
+                      ],
+                    ),
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  ),
+                  collapsedShape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  ),
+                  children: [
+                    _buildStyledCard(
+                      benar: int.parse(scores[i]['correct_answers']),
+                      salah: int.parse(scores[i]['incorrect_answers']),
+                      kosong: int.parse(scores[i]['empty_answers']),
+                      scoreId: scores[i]['score_id'],
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+              ],
             ],
-          ],
+          ),
         ),
       ),
 

@@ -18,41 +18,21 @@ class UnsureButton extends StatefulWidget {
 }
 
 class _UnsureButtonState extends State<UnsureButton> {
-  late int questionNumber = widget.questionNumber;
-  late IconData icon = widget.icon;
+  late IconData icon;
+  late VoidCallback onPressed = widget.onPressed;
 
   @override
   void initState() {
     super.initState();
-    setState(() {
-      icon = getIcon();
-    });
-  }
-
-  IconData getIcon() {
-    if (unsureQuestions.contains(questionNumber)) {
-      return Icons.bookmark_remove;
-    } else {
-      return Icons.bookmark_add;
-    }
-  }
-
-  void onPress() {
-    if (unsureQuestions.contains(questionNumber)) {
-      unsureQuestions.remove(questionNumber);
-    } else {
-      unsureQuestions.add(questionNumber);
-    }
-
-    setState(() {
-      icon = getIcon();
-    });
   }
 
   @override
   Widget build(BuildContext ctx) {
+    bool isUnsure = unsureQuestions.contains(widget.questionNumber);
+    IconData icon = isUnsure ? Icons.bookmark_remove : Icons.bookmark_add;
+
     return ElevatedButton.icon(
-      onPressed: onPress,
+      onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: const Color(0xFFFFD700),
         foregroundColor: Colors.black87,

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:skorify/components/questions/answer_option_button.dart';
-import 'package:skorify/components/questions/color_indication_text.dart';
 import 'package:skorify/components/questions/question_background.dart';
-import 'package:skorify/components/questions/question_nav.dart';
+import 'package:skorify/components/questions/question_colors_indication.dart';
+import 'package:skorify/components/questions/question_bottom_nav.dart';
 import 'package:skorify/components/questions/question_nav_button.dart';
 import 'package:skorify/components/questions/question_number.dart';
+import 'package:skorify/components/questions/question_numbers_grid.dart';
 import 'package:skorify/components/questions/timer.dart';
 import 'package:skorify/components/misc/top_bar.dart';
 import 'package:skorify/handlers/classes.dart';
@@ -48,18 +49,21 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
   }
 
   void nextQuestion() {
-    setState(() {
-      _questionNumber++;
-      question = widget.questions.questions[_questionNumber - 1];
-      _selectedLabel = _getAnswer(_questionNumber.toString());
-    });
+    changeNumber(_questionNumber + 1);
   }
 
   void previousQuestion() {
+    changeNumber(_questionNumber - 1);
+  }
+
+  void changeNumber(int questonNum) {
     setState(() {
-      _questionNumber--;
+      _questionNumber = questonNum;
       question = widget.questions.questions[_questionNumber - 1];
       _selectedLabel = _getAnswer(_questionNumber.toString());
+      unsureButtonIcon = (unsureQuestions.contains(_questionNumber))
+          ? Icons.bookmark_remove
+          : Icons.bookmark_add;
     });
   }
 
@@ -67,11 +71,10 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
     if (unsureQuestions.contains(_questionNumber)) {
       unsureQuestions.remove(_questionNumber);
       unsureButtonIcon = Icons.bookmark_add;
-      return;
+    } else {
+      unsureButtonIcon = Icons.bookmark_remove;
+      unsureQuestions.add(_questionNumber);
     }
-
-    unsureButtonIcon = Icons.bookmark_remove;
-    unsureQuestions.add(_questionNumber);
 
     setState(() {
       unsureButtonIcon = unsureButtonIcon;
@@ -108,227 +111,242 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
     );
   }
 
+  Future<bool?> _showExitConfirmation() {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text(
+            'Ingin Berhenti?',
+            style: TextStyle(color: Colors.black),
+          ),
+          content: const Text(
+            'Apakah kamu yakin ingin berhenti mengerjakan tes?',
+            style: TextStyle(color: Colors.black),
+          ),
+          backgroundColor: Colors.white,
+
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('Tidak', style: TextStyle(color: Colors.black)),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('Iya', style: TextStyle(color: Colors.black)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: TopBar(),
-      body: Stack(
-        children: [
-          Column(
+      body: PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (bool didPop, Object? result) async {
+          if (didPop) return;
+
+          bool confimed = await _showExitConfirmation() ?? false;
+          if (context.mounted && confimed) {
+            Navigator.pop(context);
+          }
+        },
+        child: GestureDetector(
+          onTap: () => {
+            setState(() {
+              showQuestionNav = false;
+            }),
+          },
+          child: Stack(
             children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.all(16),
-                        padding: const EdgeInsets.all(16),
-                        decoration: questionBackground,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Timer dan tombol Sembunyikan
-                            Timer(),
-                            const SizedBox(height: 16),
+              Column(
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.all(16),
+                            padding: const EdgeInsets.all(16),
+                            decoration: questionBackground,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Timer dan tombol Sembunyikan
+                                Timer(),
+                                const SizedBox(height: 16),
 
-                            // Nomor Soal
-                            QuestionNumber(number: '$_questionNumber'),
-                            const SizedBox(height: 20),
+                                // Nomor Soal
+                                QuestionNumber(number: '$_questionNumber'),
+                                const SizedBox(height: 20),
 
-                            // Teks Soal
-                            Text(
-                              question.text,
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black87,
-                                height: 1.5,
-                              ),
+                                // Teks Soal
+                                Text(
+                                  question.text,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black87,
+                                    height: 1.5,
+                                  ),
+                                ),
+                                const SizedBox(height: 24),
+
+                                // Opsi Jawaban
+                                for (
+                                  var i = 0;
+                                  i < question.choices.length;
+                                  i++
+                                ) ...[
+                                  AnswerOptionButton(
+                                    key: ValueKey(
+                                      'q$_questionNumber:a${question.choices[i].label}',
+                                    ),
+                                    label: question.choices[i].label,
+                                    text: question.choices[i].choiceValue,
+                                    selected:
+                                        _selectedLabel ==
+                                        question.choices[i].label,
+                                    onTap: () => choiceClick(
+                                      id: question.id,
+                                      questionNumber: _questionNumber
+                                          .toString(),
+                                      answerLabel: question.choices[i].label,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                ],
+                              ],
                             ),
-                            const SizedBox(height: 24),
-
-                            // Opsi Jawaban
-                            for (
-                              var i = 0;
-                              i < question.choices.length;
-                              i++
-                            ) ...[
-                              AnswerOptionButton(
-                                key: ValueKey(
-                                  'q$_questionNumber:a${question.choices[i].label}',
-                                ),
-                                label: question.choices[i].label,
-                                text: question.choices[i].choiceValue,
-                                selected:
-                                    _selectedLabel == question.choices[i].label,
-                                onTap: () => choiceClick(
-                                  id: question.id,
-                                  questionNumber: _questionNumber.toString(),
-                                  answerLabel: question.choices[i].label,
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                            ],
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
+
+                  // Navigasi soal (tombol selanjutnya, sebelumnya, ragu-ragu)
+                  QuestionNav(
+                    previousQuestionMethod: previousQuestion,
+                    nextQuestionMethod: nextQuestion,
+                    unsureMethod: unsure,
+                    submitMethod: submitAnswers,
+                    unsureButtonIcon: unsureButtonIcon,
+                    questionNumber: _questionNumber,
+                    totalQuestions: totalQuestions,
+                    showSubmitButton: totalQuestions == userAnswers.length,
+                  ),
+                ],
               ),
 
-              // Navigasi soal (tombol selanjutnya, sebelumnya, ragu-ragu)
-              QuestionNav(
-                previousQuestionMethod: previousQuestion,
-                nextQuestionMethod: nextQuestion,
-                unsureMethod: unsure,
-                submitMethod: submitAnswers,
-                unsureButtonIcon: unsureButtonIcon,
-                questionNumber: _questionNumber,
-                totalQuestions: totalQuestions,
-                showSubmitButton: totalQuestions == userAnswers.length,
+              // Panel navigasi soal-soal
+              if (showQuestionNav)
+                Positioned(
+                  right: 0,
+                  top: 0,
+                  bottom: 180,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.75,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        bottomLeft: Radius.circular(20),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color.fromARGB(59, 0, 0, 0),
+                          spreadRadius: 2,
+                          blurRadius: 10,
+                          offset: const Offset(-3, 0),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        // Question Grid
+                        const SizedBox(height: 45),
+                        QuestionNumbersGrid(
+                          itemCount: totalQuestions,
+                          itemBuilder: (context, index) {
+                            int questionNum = index + 1;
+                            String status = '';
+                            bool isAnswered = userAnswers.any(
+                              (item) =>
+                                  item['number'] == questionNum.toString(),
+                            );
+                            if (isAnswered) {
+                              status = 'ANSWERED';
+                            } else if (unsureQuestions.contains(questionNum)) {
+                              status = 'UNSURE';
+                            }
+                            return _buildQuestionNavItem(questionNum, status);
+                          },
+                        ),
+
+                        // Question color indication
+                        QuestionColorsIndication(),
+                      ],
+                    ),
+                  ),
+                ),
+
+              // Floating Question Navigator Button
+              QuestionNavButton(
+                onTap: () {
+                  setState(() {
+                    showQuestionNav = !showQuestionNav;
+                  });
+                },
               ),
             ],
           ),
-
-          // Panel navigasi soal-soal
-          if (showQuestionNav)
-            Positioned(
-              right: 0,
-              top: 0,
-              bottom: 180,
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.75,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    bottomLeft: Radius.circular(20),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color.fromARGB(59, 0, 0, 0),
-                      spreadRadius: 2,
-                      blurRadius: 10,
-                      offset: const Offset(-3, 0),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    // Header
-                    Container(
-                      padding: const EdgeInsets.only(top: 30),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                showQuestionNav = false;
-                              });
-                            },
-                            child: const Icon(Icons.close, color: Colors.white),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    // Question Grid
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: GridView.builder(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 5,
-                                crossAxisSpacing: 12,
-                                mainAxisSpacing: 12,
-                                childAspectRatio: 1,
-                              ),
-                          itemCount: 10,
-                          itemBuilder: (context, index) {
-                            return _buildQuestionNavItem(index + 1);
-                          },
-                        ),
-                      ),
-                    ),
-
-                    // Question color indication
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        children: [
-                          ColorIndicationText(
-                            text: 'Sudah Dijawab',
-                            colorCode: 0xFF4CAF50,
-                          ),
-                          const SizedBox(height: 8),
-                          ColorIndicationText(
-                            text: 'Ragu-ragu',
-                            colorCode: 0xFFFFD700,
-                          ),
-                          const SizedBox(height: 8),
-                          ColorIndicationText(
-                            text: 'Belum Dijawab',
-                            colorCode: 0xFFE0E0E0,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-          // Floating Question Navigator Button
-          Positioned(
-            top: 10,
-            right: 0,
-            child: GestureDetector(
-              onTap: () {
-                setState(() {
-                  showQuestionNav = !showQuestionNav;
-                });
-              },
-              child: QuestionNavButton(),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
 
-  Widget _buildQuestionNavItem(int number) {
+  Widget _buildQuestionNavItem(int number, String status) {
     Color bgColor;
-    if (number == 8) {
-      bgColor = const Color(0xFF4CAF50); // Answered
-    } else if (number == 3 || number == 5) {
-      bgColor = const Color(0xFFFFD700); // Doubt
+    Color textColor = Color.fromRGBO(255, 255, 255, 1);
+    if (status == 'ANSWERED') {
+      bgColor = const Color(0xFF4CAF50);
+    } else if (status == 'UNSURE') {
+      bgColor = const Color(0xFFFFD700);
+      textColor = const Color.fromRGBO(0, 0, 0, 0.5);
     } else {
-      bgColor = Colors.grey.shade300; // Unanswered
+      bgColor = const Color.fromRGBO(224, 224, 224, 1);
     }
 
-    return Container(
-      decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: BorderRadius.circular(8),
-        border: number == 1
-            ? Border.all(color: const Color(0xFF4A90E2), width: 2)
-            : null,
-      ),
-      child: Center(
-        child: Text(
-          '$number',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: number == 1 || number == 3 || number == 5
-                ? Colors.white
-                : Colors.black54,
+    return InkWell(
+      child: Container(
+        decoration: BoxDecoration(
+          color: bgColor,
+          borderRadius: BorderRadius.circular(8),
+          border: number == _questionNumber
+              ? Border.all(color: const Color(0xFF4A90E2), width: 2)
+              : null,
+        ),
+        child: Center(
+          child: Text(
+            '$number',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: textColor,
+            ),
           ),
         ),
       ),
+      onTap: () => {
+        changeNumber(number),
+        setState(() {
+          showQuestionNav = !showQuestionNav;
+        }),
+      },
     );
   }
 }
