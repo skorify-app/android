@@ -5,16 +5,21 @@ import 'package:skorify/handlers/classes.dart';
 import 'package:skorify/handlers/secure_storage_service.dart';
 import 'package:skorify/pages/questions_screen.dart';
 
-class LoadingScreen extends StatefulWidget {
-  const LoadingScreen({super.key, required this.subtestId});
+class LoadingQuestionScreen extends StatefulWidget {
+  const LoadingQuestionScreen({
+    super.key,
+    required this.subtestId,
+    required this.duration,
+  });
 
   final String subtestId;
+  final int duration;
 
   @override
-  State<LoadingScreen> createState() => _LoadingScreenState();
+  State<LoadingQuestionScreen> createState() => _LoadingQuestionScreenState();
 }
 
-class _LoadingScreenState extends State<LoadingScreen> {
+class _LoadingQuestionScreenState extends State<LoadingQuestionScreen> {
   @override
   void initState() {
     super.initState();
@@ -70,10 +75,15 @@ class _LoadingScreenState extends State<LoadingScreen> {
       questions: listOfQuestions,
     );
 
+    int duration = 1 * 60;
+
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (context) =>
-            QuestionsScreen(subtestId: subtestId, questions: questions),
+        builder: (context) => QuestionsScreen(
+          subtestId: subtestId,
+          questions: questions,
+          duration: duration,
+        ),
       ),
     );
   }

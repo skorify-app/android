@@ -19,11 +19,13 @@ class QuestionsScreen extends StatefulWidget {
     super.key,
     required this.questions,
     required this.subtestId,
+    required this.duration,
   });
 
-  final String subtestId;
-  final int questionNumber = 1;
   final Questions questions;
+  final String subtestId;
+  final int duration;
+  final int questionNumber = 1;
 
   @override
   State<QuestionsScreen> createState() => _QuestionsScreenState();
@@ -33,6 +35,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
   bool showQuestionNav = false;
 
   late int totalQuestions = widget.questions.questions.length;
+  late int duration = widget.duration;
 
   late int _questionNumber = widget.questionNumber;
   late QuestionData question = widget.questions.questions[_questionNumber - 1];
@@ -178,7 +181,10 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 // Timer dan tombol Sembunyikan
-                                Timer(),
+                                Timer(
+                                  duration: duration,
+                                  submitAnswers: submitAnswers,
+                                ),
                                 const SizedBox(height: 16),
 
                                 // Nomor Soal

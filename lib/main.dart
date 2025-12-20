@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:skorify/pages/activity_screen.dart';
 import 'package:skorify/pages/homepage.dart';
-import 'package:skorify/pages/loading_detail_screen.dart';
+import 'package:skorify/pages/loading_result_screen.dart';
 import 'package:skorify/pages/start_screen.dart';
 import 'pages/onboarding_page.dart';
 import 'pages/login_pages.dart';
