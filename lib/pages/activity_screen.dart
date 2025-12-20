@@ -154,7 +154,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
             colorList: const [
               Color(0xFF4CAF50),
               Color(0xFFF44336),
-              Color(0xFFA9A9A9),
+              Color.fromARGB(255, 0, 0, 0),
             ],
             chartType: ChartType.disc,
             legendOptions: LegendOptions(

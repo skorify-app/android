@@ -138,7 +138,7 @@ class _ResultScreenState extends State<ResultScreen> {
                     })
                     .toList(),
                 correctAnswer: scoreData['questions'][i]['correctAnswer'],
-                userAnswer: scoreData['questions'][i]['userAnswer'],
+                userAnswer: scoreData['questions'][i]['userAnswer'] ?? '-1',
               ),
             ],
 

@@ -48,6 +48,7 @@ class QuestionCard extends StatelessWidget {
             QuestionChoices(
               label: choices[i]['label'] ?? '',
               text: choices[i]['choice_value'] ?? '',
+              emptyAnswer: userAnswer == '-1',
               userAnswer: choices[i]['label'] == userAnswer,
               isCorrect: correctAnswer == choices[i]['label'],
             ),

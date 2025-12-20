@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:skorify/components/homepage/timeline_item.dart';
-import 'package:skorify/pages/loading_screen.dart';
 
 class SimulationDialog extends StatelessWidget {
   const SimulationDialog({
@@ -92,16 +91,7 @@ class SimulationDialog extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            const LoadingScreen(subtestId: '3'),
-                      ),
-                    );
-                  },
+                  onPressed: () {},
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF002855),
                     shape: RoundedRectangleBorder(

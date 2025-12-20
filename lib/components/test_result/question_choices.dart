@@ -5,23 +5,28 @@ class QuestionChoices extends StatelessWidget {
     super.key,
     required this.label,
     required this.text,
+    required this.emptyAnswer,
     required this.userAnswer,
     required this.isCorrect,
   });
 
   final String label;
   final String text;
+  final bool emptyAnswer;
   final bool userAnswer;
   final bool isCorrect;
 
   Color _getColor() {
     if (!userAnswer && isCorrect) return Colors.green;
+
+    if (emptyAnswer) return Colors.black;
+
     if (!userAnswer) return Colors.grey.shade300;
 
-    // user answer and wrong
+    // user answer and it is wrong
     if (!isCorrect) return Colors.red;
 
-    // user answer and correct
+    // user answer and it is correct
     return Colors.green;
   }
 
