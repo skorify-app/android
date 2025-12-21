@@ -33,12 +33,7 @@ class QuestionsScreen extends StatefulWidget {
 
 class _QuestionsScreenState extends State<QuestionsScreen> {
   bool showQuestionNav = false;
-
-  late int totalQuestions = widget.questions.questions.length;
-  late int duration = widget.duration;
-
   late int _questionNumber = widget.questionNumber;
-  late QuestionData question = widget.questions.questions[_questionNumber - 1];
 
   List<Widget> choices = [];
   late String? _selectedLabel = _getAnswer(_questionNumber.toString());
@@ -62,7 +57,6 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
   void changeNumber(int questonNum) {
     setState(() {
       _questionNumber = questonNum;
-      question = widget.questions.questions[_questionNumber - 1];
       _selectedLabel = _getAnswer(_questionNumber.toString());
       unsureButtonIcon = (unsureQuestions.contains(_questionNumber))
           ? Icons.bookmark_remove
@@ -146,6 +140,11 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    int totalQuestions = widget.questions.questions.length;
+    int duration = widget.duration;
+
+    QuestionData question = widget.questions.questions[_questionNumber - 1];
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: TopBar(),
