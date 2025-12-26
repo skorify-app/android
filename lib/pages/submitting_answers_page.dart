@@ -50,8 +50,10 @@ class _SubmittingAnswersPageState extends State<SubmittingAnswersPage> {
     }
 
     String scoreId = rawResult.result;
-
-    Navigator.of(context).pushReplacementNamed('/result/$scoreId');
+    Navigator.of(context).pushNamedAndRemoveUntil(
+      '/result/$scoreId',
+      (Route<dynamic> route) => false,
+    );
   }
 
   @override
