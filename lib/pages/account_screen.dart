@@ -165,14 +165,17 @@ class _SettingPageState extends State<AccountScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         title: const Text("Ubah Nama"),
+        backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
         content: TextField(
           controller: nameController,
           decoration: const InputDecoration(border: OutlineInputBorder()),
         ),
         actions: [
-          Center(
+          SizedBox(
+            width: double.infinity,
+            height: 45,
             child: ElevatedButton(
               style: popupStyle,
               onPressed: () {
@@ -193,8 +196,9 @@ class _SettingPageState extends State<AccountScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         title: const Text("Ubah Email"),
+        backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
         content: TextField(
           controller: emailController,
           keyboardType: TextInputType.emailAddress,
@@ -204,7 +208,9 @@ class _SettingPageState extends State<AccountScreen> {
           ),
         ),
         actions: [
-          Center(
+          SizedBox(
+            width: double.infinity,
+            height: 45,
             child: ElevatedButton(
               style: popupStyle,
               onPressed: () {
@@ -232,9 +238,10 @@ class _SettingPageState extends State<AccountScreen> {
           builder: (context, setStateDialog) {
             return AlertDialog(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(10),
               ),
               title: const Text("Ubah Kata Sandi"),
+              backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -263,7 +270,9 @@ class _SettingPageState extends State<AccountScreen> {
                 ],
               ),
               actions: [
-                Center(
+                SizedBox(
+                  width: double.infinity,
+                  height: 45,
                   child: ElevatedButton(
                     style: popupStyle,
                     onPressed: () {
