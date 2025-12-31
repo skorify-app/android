@@ -1,34 +1,25 @@
 import 'package:flutter/material.dart';
 
-class AnswerOptionButton extends StatefulWidget {
-  const AnswerOptionButton({super.key, required this.text});
+class AnswerOptionButton extends StatelessWidget {
+  const AnswerOptionButton({
+    super.key,
+    required this.label,
+    required this.text,
+    required this.selected,
+    required this.onTap,
+  });
 
+  final String label;
   final String text;
-
-  @override
-  State<AnswerOptionButton> createState() => _AnswerOptionButtonState();
-}
-
-class _AnswerOptionButtonState extends State<AnswerOptionButton> {
-  late String text;
-  Color color = Colors.grey.shade300;
-
-  @override
-  void initState() {
-    super.initState();
-    text = widget.text;
-  }
+  final bool selected;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext ctx) {
+    final color = selected ? Colors.blue : Colors.grey.shade300;
     return InkWell(
-      onTap: () {
-        setState(() {
-          color = Colors.grey;
-        });
-      },
+      onTap: onTap,
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             width: 32,

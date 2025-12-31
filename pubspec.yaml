@@ -30,6 +30,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  pie_chart: ^5.1.0
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -37,7 +39,10 @@ dependencies:
   google_fonts: ^6.2.1
   flutter_lints: ^6.0.0
   http: ^1.5.0
-  flutter_secure_storage: ^9.2.4
+  flutter_secure_storage: ^10.0.0
+  cached_network_image: ^3.4.1
+  hive_ce: ^2.15.1
+  hive_ce_flutter: ^2.3.3
 
 
 dev_dependencies:
@@ -78,13 +83,9 @@ flutter:
     - assets/images/Dashboard_pengguna.png
     - assets/images/pengerjaan_soal.png
     - assets/images/UMPB.png
-    - assets/images/sains.png
-    - assets/images/matematika.png
-    - assets/images/inggris.png
-    - assets/images/indonesia.png
-    - assets/images/computer.png
     - assets/images/Task.png
     - assets/images/register-background.png
+    - assets/images/error.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

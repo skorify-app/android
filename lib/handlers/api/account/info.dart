@@ -10,7 +10,6 @@ Future<DefaultAPIResult> getAccountInfo(String session) async {
     final res = await http.get(Uri.parse(completeURL), headers: headers);
 
     final Map<String, dynamic> jsonResponse = jsonDecode(res.body);
-    print(jsonResponse);
     if (jsonResponse.containsKey('message')) {
       return DefaultAPIResult(result: jsonResponse['message'], success: false);
     }

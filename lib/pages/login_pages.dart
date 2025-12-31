@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hive_ce_flutter/adapters.dart';
 import 'package:skorify/handlers/api/account/login.dart';
 import 'package:skorify/handlers/classes.dart';
 import 'package:skorify/handlers/secure_storage_service.dart';
-import 'homepages.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -13,6 +13,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final SecureStorageService _secureStorage = getStorage();
+  final box = Hive.box('storageBox');
+  late String savedEmail = '';
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -20,6 +22,17 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
   bool _obscureText = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadAccountInfo();
+  }
+
+  void _loadAccountInfo() async {
+    savedEmail = await box.get('email') ?? '';
+    emailController.value = TextEditingValue(text: savedEmail);
+  }
 
   void _login() async {
     if (_formKey.currentState!.validate()) {
@@ -34,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
       });
 
       if (result.success) {
-        await _secureStorage.saveSession(result.result);
+        await _secureStorage.set('session', result.result);
 
         if (!mounted) return;
 
@@ -42,10 +55,7 @@ class _LoginPageState extends State<LoginPage> {
           context,
         ).showSnackBar(const SnackBar(content: Text("Login berhasil!")));
 
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const HomePages()),
-        );
+        Navigator.pushReplacementNamed(context, '/homepage');
       } else {
         if (!mounted) return;
 

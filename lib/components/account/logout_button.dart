@@ -17,7 +17,7 @@ class LogoutButton extends StatelessWidget {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
         child: const Text(
-          "KELUAR",
+          "KELUAR AKUN",
           style: TextStyle(
             color: Colors.white,
             fontSize: 16,

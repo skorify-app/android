@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:skorify/components/questions/next_button.dart';
 import 'package:skorify/components/questions/previous_button.dart';
+import 'package:skorify/components/questions/submit_button.dart';
 import 'package:skorify/components/questions/unsure_button.dart';
 
 class QuestionNav extends StatelessWidget {
@@ -8,12 +9,22 @@ class QuestionNav extends StatelessWidget {
     super.key,
     required this.previousQuestionMethod,
     required this.nextQuestionMethod,
+    required this.unsureMethod,
+    required this.submitMethod,
+    required this.unsureButtonIcon,
     required this.questionNumber,
+    required this.totalQuestions,
+    this.showSubmitButton,
   });
 
   final VoidCallback previousQuestionMethod;
   final VoidCallback nextQuestionMethod;
+  final VoidCallback unsureMethod;
+  final VoidCallback submitMethod;
+  final IconData unsureButtonIcon;
   final int questionNumber;
+  final int totalQuestions;
+  final bool? showSubmitButton;
 
   @override
   Widget build(BuildContext ctx) {
@@ -37,11 +48,19 @@ class QuestionNav extends StatelessWidget {
             onPressed: previousQuestionMethod,
             questionNumber: questionNumber,
           ),
-          UnsureButton(questionNumber: questionNumber),
+          UnsureButton(
+            onPressed: unsureMethod,
+            icon: unsureButtonIcon,
+            questionNumber: questionNumber,
+          ),
           NextButton(
             onPressed: nextQuestionMethod,
             questionNumber: questionNumber,
+            totalQuestions: totalQuestions,
           ),
+          if (showSubmitButton == true && questionNumber == totalQuestions) ...[
+            SubmitButton(onPressed: submitMethod),
+          ],
         ],
       ),
     );

@@ -5,16 +5,18 @@ class NextButton extends StatelessWidget {
     super.key,
     required this.onPressed,
     required this.questionNumber,
+    required this.totalQuestions,
   });
 
   final VoidCallback onPressed;
   final int questionNumber;
+  final int totalQuestions;
 
   @override
   Widget build(BuildContext ctx) {
     return Visibility(
-      visible: questionNumber < 30 ? true : false,
-      maintainSize: true,
+      visible: questionNumber < totalQuestions ? true : false,
+      maintainSize: false,
       maintainAnimation: true,
       maintainState: true,
       child: ElevatedButton(
@@ -27,7 +29,7 @@ class NextButton extends StatelessWidget {
         ),
         child: const Row(
           children: [
-            Text('Soal selanjutnya', style: TextStyle(fontSize: 11)),
+            Text('Selanjutnya', style: TextStyle(fontSize: 11)),
             SizedBox(width: 4),
             Icon(Icons.arrow_forward, size: 14),
           ],

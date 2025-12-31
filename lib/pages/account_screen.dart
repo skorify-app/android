@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive_ce_flutter/adapters.dart';
 import 'package:skorify/components/account/change_password_field.dart';
 import 'package:skorify/components/account/info_card.dart';
 import 'package:skorify/components/account/logout_button.dart';
@@ -8,6 +9,7 @@ import 'package:skorify/components/misc/bottom_navbar.dart';
 import 'package:skorify/components/misc/top_bar.dart';
 import 'package:skorify/handlers/api/account/info.dart';
 import 'package:skorify/handlers/api/account/logout.dart';
+import 'package:skorify/handlers/api/account/update.dart';
 import 'package:skorify/handlers/classes.dart';
 import 'package:skorify/handlers/secure_storage_service.dart';
 import 'package:skorify/pages/login_pages.dart';
@@ -21,11 +23,13 @@ class AccountScreen extends StatefulWidget {
 
 class _SettingPageState extends State<AccountScreen> {
   final SecureStorageService _secureStorage = getStorage();
+  final box = Hive.box('storageBox');
 
   int _selectedIndex = 2;
   var fullName = 'Loading...';
   var email = 'Loading...';
   var role = 'Loading...';
+  late String sessionId;
 
   @override
   void initState() {
@@ -34,15 +38,49 @@ class _SettingPageState extends State<AccountScreen> {
   }
 
   void _loadAccountInfo() async {
-    String sessionId = await _secureStorage.getSession() ?? '';
-    DefaultAPIResult account = await getAccountInfo(sessionId);
+    sessionId = await _secureStorage.get('session') ?? '';
+    if (sessionId.isEmpty) {
+      if (!mounted) return;
+      Navigator.pushNamed(context, '/homepage');
+      return;
+    }
 
+    String savedFullName = await box.get('full_name') ?? fullName;
+    String savedEmail = await box.get('email') ?? email;
+    String savedRole = await box.get('role') ?? role;
+
+    setState(() {
+      fullName = savedFullName;
+      email = savedEmail;
+      role = savedRole;
+    });
+
+    DefaultAPIResult account = await getAccountInfo(sessionId);
     if (account.success) {
-      setState(() {
-        fullName = account.result['full_name'];
-        email = account.result['email'];
-        role = account.result['role'];
-      });
+      String resFullName = account.result['full_name'];
+      // If the full name is updated
+      if (resFullName != savedFullName) {
+        await box.put('full_name', resFullName);
+        setState(() {
+          fullName = resFullName;
+        });
+      }
+
+      String resEmail = account.result['email'];
+      if (resEmail != savedEmail) {
+        await box.put('email', resEmail);
+        setState(() {
+          email = resEmail;
+        });
+      }
+
+      String resRole = account.result['role'];
+      if (resRole != savedRole) {
+        await box.put('role', resRole);
+        setState(() {
+          role = resRole;
+        });
+      }
     }
   }
 
@@ -52,7 +90,7 @@ class _SettingPageState extends State<AccountScreen> {
     });
 
     if (index == 0) {
-      Navigator.pushNamed(context, '/homepages');
+      Navigator.pushNamed(context, '/homepage');
     } else if (index == 1) {
       Navigator.pushNamed(context, '/activity');
     }
@@ -61,7 +99,7 @@ class _SettingPageState extends State<AccountScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: Color(0xFFF5F6F8),
       appBar: TopBar(),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -127,31 +165,22 @@ class _SettingPageState extends State<AccountScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         title: const Text("Ubah Nama"),
+        backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
         content: TextField(
           controller: nameController,
           decoration: const InputDecoration(border: OutlineInputBorder()),
         ),
         actions: [
-          Center(
+          SizedBox(
+            width: double.infinity,
+            height: 45,
             child: ElevatedButton(
               style: popupStyle,
               onPressed: () {
-                setState(() {
-                  fullName = nameController.text;
-                });
+                _processUpdate({'fullName': nameController.text}, 'full_name');
                 Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: const Text("Nama berhasil diperbarui!"),
-                    behavior: SnackBarBehavior.floating,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    margin: const EdgeInsets.all(16),
-                  ),
-                );
               },
               child: popupButtonText,
             ),
@@ -167,35 +196,26 @@ class _SettingPageState extends State<AccountScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         title: const Text("Ubah Email"),
+        backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
         content: TextField(
           controller: emailController,
           keyboardType: TextInputType.emailAddress,
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
-            hintText: "Masukkan email (contoh: user@gmail.com)",
+            hintText: "Masukkan email",
           ),
         ),
         actions: [
-          Center(
+          SizedBox(
+            width: double.infinity,
+            height: 45,
             child: ElevatedButton(
               style: popupStyle,
               onPressed: () {
-                setState(() {
-                  email = emailController.text;
-                });
+                _processUpdate({'email': emailController.text}, 'email');
                 Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: const Text("Email berhasil diperbarui!"),
-                    behavior: SnackBarBehavior.floating,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    margin: const EdgeInsets.all(16),
-                  ),
-                );
               },
               child: popupButtonText,
             ),
@@ -218,13 +238,15 @@ class _SettingPageState extends State<AccountScreen> {
           builder: (context, setStateDialog) {
             return AlertDialog(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(10),
               ),
               title: const Text("Ubah Kata Sandi"),
+              backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ChangePasswordField(
+                    label: 'Kata sandi sekarang',
                     currentPassController: currentPassController,
                     obscureCurrent: obscureCurrent,
                     onPressed: () {
@@ -236,6 +258,7 @@ class _SettingPageState extends State<AccountScreen> {
 
                   const SizedBox(height: 12),
                   ChangePasswordField(
+                    label: 'Kata sandi baru',
                     currentPassController: newPassController,
                     obscureCurrent: obscureNew,
                     onPressed: () {
@@ -247,23 +270,17 @@ class _SettingPageState extends State<AccountScreen> {
                 ],
               ),
               actions: [
-                Center(
+                SizedBox(
+                  width: double.infinity,
+                  height: 45,
                   child: ElevatedButton(
                     style: popupStyle,
                     onPressed: () {
+                      _processUpdate({
+                        'currentPassword': currentPassController.text,
+                        'newPassword': newPassController.text,
+                      }, 'password');
                       Navigator.pop(context);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: const Text(
-                            "Kata sandi berhasil diperbarui!",
-                          ),
-                          behavior: SnackBarBehavior.floating,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          margin: const EdgeInsets.all(16),
-                        ),
-                      );
                     },
                     child: popupButtonText,
                   ),
@@ -276,12 +293,53 @@ class _SettingPageState extends State<AccountScreen> {
     );
   }
 
+  void _processUpdate(Map<String, String> data, String label) async {
+    EmptyAPIResult result = await update(sessionId, data);
+
+    if (result.success) {
+      if (!mounted) return;
+
+      String labelName = '';
+      if (label == 'full_name') {
+        labelName = 'nama lengkap';
+        String dataResult = data['fullName'] ?? '';
+        box.put('full_name', dataResult);
+
+        setState(() {
+          fullName = dataResult;
+        });
+      } else if (label == 'email') {
+        labelName = 'alamat email';
+        String dataResult = data['email'] ?? '';
+        box.put('email', dataResult);
+
+        setState(() {
+          email = dataResult;
+        });
+      } else if (label == 'password') {
+        labelName = 'kata sandi';
+      }
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Berhasil mengubah $labelName.')));
+    } else {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(result.error)));
+    }
+  }
+
   void _processLogout() async {
-    String sessionId = await _secureStorage.getSession() ?? '';
     StringAPIResult result = await logout(sessionId);
 
     if (result.success) {
-      await _secureStorage.deleteSession();
+      await _secureStorage.delete('session');
+      await box.delete('full_name');
+      await box.delete('role');
+
       if (!mounted) return;
 
       ScaffoldMessenger.of(

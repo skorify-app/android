@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'login_pages.dart'; 
+import 'package:skorify/components/misc/background_image.dart';
+import 'login_pages.dart';
 
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});
@@ -44,21 +45,14 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   @override
   Widget build(BuildContext context) {
-    const double bottomAreaHeight = 60.0; 
+    const double bottomAreaHeight = 60.0;
 
     return Scaffold(
       body: SafeArea(
         child: Stack(
           children: [
-            
             // Background Image
-            Positioned.fill(
-              child: Image.asset(
-                'assets/images/home-background.png', 
-                fit: BoxFit.cover,
-                alignment: Alignment.center, 
-              ),
-            ),
+            Positioned.fill(child: BackgroundImage()),
 
             // Isi konten onboarding (Gambar & Teks)
             Padding(
@@ -78,13 +72,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   return Container(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center, 
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        
-                        Image.asset(
-                          page['image']!,
-                          height: 250,
-                        ),
+                        Image.asset(page['image']!, height: 250),
                         const SizedBox(height: 8),
                         Text(
                           page['title']!,
@@ -95,23 +85,24 @@ class _OnboardingPageState extends State<OnboardingPage> {
                             color: Colors.black,
                           ),
                         ),
-                        
-                        if (page['subtitle'] != null && page['subtitle']!.isNotEmpty) ...[
+
+                        if (page['subtitle'] != null &&
+                            page['subtitle']!.isNotEmpty) ...[
                           const SizedBox(height: 8),
                           Text(
                             page['subtitle']!,
                             textAlign: TextAlign.center,
                             style: const TextStyle(
-                              fontSize: 25, 
+                              fontSize: 25,
                               color: Colors.black,
                             ),
                           ),
                         ],
-                        
+
                         // Tombol Coba Sekarang
                         if (isLastPageItem)
                           Padding(
-                            padding: const EdgeInsets.only(top: 20.0), 
+                            padding: const EdgeInsets.only(top: 20.0),
                             child: ElevatedButton(
                               onPressed: () {
                                 Navigator.pushReplacement(
@@ -124,7 +115,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xFF001D39),
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 40, vertical: 14),
+                                  horizontal: 40,
+                                  vertical: 14,
+                                ),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
@@ -150,13 +143,12 @@ class _OnboardingPageState extends State<OnboardingPage> {
             Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 20.0), 
+                padding: const EdgeInsets.only(bottom: 20.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    
                     // Tombol Kembali (Panah Kiri) atau Penyeimbang
-                    if (_currentPage != 0) 
+                    if (_currentPage != 0)
                       IconButton(
                         onPressed: () {
                           _controller.previousPage(
@@ -164,11 +156,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
                             curve: Curves.easeInOut,
                           );
                         },
-                        icon: const Icon(Icons.arrow_back_ios,
-                            color: Colors.black),
+                        icon: const Icon(
+                          Icons.arrow_back_ios,
+                          color: Colors.black,
+                        ),
                       )
                     else
-                      const SizedBox(width: 48.0), 
+                      const SizedBox(width: 48.0),
 
                     // Indikator Titik
                     Row(
@@ -189,7 +183,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     ),
 
                     // Tombol Maju (Panah Kanan) atau Penyeimbang
-                    if (_currentPage != _pages.length - 1) 
+                    if (_currentPage != _pages.length - 1)
                       IconButton(
                         onPressed: () {
                           _controller.nextPage(
@@ -197,11 +191,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
                             curve: Curves.easeInOut,
                           );
                         },
-                        icon: const Icon(Icons.arrow_forward_ios,
-                            color: Colors.black),
+                        icon: const Icon(
+                          Icons.arrow_forward_ios,
+                          color: Colors.black,
+                        ),
                       )
                     else
-                      const SizedBox(width: 48.0), 
+                      const SizedBox(width: 48.0),
                   ],
                 ),
               ),
