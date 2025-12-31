@@ -274,7 +274,7 @@ class _LoginPageState extends State<LoginPage> {
 
                     const SizedBox(height: 12),
 
-                    Padding(padding: EdgeInsetsGeometry.only(top: 15)),
+                    
 
                     // Teks dan tombol register secara horizontal
                     Column(
