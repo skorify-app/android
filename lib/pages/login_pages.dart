@@ -274,8 +274,6 @@ class _LoginPageState extends State<LoginPage> {
 
                     const SizedBox(height: 12),
 
-                    
-
                     // Teks dan tombol register secara horizontal
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,

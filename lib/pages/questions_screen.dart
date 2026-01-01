@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:skorify/components/questions/answer_option_button.dart';
 import 'package:skorify/components/questions/question_background.dart';
@@ -199,6 +200,12 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                                     height: 1.5,
                                   ),
                                 ),
+                                const SizedBox(height: 8),
+                                if (question.image != null)
+                                  CachedNetworkImage(
+                                    imageUrl:
+                                        'https://skorify-web.hosea.dev/storage/questions/${widget.subtestId}/${question.image}',
+                                  ),
                                 const SizedBox(height: 24),
 
                                 // Opsi Jawaban

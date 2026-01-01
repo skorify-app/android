@@ -44,8 +44,14 @@ class QuestionData {
   final int id;
   final String text;
   final List<Choice> choices;
+  final String? image;
 
-  QuestionData({required this.id, required this.text, required this.choices});
+  QuestionData({
+    required this.id,
+    required this.text,
+    required this.choices,
+    required this.image,
+  });
 }
 
 class Questions {
