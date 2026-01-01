@@ -66,6 +66,7 @@ class _LoadingQuestionScreenState extends State<LoadingQuestionScreen> {
           id: question['question_id'],
           text: question['question_text'],
           choices: choices,
+          image: question['image'],
         ),
       );
     }
