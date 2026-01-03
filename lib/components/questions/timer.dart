@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async' as da;
 
+import 'package:skorify/handlers/util.dart';
+
 class Timer extends StatefulWidget {
   // The duration is in seconds
   const Timer({super.key, required this.duration, required this.submitAnswers});
@@ -14,17 +16,6 @@ class Timer extends StatefulWidget {
 
 class _TimerState extends State<Timer> {
   bool _isVisible = true;
-
-  String padToTwoDigits(int n) => n.toString().padLeft(2, '0');
-  String formatTime(int totalSeconds) {
-    Duration duration = Duration(seconds: totalSeconds);
-
-    int hours = duration.inHours;
-    int minutes = duration.inMinutes.remainder(60);
-    int seconds = duration.inSeconds.remainder(60);
-
-    return '${padToTwoDigits(hours)}:${padToTwoDigits(minutes)}:${padToTwoDigits(seconds)}';
-  }
 
   late da.Timer _timer;
   late int _remainingSeconds;

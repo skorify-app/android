@@ -76,7 +76,7 @@ class _LoadingQuestionScreenState extends State<LoadingQuestionScreen> {
       questions: listOfQuestions,
     );
 
-    int duration = widget.duration * 60;
+    int duration = widget.duration;
 
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(

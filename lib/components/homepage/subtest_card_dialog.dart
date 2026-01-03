@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:skorify/components/homepage/subtest_details.dart';
+import 'package:skorify/handlers/util.dart';
 import 'package:skorify/pages/loading_questions_screen.dart';
 
 class SubtestCardDialog extends StatelessWidget {
@@ -15,6 +16,8 @@ class SubtestCardDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext ctx) {
+    String duration = subtest['duration_seconds'];
+
     return Dialog(
       backgroundColor: const Color(0xFFF5F6F8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -49,7 +52,7 @@ class SubtestCardDialog extends StatelessWidget {
                   SubtestDetails(
                     icon: Icons.timer_outlined,
                     label: 'Total waktu',
-                    value: '${subtest['duration_minutes']} menit',
+                    value: formatTime(int.parse(duration)),
                   ),
                   const SizedBox(height: 6),
                   const Divider(thickness: 1, color: Color(0xFFE0E0E0)),
@@ -76,7 +79,7 @@ class SubtestCardDialog extends StatelessWidget {
                     MaterialPageRoute(
                       builder: (context) => LoadingQuestionScreen(
                         subtestId: '${subtest['subtest_id']}',
-                        duration: int.parse(subtest['duration_minutes']),
+                        duration: int.parse(duration),
                       ),
                     ),
                   );
