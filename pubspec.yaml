@@ -79,7 +79,7 @@ flutter:
   assets:
     - assets/images/home-background.png
     - assets/images/logo.png
-    - assets/images/avatar.jpeg
+    - assets/images/avatar.png
     - assets/images/Dashboard_pengguna.png
     - assets/images/pengerjaan_soal.png
     - assets/images/UMPB.png

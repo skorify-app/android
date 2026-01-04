@@ -121,7 +121,7 @@ class _SettingPageState extends State<AccountScreen> {
               const SizedBox(height: 20),
               const CircleAvatar(
                 radius: 50,
-                backgroundImage: AssetImage('assets/images/avatar.jpeg'),
+                backgroundImage: AssetImage('assets/images/avatar.png'),
               ),
 
               const SizedBox(height: 25),
