@@ -10,22 +10,16 @@ import 'package:skorify/components/questions/question_numbers_grid.dart';
 import 'package:skorify/components/questions/timer.dart';
 import 'package:skorify/components/misc/top_bar.dart';
 import 'package:skorify/handlers/classes.dart';
+import 'package:skorify/handlers/util.dart';
 import 'package:skorify/pages/submitting_answers_page.dart';
 
-List<Map<String, String>> userAnswers = [];
+List<Answer> userAnswers = [];
 List<int> unsureQuestions = [];
 
 class QuestionsScreen extends StatefulWidget {
-  const QuestionsScreen({
-    super.key,
-    required this.questions,
-    required this.subtestId,
-    required this.duration,
-  });
+  const QuestionsScreen({super.key, required this.questionsInfo});
 
-  final Questions questions;
-  final String subtestId;
-  final int duration;
+  final QuestionsInfo questionsInfo;
   final int questionNumber = 1;
 
   @override
@@ -99,12 +93,15 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
   }
 
   void submitAnswers() {
+    AnswersData answersData = AnswersData(
+      type: widget.questionsInfo.type,
+      subtestId: widget.questionsInfo.subtestId,
+      answers: userAnswers,
+    );
+
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (context) => SubmittingAnswersPage(
-          subtestId: widget.subtestId,
-          answers: userAnswers,
-        ),
+        builder: (context) => SubmittingAnswersPage(answersData: answersData),
       ),
     );
   }
@@ -141,10 +138,10 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    int totalQuestions = widget.questions.questions.length;
-    int duration = widget.duration;
+    int totalQuestions = widget.questionsInfo.questions.length;
+    int duration = widget.questionsInfo.duration;
 
-    QuestionData question = widget.questions.questions[_questionNumber - 1];
+    Question question = widget.questionsInfo.questions[_questionNumber - 1];
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -200,11 +197,14 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                                     height: 1.5,
                                   ),
                                 ),
+
+                                // Gambar Soal
                                 const SizedBox(height: 8),
                                 if (question.image != null)
                                   CachedNetworkImage(
+                                    // o bozhe...
                                     imageUrl:
-                                        'https://skorify-web.hosea.dev/storage/questions/${widget.subtestId}/${question.image}',
+                                        '$WEB_URL/storage/questions/${question.image}',
                                   ),
                                 const SizedBox(height: 24),
 
@@ -287,8 +287,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                             int questionNum = index + 1;
                             String status = '';
                             bool isAnswered = userAnswers.any(
-                              (item) =>
-                                  item['number'] == questionNum.toString(),
+                              (item) => item.number == questionNum.toString(),
                             );
                             if (isAnswered) {
                               status = 'ANSWERED';
@@ -365,27 +364,29 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
 
 void _setAnswer(int id, String number, String label) {
   for (var answer in userAnswers) {
-    if (answer['number'] == number) {
-      answer['answerLabel'] = label;
+    if (answer.number == number) {
+      answer.answerLabel = label;
       return;
     }
   }
 
-  userAnswers.add({
-    'id': id.toString(),
-    'number': number,
-    'answerLabel': label,
-  });
+  Answer theAnswer = Answer(
+    id: id.toString(),
+    number: number,
+    answerLabel: label,
+  );
+
+  userAnswers.add(theAnswer);
 }
 
 String? _getAnswer(String number) {
   for (var answer in userAnswers) {
-    if (answer['number'] == number) return answer['answerLabel'];
+    if (answer.number == number) return answer.answerLabel;
   }
 
   return null;
 }
 
 void _removeAnswer(String number) {
-  userAnswers.removeWhere((answer) => answer['number'] == number);
+  userAnswers.removeWhere((answer) => answer.number == number);
 }

@@ -1,13 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:skorify/handlers/classes.dart';
+import 'package:skorify/handlers/util.dart';
 
-Future<QuestionAPIResult> fetchQuestions(
-  String session,
-  String subtestId,
-) async {
-  final String completeURL =
-      'https://skorify-api.hosea.dev/questions/get/$subtestId';
+Future<QuestionAPIResult> fetchUMPBQuestions(String session) async {
+  final String completeURL = '$API_URL/questions?type=umpb';
   final Map<String, String> headers = {'Session': session};
 
   try {

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -102,8 +100,10 @@ class _HomePageState extends State<HomePage> {
 
   int _selectedNavbarIndex = 0;
   late String sessionId;
-  late List<Map<String, dynamic>> subtests = [];
+  late List<SubtestInfo> subtests = [];
   late List<Widget> subtestWidgets = [];
+  late UMPB umpbData;
+  bool umpbExists = false;
 
   @override
   void initState() {
@@ -129,18 +129,20 @@ class _HomePageState extends State<HomePage> {
 
   void _fetchSubtestList() async {
     sessionId = await _secureStorage.get('session') ?? '';
-    ListAPIResult subtestsResult = await fetchList(sessionId);
-    if (subtestsResult.success) subtests = subtestsResult.result;
+    QuizInfoResult subtestsResult = await fetchList(sessionId);
+    if (!subtestsResult.success) return;
 
-    await box.put('subtest_data', jsonEncode(subtests));
+    subtests = subtestsResult.info.subtests;
 
     setState(() {
+      umpbData = subtestsResult.info.umpb;
+      umpbExists = true;
       subtestWidgets = List.from(
         subtests.map((subtest) {
           return _buildSubtestCard(
-            subtest['subtest_id'],
-            subtest['subtest_name'],
-            subtest['subtest_image_name'].toString(),
+            subtest.id.toString(),
+            subtest.name,
+            subtest.imageName,
           );
         }),
       );
@@ -160,12 +162,18 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _showSubtestDialog(BuildContext context, String subtestId) {
-    Map<String, dynamic> subtest = subtests.firstWhere(
-      (map) => map['subtest_id'] == subtestId,
-      orElse: () => <String, String>{},
+    SubtestInfo subtest = subtests.firstWhere(
+      (map) => map.id == subtestId,
+      orElse: () => SubtestInfo(
+        id: '',
+        name: '',
+        imageName: '',
+        duration: -1,
+        totalQuestions: -1,
+      ),
     );
 
-    if (subtest.isEmpty) return;
+    if (subtest.id.isEmpty) return;
 
     showGeneralDialog(
       context: context,
@@ -200,7 +208,11 @@ class _HomePageState extends State<HomePage> {
         final curvedValue = Curves.easeOutBack.transform(animation.value);
         return Transform.scale(
           scale: curvedValue,
-          child: SimulationDialog(context: context, animation: animation),
+          child: SimulationDialog(
+            context: context,
+            animation: animation,
+            umpbData: umpbData,
+          ),
         );
       },
     );
@@ -298,7 +310,10 @@ class _HomePageState extends State<HomePage> {
             ),
             const SizedBox(height: 20),
 
-            _buildSimulasiCard(),
+            if (umpbExists)
+              _buildSimulasiCard()
+            else
+              Text('Sedang memuat data...'),
 
             const SizedBox(height: 24),
             Text(

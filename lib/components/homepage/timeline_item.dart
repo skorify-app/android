@@ -5,12 +5,10 @@ class TimelineItem extends StatelessWidget {
   const TimelineItem({
     super.key,
     required this.title,
-    required this.duraton,
     required this.totalQuestions,
   });
 
   final String title;
-  final String duraton;
   final String totalQuestions;
 
   @override
@@ -49,20 +47,6 @@ class TimelineItem extends StatelessWidget {
                 const SizedBox(height: 4),
                 Row(
                   children: [
-                    const Icon(
-                      Icons.timer_outlined,
-                      size: 14,
-                      color: Colors.black54,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      duraton,
-                      style: GoogleFonts.inter(
-                        fontSize: 12,
-                        color: Colors.black54,
-                      ),
-                    ),
-                    const SizedBox(width: 12),
                     const Icon(
                       Icons.article_outlined,
                       size: 14,

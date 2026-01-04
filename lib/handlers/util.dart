@@ -1,3 +1,6 @@
+final String API_URL = 'https://skorify-api.hosea.dev';
+final String WEB_URL = 'https://skorify-web.hosea.dev';
+
 String padToTwoDigits(int n) => n.toString().padLeft(2, '0');
 
 String formatTime(int totalSeconds) {

@@ -72,7 +72,7 @@ class _ResultScreenState extends State<ResultScreen> {
                   const SizedBox(height: 20),
 
                   Text(
-                    scoreData['subtest_name'],
+                    scoreData['name'],
                     style: TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.bold,

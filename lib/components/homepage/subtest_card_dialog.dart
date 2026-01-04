@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:skorify/components/homepage/subtest_details.dart';
+import 'package:skorify/handlers/classes.dart';
 import 'package:skorify/handlers/util.dart';
 import 'package:skorify/pages/loading_questions_screen.dart';
 
@@ -12,11 +13,11 @@ class SubtestCardDialog extends StatelessWidget {
   });
 
   final BuildContext context;
-  final Map<String, dynamic> subtest;
+  final SubtestInfo subtest;
 
   @override
   Widget build(BuildContext ctx) {
-    String duration = subtest['duration_seconds'];
+    int duration = subtest.duration;
 
     return Dialog(
       backgroundColor: const Color(0xFFF5F6F8),
@@ -35,7 +36,7 @@ class SubtestCardDialog extends StatelessWidget {
               ),
             ),
             Text(
-              'Detail Uji ${subtest['subtest_name']}',
+              'Detail Uji ${subtest.name}',
               textAlign: TextAlign.center,
               style: GoogleFonts.inter(
                 fontSize: 18,
@@ -52,7 +53,7 @@ class SubtestCardDialog extends StatelessWidget {
                   SubtestDetails(
                     icon: Icons.timer_outlined,
                     label: 'Total waktu',
-                    value: formatTime(int.parse(duration)),
+                    value: formatTime(duration),
                   ),
                   const SizedBox(height: 6),
                   const Divider(thickness: 1, color: Color(0xFFE0E0E0)),
@@ -60,7 +61,7 @@ class SubtestCardDialog extends StatelessWidget {
                   SubtestDetails(
                     icon: Icons.list_alt_rounded,
                     label: 'Total soal',
-                    value: '${subtest['total_questions']} soal',
+                    value: '${subtest.totalQuestions} soal',
                   ),
                   const SizedBox(height: 6),
                   const Divider(thickness: 1, color: Color(0xFFE0E0E0)),
@@ -78,8 +79,9 @@ class SubtestCardDialog extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => LoadingQuestionScreen(
-                        subtestId: '${subtest['subtest_id']}',
-                        duration: int.parse(duration),
+                        type: 'subtest',
+                        subtestId: subtest.id,
+                        duration: duration,
                       ),
                     ),
                   );

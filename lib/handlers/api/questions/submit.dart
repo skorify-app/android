@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:skorify/handlers/classes.dart';
+import 'package:skorify/handlers/util.dart';
 
 Future<StringAPIResult> submit(String session, Object data) async {
-  final String completeURL = 'https://skorify-api.hosea.dev/questions/submit';
+  final String completeURL = '$API_URL/questions';
   final Map<String, String> headers = {
     'Content-Type': 'application/json',
     'Session': session,
