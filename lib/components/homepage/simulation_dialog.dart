@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:skorify/components/homepage/timeline_item.dart';
+import 'package:skorify/handlers/classes.dart';
+import 'package:skorify/handlers/util.dart';
+import 'package:skorify/pages/loading_questions_screen.dart';
 
 class SimulationDialog extends StatelessWidget {
   const SimulationDialog({
     super.key,
     required this.context,
     required this.animation,
+    required this.umpbData,
   });
 
   final BuildContext context;
   final Animation<double> animation;
+  final UMPB umpbData;
 
   @override
   Widget build(BuildContext ctx) {
@@ -34,20 +39,12 @@ class SimulationDialog extends StatelessWidget {
               ),
               Center(
                 child: Text(
-                  "Detail Simulasi UMPB",
+                  'Detail Simulasi UMPB',
                   style: GoogleFonts.inter(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: const Color(0xFF001D39),
                   ),
-                ),
-              ),
-              const SizedBox(height: 8),
-              Center(
-                child: Text(
-                  "Simulasi Ujian Mandiri Polibatam (UMP) - #1\n20 Agustus 2024",
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.inter(fontSize: 13, color: Colors.black54),
                 ),
               ),
 
@@ -57,7 +54,7 @@ class SimulationDialog extends StatelessWidget {
                   const Icon(Icons.timer, color: Color(0xFF002855)),
                   const SizedBox(width: 8),
                   Text(
-                    "Total waktu: 150 menit",
+                    'Total durasi: ${formatTime(umpbData.duration)}',
                     style: GoogleFonts.inter(fontSize: 14),
                   ),
                 ],
@@ -69,29 +66,37 @@ class SimulationDialog extends StatelessWidget {
                   const Icon(Icons.list_alt_rounded, color: Color(0xFF002855)),
                   const SizedBox(width: 8),
                   Text(
-                    "Total soal: 125 soal",
+                    "Total soal: ${umpbData.totalQuestions} soal",
                     style: GoogleFonts.inter(fontSize: 14),
                   ),
                 ],
               ),
 
               const Divider(height: 30, thickness: 1),
-              TimelineItem(
-                title: 'Matematika',
-                duraton: '30 menit',
-                totalQuestions: '25 soal',
-              ),
-              TimelineItem(
-                title: 'Sains',
-                duraton: '30 menit',
-                totalQuestions: '25 soal',
-              ),
+              ...umpbData.subtests.map<Widget>((item) {
+                return TimelineItem(
+                  title: item.name,
+                  totalQuestions: '${item.amount} soal',
+                );
+              }),
 
               const SizedBox(height: 20),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LoadingQuestionScreen(
+                          type: 'umpb',
+                          subtestId: null,
+                          duration: umpbData.duration,
+                        ),
+                      ),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF002855),
                     shape: RoundedRectangleBorder(

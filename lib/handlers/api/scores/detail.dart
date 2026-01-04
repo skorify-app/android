@@ -2,9 +2,10 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:skorify/handlers/classes.dart';
+import 'package:skorify/handlers/util.dart';
 
 Future<DefaultAPIResult> detail(String session, String scoreId) async {
-  final String completeURL = 'https://skorify-api.hosea.dev/scores/$scoreId';
+  final String completeURL = '$API_URL/scores/$scoreId';
   final Map<String, String> headers = {'Session': session};
 
   try {
@@ -16,7 +17,9 @@ Future<DefaultAPIResult> detail(String session, String scoreId) async {
     }
 
     return DefaultAPIResult(result: jsonResponse, success: true);
-  } catch (err) {
+  } catch (err, stack) {
+    print(err);
+    print(stack);
     return DefaultAPIResult(result: {}, success: false);
   }
 }

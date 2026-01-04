@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:skorify/components/misc/top_bar.dart';
-import 'package:skorify/handlers/api/questions/fetch.dart';
+import 'package:skorify/handlers/api/questions/fetch_subtest.dart';
+import 'package:skorify/handlers/api/questions/fetch_umpb.dart';
 import 'package:skorify/handlers/classes.dart';
 import 'package:skorify/handlers/secure_storage_service.dart';
 import 'package:skorify/pages/questions_screen.dart';
 
+List<String> _questionTypes = ['subtest', 'umpb'];
+
 class LoadingQuestionScreen extends StatefulWidget {
   const LoadingQuestionScreen({
     super.key,
+    required this.type,
     required this.subtestId,
     required this.duration,
   });
 
-  final String subtestId;
+  final String type;
+  final String? subtestId;
   final int duration;
 
   @override
@@ -26,65 +31,87 @@ class _LoadingQuestionScreenState extends State<LoadingQuestionScreen> {
     fetchQuestionsFromAPI();
   }
 
-  Future<void> fetchQuestionsFromAPI() async {
-    final SecureStorageService secureStorage = getStorage();
-    String sessionId = await secureStorage.get('session') ?? '';
-
-    String subtestId = widget.subtestId;
-    QuestionAPIResult rawResult = await fetchQuestions(sessionId, subtestId);
-
+  void begone() {
     if (!mounted) return;
 
-    if (!rawResult.success) {
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        '/homepage',
-        (Route<dynamic> route) => false,
-      );
-      return;
-    }
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      '/homepage',
+      (Route<dynamic> route) => false,
+    );
+    return;
+  }
 
-    List<QuestionData> listOfQuestions = [];
-    List<dynamic> result = rawResult.result;
-    for (var i = 0; i < result.length; i++) {
-      Map<String, dynamic> question = result[i];
+  QuestionsInfo generateQuestionInfo(List<dynamic> unformattedQuestions) {
+    List<Question> questions = [];
+
+    for (int i = 0; i < unformattedQuestions.length; i++) {
+      Map<String, dynamic> rawQuestion = unformattedQuestions[i];
 
       List<Choice> choices = [];
-      List<dynamic> listOfChoices = question['choices'];
-
-      for (var j = 0; j < listOfChoices.length; j++) {
-        choices.add(
-          Choice(
-            label: listOfChoices[j]['label'],
-            choiceValue: listOfChoices[j]['choice_value'],
-          ),
+      for (int j = 0; j < rawQuestion['choices'].length; j++) {
+        Map<String, dynamic> rawChoice = rawQuestion['choices'][j];
+        Choice choice = Choice(
+          label: rawChoice['label'],
+          choiceValue: rawChoice['choice_value'],
         );
+        choices.add(choice);
       }
 
-      listOfQuestions.add(
-        QuestionData(
-          id: question['question_id'],
-          text: question['question_text'],
-          choices: choices,
-          image: question['image'],
-        ),
+      Question question = Question(
+        id: rawQuestion['question_id'],
+        text: rawQuestion['question_text'],
+        choices: choices,
+        image: rawQuestion['image'],
       );
+      questions.add(question);
     }
 
-    Questions questions = Questions(
-      subtestId: int.parse(subtestId),
-      questions: listOfQuestions,
+    QuestionsInfo result = QuestionsInfo(
+      type: widget.type,
+      subtestId: widget.subtestId,
+      duration: widget.duration,
+      questions: questions,
     );
 
-    int duration = widget.duration;
+    return result;
+  }
 
+  Future<void> fetchQuestionsFromAPI() async {
+    String type = widget.type;
+
+    if (!_questionTypes.contains(type)) return;
+
+    final SecureStorageService secureStorage = getStorage();
+    String sessionId = await secureStorage.get('session') ?? '';
+    if (sessionId.isEmpty) return;
+
+    QuestionAPIResult rawResult;
+    QuestionsInfo questionsInfo;
+
+    if (type == 'subtest') {
+      String subtestId = widget.subtestId ?? '';
+      if (subtestId.isEmpty) return;
+
+      rawResult = await fetchSubtestQuestions(sessionId, subtestId);
+
+      print('rawResult');
+      print(rawResult.success);
+      print('\n\n');
+      if (!rawResult.success) return;
+    } else {
+      rawResult = await fetchUMPBQuestions(sessionId);
+      if (!rawResult.success) return;
+    }
+
+    questionsInfo = generateQuestionInfo(rawResult.result);
+    print('\nquestionsInfo');
+    print(questionsInfo.duration);
+
+    if (!mounted) return;
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (context) => QuestionsScreen(
-          subtestId: subtestId,
-          questions: questions,
-          duration: duration,
-        ),
+        builder: (context) => QuestionsScreen(questionsInfo: questionsInfo),
       ),
     );
   }

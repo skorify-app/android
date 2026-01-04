@@ -6,14 +6,9 @@ import 'package:skorify/handlers/secure_storage_service.dart';
 import 'package:skorify/pages/error_page.dart';
 
 class SubmittingAnswersPage extends StatefulWidget {
-  const SubmittingAnswersPage({
-    super.key,
-    required this.subtestId,
-    required this.answers,
-  });
+  const SubmittingAnswersPage({super.key, required this.answersData});
 
-  final String subtestId;
-  final List<Map<String, String>> answers;
+  final AnswersData answersData;
 
   @override
   State<SubmittingAnswersPage> createState() => _SubmittingAnswersPageState();
@@ -30,9 +25,14 @@ class _SubmittingAnswersPageState extends State<SubmittingAnswersPage> {
     final SecureStorageService secureStorage = getStorage();
     String sessionId = await secureStorage.get('session') ?? '';
 
+    List<Map<String, dynamic>> answersJson = widget.answersData.answers
+        .map((answer) => answer.toJson())
+        .toList();
+
     StringAPIResult rawResult = await submit(sessionId, {
-      'subtestId': widget.subtestId,
-      'answers': widget.answers,
+      'type': widget.answersData.type,
+      'subtestId': widget.answersData.subtestId,
+      'answers': answersJson,
     });
 
     if (!mounted) return;

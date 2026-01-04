@@ -17,7 +17,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
   final SecureStorageService _secureStorage = getStorage();
 
   int _selectedNavbarIndex = 1;
-  late List<Map<String, dynamic>> scores = [];
+  late List<ScoreData> scores = [];
 
   @override
   void initState() {
@@ -27,9 +27,9 @@ class _ActivityScreenState extends State<ActivityScreen> {
 
   void fetchScores() async {
     String sessionId = await _secureStorage.get('session') ?? '';
-    ListAPIResult apiResponse = await fetchAll(sessionId);
+    ScoreDataAPIResult result = await fetchAll(sessionId);
 
-    if (!apiResponse.success) {
+    if (!result.success) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -41,7 +41,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
     }
 
     setState(() {
-      scores = apiResponse.result;
+      scores = result.scores;
     });
   }
 
@@ -91,11 +91,11 @@ class _ActivityScreenState extends State<ActivityScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          scores[i]['subtest_name'],
+                          scores[i].name,
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          scores[i]['recorded_at'],
+                          scores[i].recordedAt,
                           style: TextStyle(fontSize: 13),
                         ),
                       ],
@@ -109,10 +109,10 @@ class _ActivityScreenState extends State<ActivityScreen> {
                   ),
                   children: [
                     _buildStyledCard(
-                      benar: int.parse(scores[i]['correct_answers']),
-                      salah: int.parse(scores[i]['incorrect_answers']),
-                      kosong: int.parse(scores[i]['empty_answers']),
-                      scoreId: scores[i]['score_id'],
+                      benar: scores[i].answerSummary.correct,
+                      salah: scores[i].answerSummary.incorrect,
+                      kosong: scores[i].answerSummary.empty,
+                      scoreId: scores[i].id,
                     ),
                   ],
                 ),
