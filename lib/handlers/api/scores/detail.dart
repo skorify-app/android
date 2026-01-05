@@ -17,9 +17,7 @@ Future<DefaultAPIResult> detail(String session, String scoreId) async {
     }
 
     return DefaultAPIResult(result: jsonResponse, success: true);
-  } catch (err, stack) {
-    print(err);
-    print(stack);
+  } catch (err) {
     return DefaultAPIResult(result: {}, success: false);
   }
 }

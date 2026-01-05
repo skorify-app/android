@@ -95,9 +95,6 @@ class _LoadingQuestionScreenState extends State<LoadingQuestionScreen> {
 
       rawResult = await fetchSubtestQuestions(sessionId, subtestId);
 
-      print('rawResult');
-      print(rawResult.success);
-      print('\n\n');
       if (!rawResult.success) return;
     } else {
       rawResult = await fetchUMPBQuestions(sessionId);
@@ -105,8 +102,6 @@ class _LoadingQuestionScreenState extends State<LoadingQuestionScreen> {
     }
 
     questionsInfo = generateQuestionInfo(rawResult.result);
-    print('\nquestionsInfo');
-    print(questionsInfo.duration);
 
     if (!mounted) return;
     Navigator.of(context).pushReplacement(
