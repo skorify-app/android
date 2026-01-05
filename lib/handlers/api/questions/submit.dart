@@ -19,7 +19,6 @@ Future<StringAPIResult> submit(String session, Object data) async {
     );
 
     String result = res.body;
-    print(result);
     bool success = true;
 
     if (res.statusCode != 200) {
@@ -28,9 +27,7 @@ Future<StringAPIResult> submit(String session, Object data) async {
     }
 
     return StringAPIResult(result: result, success: success);
-  } catch (err, stack) {
-    print(err);
-    print(stack);
+  } catch (err) {
     return StringAPIResult(result: '', success: false);
   }
 }
