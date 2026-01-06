@@ -30,7 +30,7 @@ Future<ScoreDataAPIResult> fetchAll(String session) async {
       );
 
       ScoreData scoreData = ScoreData(
-        id: raw['id'],
+        id: (raw['id']).toString(),
         name: raw['name'],
         score: raw['score'],
         recordedAt: raw['recorded_at'],
