@@ -80,8 +80,7 @@ flutter:
     - assets/images/home-background.png
     - assets/images/logo.png
     - assets/images/avatar.png
-    - assets/images/Dashboard_pengguna.png
-    - assets/images/pengerjaan_soal.png
+    - assets/images/dashboard.png
     - assets/images/UMPB.png
     - assets/images/Task.png
     - assets/images/register-background.png
