@@ -20,7 +20,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
       'subtitle': 'Aplikasi CBT Test Potensi Akademik',
     },
     {
-      'image': 'assets/images/Dashboard_pengguna.png',
+      'image': 'assets/images/dashboard.png',
       'title': 'Lakukan Simulasi Ujian Mandiri Polibatam disini!',
       'subtitle': '',
     },
