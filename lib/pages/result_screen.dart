@@ -129,6 +129,7 @@ class _ResultScreenState extends State<ResultScreen> {
             for (var i = 0; i < scoreData['questions'].length; i++) ...[
               QuestionCard(
                 questionText: scoreData['questions'][i]['text'],
+                imageName: scoreData['questions'][i]['image'],
                 choices: (scoreData['questions'][i]['choices'] as List<dynamic>)
                     .map<Map<String, String>>((choice) {
                       return {

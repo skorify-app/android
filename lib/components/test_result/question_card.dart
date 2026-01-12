@@ -1,16 +1,20 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:skorify/components/test_result/question_choices.dart';
+import 'package:skorify/handlers/util.dart';
 
 class QuestionCard extends StatelessWidget {
   const QuestionCard({
     super.key,
     required this.questionText,
+    required this.imageName,
     required this.choices,
     required this.correctAnswer,
     required this.userAnswer,
   });
 
   final String questionText;
+  final String? imageName;
   final List<Map<String, String>> choices;
   final String correctAnswer;
   final String userAnswer;
@@ -42,6 +46,12 @@ class QuestionCard extends StatelessWidget {
               height: 1.4,
             ),
           ),
+          const SizedBox(height: 16),
+
+          if (imageName != null)
+            CachedNetworkImage(
+              imageUrl: '$WEB_URL/storage/questions/$imageName',
+            ),
           const SizedBox(height: 16),
 
           for (int i = 0; i < choices.length; i++)
